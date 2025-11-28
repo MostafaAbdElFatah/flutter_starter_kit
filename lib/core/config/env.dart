@@ -17,3 +17,19 @@ abstract class EnvProd {
   @EnviedField(varName: 'API_KEY')
   static const String apiKey = _EnvProd.apiKey;
 }
+
+@Envied(path: '.env.stage', name: 'EnvStage')
+abstract class EnvStage {
+  @EnviedField(varName: 'BASE_URL')
+  static const String baseUrl = _EnvStage.baseUrl;
+  @EnviedField(varName: 'API_KEY')
+  static const String apiKey = _EnvStage.apiKey;
+}
+
+@Envied(path: '.env.test', name: 'EnvTest')
+abstract class EnvTest {
+  @EnviedField(varName: 'BASE_URL')
+  static const String baseUrl = _EnvTest.baseUrl;
+  @EnviedField(varName: 'API_KEY')
+  static const String apiKey = _EnvTest.apiKey;
+}

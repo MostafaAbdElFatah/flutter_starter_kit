@@ -1,4 +1,4 @@
-enum Environment { dev, prod }
+enum Environment { dev, stage, test, prod }
 
 class AppConfig {
   final Environment environment;

@@ -23,8 +23,6 @@ class StorageServiceImpl implements StorageService {
 
   @override
   Future<void> init() async {
-    await Hive.initFlutter();
-    
     // 1. Check if we have an encryption key
     String? encryptionKeyString = await _secureStorage.read(key: _hiveKey);
     

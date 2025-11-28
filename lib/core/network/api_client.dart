@@ -2,16 +2,17 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../constants/app_constants.dart';
 import '../storage/storage_service.dart';
-import '../config/app_config.dart';
+import '../config/config_service.dart';
 
 class ApiClient {
   final Dio _dio;
   final StorageService _storageService;
+  final ConfigService _configService;
 
-  ApiClient(this._storageService, AppConfig appConfig)
+  ApiClient(this._storageService, this._configService)
       : _dio = Dio(
           BaseOptions(
-            baseUrl: appConfig.apiBaseUrl,
+            baseUrl: _configService.currentConfig.apiBaseUrl,
             connectTimeout: const Duration(milliseconds: AppConstants.connectTimeout),
             receiveTimeout: const Duration(milliseconds: AppConstants.receiveTimeout),
             headers: {
@@ -23,6 +24,9 @@ class ApiClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
+          // Dynamic Base URL
+          options.baseUrl = _configService.currentConfig.apiBaseUrl;
+
           final token = await _storageService.getToken();
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
