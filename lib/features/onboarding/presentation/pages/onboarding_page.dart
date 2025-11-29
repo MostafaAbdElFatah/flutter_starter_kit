@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/assets/locale_keys.dart';
 import '../../../../core/di/injection_container.dart';
 import '../bloc/onboarding_cubit.dart';
 
@@ -16,18 +17,18 @@ class OnboardingPage extends StatelessWidget {
           body: PageView(
             children: [
               _buildPage(
-                title: 'Welcome',
-                description: 'This is the best starter kit.',
+                title: LocaleKeys.onboardingTitle1,
+                description: LocaleKeys.onboardingDesc1,
                 color: Colors.blue,
               ),
               _buildPage(
-                title: 'Clean Architecture',
-                description: 'Built with scalability in mind.',
+                title: LocaleKeys.onboardingTitle2,
+                description: LocaleKeys.onboardingDesc2,
                 color: Colors.green,
               ),
               _buildPage(
-                title: 'Get Started',
-                description: 'Let\'s build something amazing.',
+                title: LocaleKeys.onboardingTitle3,
+                description: LocaleKeys.onboardingDesc3,
                 color: Colors.orange,
                 isLast: true,
                 onPressed: () {
@@ -65,10 +66,7 @@ class OnboardingPage extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             description,
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-            ),
+            style: const TextStyle(fontSize: 18, color: Colors.white),
           ),
           if (isLast) ...[
             const SizedBox(height: 32),
@@ -78,7 +76,7 @@ class OnboardingPage extends StatelessWidget {
                 backgroundColor: Colors.white,
                 foregroundColor: color,
               ),
-              child: const Text('Get Started'),
+              child: Text(LocaleKeys.getStarted),
             ),
           ],
         ],

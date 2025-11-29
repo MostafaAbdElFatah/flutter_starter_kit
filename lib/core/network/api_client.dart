@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../constants/app_constants.dart';
 import '../storage/storage_service.dart';
 import '../config/config_service.dart';
+import 'api_endpoint.dart';
 
 class ApiClient {
   final Dio _dio;
@@ -53,6 +54,28 @@ class ApiClient {
   }
 
   Dio get dio => _dio;
+
+  Future<Response> request(ApiEndpoint endpoint) async {
+    // If endpoint has a specific base URL (that isn't the default placeholder), use it.
+    // Otherwise, the interceptor will set the dynamic base URL from ConfigService.
+    // However, since we are using an interceptor for dynamic base URL, we need to be careful.
+    // The interceptor sets options.baseUrl.
+    // If we pass a full URL to dio.request, it overrides baseUrl.
+    
+    String path = endpoint.path;
+
+    final options = Options(
+      method: endpoint.method.name.toUpperCase(),
+      headers: endpoint.headers,
+    );
+
+    return await _dio.request(
+      path,
+      data: endpoint.body,
+      queryParameters: endpoint.queryParameters,
+      options: options,
+    );
+  }
 
   Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
     return await _dio.get(path, queryParameters: queryParameters);

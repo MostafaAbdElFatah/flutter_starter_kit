@@ -5,7 +5,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../network/api_client.dart';
 import '../storage/storage_service.dart';
 import '../config/config_service.dart';
-import '../config/app_config.dart';
 
 final sl = GetIt.instance;
 
