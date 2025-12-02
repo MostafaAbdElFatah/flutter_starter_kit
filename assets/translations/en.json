@@ -1,0 +1,78 @@
+{
+    "appName": "Flutter Starter Kit",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "error": "An error occurred",
+    "success": "Operation completed successfully",
+    "cancelError": "Unable to cancel the process",
+    "invalidDataError": "The provided data is invalid",
+    "badRequestError": "Invalid request",
+    "noContent": "No content available",
+    "forbiddenError": "Access is forbidden",
+    "internalServerError": "Internal server error",
+    "unauthorizedError": "Unauthorized access",
+    "notFoundError": "Resource not found",
+    "conflictError": "Request conflict occurred",
+    "unauthorizedServerError": "Unauthorized server response",
+    "unknownError": "An unknown error occurred",
+    "timeoutError": "The request timed out",
+    "cacheError": "Cache error",
+    "noInternetError": "No internet connection",
+    "noConnectionError": "Unable to connect to the server",
+    "pleaseMakeSureConnectedToInternet": "Please make sure you are connected to the internet and try again later",
+    "welcome": "Welcome",
+    "welcomeFlutterStarterKit": "Welcome to Flutter Starter Kit!",
+    "onboardingTitle1": "Welcome to the App",
+    "onboardingDesc1": "This is the first step of onboarding.",
+    "onboardingTitle2": "Discover Features",
+    "onboardingDesc2": "Explore what you can do with this app.",
+    "onboardingTitle3": "Get Started",
+    "onboardingDesc3": "You are ready to go!",
+    "getStarted": "Get Started",
+    "next": "Next",
+    "skip": "Skip",
+    "homeTitle": "Home",
+    "changeLanguage": "Change Language",
+    "settings": "Settings",
+    "date": "{currentDate}.",
+    "dateLogging": "INFO: the date today is @:date",
+    "msg":"language Hello {} in the {} world",
+    "msg_named":"Hello {name} in the {type} world",
+    "msg_mixed":"{} are written in the {lang} language",
+    "example": {
+        "hello": "Hello",
+        "world": "World!",
+        "helloWorld": "@:example.hello @:example.world"
+    },
+    "gender":{
+        "male":"Hi man ;) {}",
+        "female":"Hello girl :) {}",
+        "other":"Hello {}"
+    },
+    "day": {
+        "zero":"{} дней",
+        "one": "{} день",
+        "two": "{} дня",
+        "few": "{} дня",
+        "many": "{} дней",
+        "other": "{} дней"
+    },
+    "money": {
+        "zero": "You not have money",
+        "one": "You have {} dollar",
+        "many": "You have {} dollars",
+        "other": "You have {} dollars"
+    },
+    "money_args": {
+        "zero": "{} has no money",
+        "one": "{} has {} dollar",
+        "many": "{} has {} dollars",
+        "other": "{} has {} dollars"
+    },
+    "money_named_args": {
+        "zero": "{name} has no money",
+        "one": "{name} has {money} dollar",
+        "many": "{name} has {money} dollars",
+        "other": "{name} has {money} dollars"
+    }
+}

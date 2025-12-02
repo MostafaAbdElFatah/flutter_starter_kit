@@ -1,0 +1,78 @@
+{
+    "appName": "فلاتر ستارتر كت",
+    "ok": "حسناً",
+    "cancel": "إلغاء",
+    "error": "حدث خطأ",
+    "success": "تمت العملية بنجاح",
+    "cancelError": "تعذّر إلغاء العملية",
+    "invalidDataError": "البيانات المدخلة غير صحيحة",
+    "badRequestError": "طلب غير صالح",
+    "noContent": "لا توجد بيانات",
+    "forbiddenError": "الوصول غير مسموح",
+    "internalServerError": "خطأ في الخادم الداخلي",
+    "unauthorizedError": "وصول غير مُصرّح به",
+    "notFoundError": "العنصر غير موجود",
+    "conflictError": "حدث تعارض في الطلب",
+    "unauthorizedServerError": "استجابة غير مُصرّح بها من الخادم",
+    "unknownError": "حدث خطأ غير معروف",
+    "timeoutError": "انتهت مهلة الطلب",
+    "cacheError": "خطأ في الذاكرة المؤقتة",
+    "noInternetError": "لا يوجد اتصال بالإنترنت",
+    "noConnectionError": "تعذّر الاتصال بالخادم",
+    "pleaseMakeSureConnectedToInternet": "يرجى التأكد من اتصالك بالإنترنت ثم المحاولة مرة أخرى",
+    "welcome": "مرحباً",
+    "welcomeFlutterStarterKit": "مرحبًا بك في Flutter Starter Kit!",
+    "onboardingTitle1": "مرحباً بك في التطبيق",
+    "onboardingDesc1": "هذه هي الخطوة الأولى.",
+    "onboardingTitle2": "اكتشف المميزات",
+    "onboardingDesc2": "استكشف ما يمكنك فعله بهذا التطبيق.",
+    "onboardingTitle3": "ابدأ الآن",
+    "onboardingDesc3": "أنت جاهز للانطلاق!",
+    "getStarted": "ابدأ الآن",
+    "next": "التالي",
+    "skip": "تخطي",
+    "homeTitle": "الرئيسية",
+    "changeLanguage": "تغيير اللغة",
+    "settings": "الإعدادات",
+    "date": "{currentDate}.",
+    "dateLogging": "معلومة: تاريخ اليوم هو @:date",
+    "msg": "{} مكتوبة باللغة {}",
+    "msg_named": "التحلية السهلة مكتوبة باللغة {lang}",
+    "msg_mixed": "{} مكتوبة باللغة {lang}",
+    "example": {
+        "hello": "مرحباً",
+        "world": "العالم!",
+        "helloWorld": "@:example.hello @:example.world"
+    },
+    "gender": {
+        "male": "مرحباً يا رجل ;) {}",
+        "female": "مرحباً يا فتاة :) {}",
+        "other": "مرحباً {}"
+    },
+    "day": {
+        "zero": "{} يومًا",
+        "one": "{} يوم",
+        "two": "{} يومين",
+        "few": "{} أيام",
+        "many": "{} يومًا",
+        "other": "{} يومًا"
+    },
+    "money": {
+        "zero": "ليس لديك مال",
+        "one": "لديك دولار واحد",
+        "many": "لديك {} دولارات",
+        "other": "لديك {} دولارات"
+    },
+    "money_args": {
+        "zero": "{} ليس لديه مال",
+        "one": "{} لديه {} دولار",
+        "many": "{} لديه {} دولارات",
+        "other": "{} لديه {} دولارات"
+    },
+    "money_named_args": {
+        "zero": "{name} ليس لديه مال",
+        "one": "{name} لديه {money} دولار",
+        "many": "{name} لديه {money} دولارات",
+        "other": "{name} لديه {money} دولارات"
+    }
+}
