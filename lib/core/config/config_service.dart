@@ -1,87 +1,96 @@
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:injectable/injectable.dart';
-import 'app_config.dart' as env_config;
-import 'env.dart';
+import 'package:injectable/injectable.dart' hide Environment;
+import '../storage/storage_service.dart';
+import 'app_config.dart';
 
-/// A service that manages the application's configuration.
+/// A service that manages the application's runtime configuration.
 ///
-/// This class is responsible for initializing, retrieving, and updating the
-/// environment-specific settings of the application. It uses Hive for
-/// persistent storage of the selected environment.
+/// This service is responsible for retrieving and persisting environment-specific
+/// settings. It interacts with a [StorageService] to read and write the
+/// application's environment and base URL configuration.
 @Injectable()
 class ConfigService {
-  // The name of the Hive box used for storing configuration.
-  static const String _boxName = 'app_config';
-
-  // The key used to store the selected environment in the Hive box.
+  /// The key used to store the selected environment in persistent storage.
   static const String _envKey = 'app_env';
 
-  late Box _box;
-  late env_config.AppConfig _currentConfig;
+  /// The key used to store the base URL configuration in persistent storage.
+  static const String _envBaseUrlConfigKey = '_env_base_url_config';
 
-  /// Returns the current application configuration.
-  env_config.AppConfig get currentConfig => _currentConfig;
+  final StorageService _storageService;
 
-  /// Initializes the configuration service.
+  /// Creates a new [ConfigService] instance.
   ///
-  /// This method opens the Hive box and loads the saved environment. If no
-  /// environment is saved, it defaults to the development environment.
-  @PostConstruct(preResolve: true)
-  Future<void> init() async {
-    _box = await Hive.openBox(_boxName);
-    final savedEnvIndex = _box.get(_envKey);
+  /// Requires a [StorageService] to be injected for handling data persistence.
+  ConfigService({required StorageService storageService})
+      : _storageService = storageService;
 
-    env_config.Environment env = env_config.Environment.dev;
-    if (savedEnvIndex != null) {
-      env = env_config.Environment.values[savedEnvIndex];
-    }
-    _updateConfig(env);
+  /// Retrieves the current application configuration.
+  ///
+  /// **Note**: This is a computed property that reads from persistent storage
+  /// every time it is accessed. It fetches the saved environment and base URL
+  /// configuration, then constructs and returns a new [AppConfig] instance.
+  AppConfig get currentConfig {
+    // Load the saved environment index, defaulting to 0 (dev) if not found.
+    final savedEnvIndex = _storageService.get(_envKey, defaultValue: 0);
+    final env = Environment.values[savedEnvIndex];
+
+    // Load the saved base URL config, defaulting to 'defaultUrl' if not found.
+    final baseUrlConfig = _storageService.getJson<BaseUrlConfig>(
+      key: env.name + _envBaseUrlConfigKey,
+      fromJson: BaseUrlConfig.fromJson,
+      defaultValue: const BaseUrlConfig.defaultUrl(),
+    )!;
+
+    // Get the static data (API keys, etc.) for the loaded environment.
+    final data = EnvData.get(env);
+
+    // Construct and return the AppConfig object.
+    return AppConfig(
+      environment: env,
+      apiKey: data.apiKey,
+      devUsername: data.devUser,
+      devPassword: data.devPass,
+      baseUrl: data.defaultBaseUrl,
+      baseUrlConfig: baseUrlConfig,
+    );
   }
 
-  /// Sets the application's environment.
-  ///
-  /// This method saves the selected environment to the Hive box and updates the
-  /// current configuration.
-  Future<void> setEnvironment(env_config.Environment env) async {
-    await _box.put(_envKey, env.index);
-    _updateConfig(env);
+  AppConfig getAppConfig(Environment env) {
+    // Load the saved base URL config, defaulting to 'defaultUrl' if not found.
+    final baseUrlConfig = _storageService.getJson<BaseUrlConfig>(
+      key: env.name + _envBaseUrlConfigKey,
+      fromJson: BaseUrlConfig.fromJson,
+      defaultValue: const BaseUrlConfig.defaultUrl(),
+    )!;
+
+    // Get the static data (API keys, etc.) for the loaded environment.
+    final data = EnvData.get(env);
+
+    // Construct and return the AppConfig object.
+    return AppConfig(
+      environment: env,
+      apiKey: data.apiKey,
+      devUsername: data.devUser,
+      devPassword: data.devPass,
+      baseUrl: data.defaultBaseUrl,
+      baseUrlConfig: baseUrlConfig,
+    );
   }
 
-  /// Updates the current configuration based on the selected environment.
-  void _updateConfig(env_config.Environment env) {
-    switch (env) {
-      case env_config.Environment.dev:
-        _currentConfig = env_config.AppConfig(
-          appName: 'Flutter Starter Kit (Dev)',
-          apiKey: EnvDev.apiKey,
-          baseUrl: EnvDev.baseUrl,
-          environment: env_config.Environment.dev,
-        );
-        break;
-      case env_config.Environment.stage:
-        _currentConfig = env_config.AppConfig(
-          appName: 'Flutter Starter Kit (Stage)',
-          apiKey: EnvStage.apiKey,
-          baseUrl: EnvStage.baseUrl,
-          environment: env_config.Environment.stage,
-        );
-        break;
-      case env_config.Environment.prod:
-        _currentConfig = env_config.AppConfig(
-          appName: 'Flutter Starter Kit',
-          apiKey: EnvProd.apiKey,
-          baseUrl: EnvProd.baseUrl,
-          environment: env_config.Environment.prod,
-        );
-        break;
-      case env_config.Environment.test:
-        _currentConfig = env_config.AppConfig(
-          appName: 'Flutter Starter Kit (Test)',
-          apiKey: EnvTest.apiKey,
-          baseUrl: EnvTest.baseUrl,
-          environment: env_config.Environment.test,
-        );
-        break;
+  /// Saves the selected environment and base URL configuration to persistent storage.
+  ///
+  /// This method updates the stored settings for both the environment and the
+  /// custom base URL. The application typically needs to be restarted for these
+  /// changes to take full effect across the app.
+  Future<void> setEnvironment(
+      Environment env, {
+        BaseUrlConfig? baseUrlConfig,
+      }) async {
+    await _storageService.put(key: _envKey, value: env.index);
+    if (baseUrlConfig != null) {
+      await _storageService.putJson(
+        key: env.name + _envBaseUrlConfigKey,
+        value: baseUrlConfig,
+      );
     }
   }
 }

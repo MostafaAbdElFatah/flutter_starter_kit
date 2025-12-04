@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/utils/validators/email_validator.dart';
+import '../../../../core/utils/validators/password_validator.dart';
+import '../../../../core/utils/validators/user_name_validator.dart';
 import '../cubit/auth_cubit.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -24,10 +27,11 @@ class _RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<_RegisterForm> {
+  final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
@@ -66,35 +70,43 @@ class _RegisterFormState extends State<_RegisterForm> {
                   TextFormField(
                     controller: _nameController,
                     decoration: const InputDecoration(labelText: 'Name'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your name';
-                      }
-                      return null;
-                    },
+                    validator: UsernameValidator.validateUsername,
+                    // Custom Username Requirements
+                    // validator: (value) => UsernameValidator.validateUsername(
+                    //   value,
+                    //   minLength: 5,
+                    //   maxLength: 15,
+                    //   allowNumbers: false,
+                    // ),
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(labelText: 'Email'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      return null;
-                    },
+                    validator: EmailValidator.validateEmail,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _passwordController,
                     decoration: const InputDecoration(labelText: 'Password'),
                     obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      return null;
-                    },
+                    validator: PasswordValidator.validatePassword,
+                    // Custom Password Requirements
+                    // validator: (value) => PasswordValidator.validatePassword(
+                    //   value,
+                    //   minLength: 12,
+                    //   requireSpecialChar: false,
+                    // ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _confirmPasswordController,
+                    decoration: const InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    validator: (value) => PasswordValidator.validatePasswordConfirmation(
+                      value,
+                      _passwordController.text,
+                    ),
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(

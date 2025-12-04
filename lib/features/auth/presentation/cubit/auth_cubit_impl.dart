@@ -10,6 +10,7 @@ class AuthCubitImpl extends AuthCubit {
   final RegisterUseCase _registerUseCase;
   final LogoutUseCase _logoutUseCase;
   //final IsLoggedInUseCase _isLoggedInUseCase;
+  final DeleteAccountUsecase _deleteAccountUsecase;
   final GetAuthenticatedUserUseCase _getAuthenticatedUserUseCase;
 
   /// Creates an instance of [AuthCubitImpl].
@@ -20,28 +21,30 @@ class AuthCubitImpl extends AuthCubit {
     required RegisterUseCase registerUseCase,
     required LogoutUseCase logoutUseCase,
     required IsLoggedInUseCase isLoggedInUseCase,
+    required DeleteAccountUsecase deleteAccountUsecase,
     required GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
   }) : _loginUseCase = loginUseCase,
        _registerUseCase = registerUseCase,
        _logoutUseCase = logoutUseCase,
        //_isLoggedInUseCase = isLoggedInUseCase,
+       _deleteAccountUsecase = deleteAccountUsecase,
        _getAuthenticatedUserUseCase = getAuthenticatedUserUseCase,
        super(const AuthInitial());
 
   /// Checks the user's current authentication status when the app starts.
   ///
   /// It attempts to retrieve the cached user. If successful, it emits
-  /// [AuthAuthenticated]; otherwise, it emits [AuthInitial].
+  /// [AuthAuthenticated]; otherwise, it emits [AuthUnauthenticated].
   @override
   Future<void> checkAuthStatus() async {
     try {
       final loggedUser = await _getAuthenticatedUserUseCase();
       loggedUser != null
           ? emit(AuthAuthenticated(loggedUser))
-          : emit(const AuthInitial());
+          : emit(const AuthUnauthenticated());
     } catch (e) {
       // If checking auth status fails, assume the user is not logged in.
-      emit(const AuthInitial());
+      emit(AuthError(e.toString()));
     }
   }
 
@@ -85,42 +88,31 @@ class AuthCubitImpl extends AuthCubit {
 
   /// Logs out the current user.
   ///
-  /// Emits [AuthLoading], then clears the local session and emits [AuthInitial].
+  /// Emits [AuthLoading], then clears the local session and emits [AuthUnauthenticated].
   /// If an error occurs, it emits [AuthError].
   @override
   Future<void> logout() async {
     emit(const AuthLoading());
     try {
       await _logoutUseCase();
-      emit(const AuthInitial());
+      emit(const AuthUnauthenticated());
     } catch (e) {
       emit(AuthError(e.toString()));
     }
   }
 
-  // --- Unimplemented Methods ---
-
+  /// delete the current account.
+  ///
+  /// Emits [AuthLoading], then clears the local session and emits [AuthUnauthenticated].
+  /// If an error occurs, it emits [AuthError].
   @override
-  void signInWithApple() {
-    // TODO: implement signInWithApple
-    throw UnimplementedError();
-  }
-
-  @override
-  void signInWithFacebook() {
-    // TODO: implement signInWithFacebook
-    throw UnimplementedError();
-  }
-
-  @override
-  void signInWithGoogle() {
-    // TODO: implement signInWithGoogle
-    throw UnimplementedError();
-  }
-
-  @override
-  void forgetPassword({required String email}) {
-    // TODO: implement forgetPassword
-    throw UnimplementedError();
+  Future<void> deleteAccount() async {
+    emit(const AuthLoading());
+    try {
+      await _deleteAccountUsecase();
+      emit(const AuthUnauthenticated());
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
   }
 }

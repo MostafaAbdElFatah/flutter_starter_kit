@@ -41,29 +41,29 @@ final class UserModel extends User {
       name: json["name"],
       email: json["email"],
       avatarUrl: json["avatar_url"],
-      isVerified: json.containsKey("has_verified_email")
-          ? json["has_verified_email"] as bool
-          : false,
+      isVerified:
+          json.containsKey("email_verified_at") &&
+          json["email_verified_at"] != null,
     );
   }
 
   /// Converts this [UserModel] instance into a JSON map for API requests.
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "email": email,
-        "avatar_url": avatarUrl,
-        "has_verified_email": isVerified,
-      };
+    "id": id,
+    "name": name,
+    "email": email,
+    "avatar_url": avatarUrl,
+    "email_verified_at": isVerified,
+  };
 
   /// Converts this data transfer object into a [User] domain entity.
   ///
   /// This is useful for mapping data from the data layer to the domain layer.
   User toEntity() => User(
-        id: id,
-        email: email,
-        name: name,
-        avatarUrl: avatarUrl,
-        isVerified: isVerified,
-      );
+    id: id,
+    email: email,
+    name: name,
+    avatarUrl: avatarUrl,
+    isVerified: isVerified,
+  );
 }

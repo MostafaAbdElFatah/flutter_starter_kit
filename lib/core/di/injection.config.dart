@@ -23,6 +23,8 @@ import '../../features/auth/data/datasources/auth_remote_datasource.dart'
 import '../../features/auth/data/network/auth_endpoints.dart' as _i802;
 import '../../features/auth/data/repositories/auth_repository.dart' as _i573;
 import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
+import '../../features/auth/domain/usecases/delete_account_usecase.dart'
+    as _i914;
 import '../../features/auth/domain/usecases/get_authenticated_user_usecase.dart'
     as _i435;
 import '../../features/auth/domain/usecases/is_logged_in_usecase.dart' as _i48;
@@ -64,10 +66,6 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final injectionModule = _$InjectionModule();
     final networkModule = _$NetworkModule();
-    await gh.factoryAsync<_i628.ConfigService>(() {
-      final i = _i628.ConfigService();
-      return i.init().then((_) => i);
-    }, preResolve: true);
     gh.lazySingleton<_i895.Connectivity>(() => injectionModule.connectivity);
     gh.lazySingleton<_i833.DeviceInfoPlugin>(
       () => injectionModule.deviceInfoPlugin,
@@ -89,6 +87,9 @@ extension GetItInjectableX on _i174.GetIt {
       final i = _i131.HiveStorageService(gh<_i666.SecureStorageService>());
       return i.init().then((_) => i);
     }, preResolve: true);
+    gh.factory<_i628.ConfigService>(
+      () => _i628.ConfigService(storageService: gh<_i865.StorageService>()),
+    );
     gh.lazySingleton<_i724.APIInterceptor>(
       () => _i724.APIInterceptor(
         configService: gh<_i628.ConfigService>(),
@@ -138,6 +139,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i153.OnboardingCubit>(
       () => _i153.OnboardingCubit(gh<_i360.CompleteOnboardingUseCase>()),
     );
+    gh.lazySingleton<_i914.DeleteAccountUsecase>(
+      () => _i914.DeleteAccountUsecase(gh<_i787.AuthRepository>()),
+    );
     gh.lazySingleton<_i435.GetAuthenticatedUserUseCase>(
       () => _i435.GetAuthenticatedUserUseCase(gh<_i787.AuthRepository>()),
     );
@@ -159,6 +163,7 @@ extension GetItInjectableX on _i174.GetIt {
         registerUseCase: gh<_i941.RegisterUseCase>(),
         logoutUseCase: gh<_i48.LogoutUseCase>(),
         isLoggedInUseCase: gh<_i48.IsLoggedInUseCase>(),
+        deleteAccountUsecase: gh<_i914.DeleteAccountUsecase>(),
         getAuthenticatedUserUseCase: gh<_i435.GetAuthenticatedUserUseCase>(),
       ),
     );

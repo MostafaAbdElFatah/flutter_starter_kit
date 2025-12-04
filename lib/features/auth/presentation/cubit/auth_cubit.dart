@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_starter_kit/features/auth/domain/usecases/delete_account_usecase.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/entities/user.dart';
@@ -64,39 +65,12 @@ abstract class AuthCubit extends Cubit<AuthState> {
     required String password,
   });
 
-  /// Initiates the Google sign-in process.
-  ///
-  /// This method should handle the logic for authenticating the user
-  /// using their Google account, emitting appropriate states like
-  /// [AuthLoading], [AuthAuthenticated], or [AuthError].
-  void signInWithGoogle();
-
-  /// Initiates the Apple sign-in process.
-  ///
-  /// This method should handle the logic for authenticating the user
-  /// using their Apple account, emitting appropriate states like
-  /// [AuthLoading], [AuthAuthenticated], or [AuthError].
-  void signInWithApple();
-
-  /// Initiates the Facebook sign-in process.
-  ///
-  /// This method should handle the logic for authenticating the user
-  /// using their Facebook account, emitting appropriate states like
-  /// [AuthLoading], [AuthAuthenticated], or [AuthError].
-  void signInWithFacebook();
-
-  /// Initiates the password recovery process for the given email.
-  ///
-  /// This method should handle sending a password reset link or instructions
-  /// to the user's email, emitting appropriate states to give user feedback.
-  ///
-  /// ### Parameters:
-  /// - `email`: The email address for which to recover the password.
-  void forgetPassword({required String email});
 
   /// Logs out the currently authenticated user.
   ///
   /// This method should clear any local session data and reset the
   /// authentication state to [AuthInitial].
   Future<void> logout();
+
+  Future<void> deleteAccount();
 }

@@ -39,6 +39,102 @@ abstract class LocalizationKeys {
   static get changeLanguage => 'changeLanguage'.tr();
   static get settings => 'settings'.tr();
 
+  static get developerModeEnabled => 'developerModeEnabled'.tr();
+  static get environmentConfig => 'environmentConfig'.tr();
+  static get configurationSaved => 'configurationSaved'.tr();
+  static get baseUrl => 'baseUrl'.tr();
+  static get environment => 'environment'.tr();
+  static get saveAndRestart => 'saveAndRestart'.tr();
+  static get defaultMode => 'default'.tr();
+  static get customMode => 'custom'.tr();
+  static get baseUrlConfiguration => 'baseUrlConfiguration'.tr();
+  static get developerLogin => 'developerLogin'.tr();
+  static get username => 'username'.tr();
+  static get required => 'required'.tr();
+  static get invalidCredentials => 'invalidCredentials'.tr();
+  static get environmentChanged => 'environmentChanged'.tr();
+  static String switchedToEnv(String envName) =>
+      'switchedToEnv'.tr(args: [envName]);
+
+  // ===========================================================================
+  // Common
+  // ===========================================================================
+
+  static String get cancel => 'cancel'.tr();
+  static String get delete => 'delete'.tr();
+  static String get confirm => 'confirm'.tr();
+  static String get yes => 'yes'.tr();
+  static String get no => 'no'.tr();
+  static String get ok => 'ok'.tr();
+  static String get save => 'save'.tr();
+
+  // ===========================================================================
+  // Validation Messages
+  // ===========================================================================
+
+  // General
+  static String get fieldRequired => 'fieldRequired'.tr();
+
+  // URL Validation
+  static String get urlRequired => 'urlRequired'.tr();
+  static String get invalidUrlFormat => 'invalidUrlFormat'.tr();
+  static String get urlMustIncludeProtocol => 'urlMustIncludeProtocol'.tr();
+  static String get urlMustUseHttpProtocol => 'urlMustUseHttpProtocol'.tr();
+  static String get urlMustIncludeDomain => 'urlMustIncludeDomain'.tr();
+  static String get invalidDomainName => 'invalidDomainName'.tr();
+
+  // Email Validation
+  static String get emailRequired => 'emailRequired'.tr();
+  static String get invalidEmailAddress => 'invalidEmailAddress'.tr();
+  static String get emailTooLong => 'emailTooLong'.tr();
+  static String get emailUsernameTooLong => 'emailUsernameTooLong'.tr();
+
+  // Password Validation
+  static String get passwordRequired => 'passwordRequired'.tr();
+  static String passwordMinLength(int length) =>
+      'passwordMinLength'.tr(args: ['$length']);
+  static String get passwordRequireUppercase => 'passwordRequireUppercase'.tr();
+  static String get passwordRequireLowercase => 'passwordRequireLowercase'.tr();
+  static String get passwordRequireNumber => 'passwordRequireNumber'.tr();
+  static String get passwordRequireSpecialChar =>
+      'passwordRequireSpecialChar'.tr();
+  static String get confirmPasswordRequired => 'confirmPasswordRequired'.tr();
+  static String get passwordsDoNotMatch => 'passwordsDoNotMatch'.tr();
+
+  // Username Validation
+  static String get usernameRequired => 'usernameRequired'.tr();
+  static String usernameMinLength(int length) =>
+      'usernameMinLength'.tr(args: ['$length']);
+  static String usernameMaxLength(int length) =>
+      'usernameMaxLength'.tr(args: ['$length']);
+  static String usernameInvalidCharacters({
+    required bool allowNumbers,
+    required bool allowUnderscores,
+  }) {
+    String key = 'usernameInvalidCharacters';
+    if (allowNumbers && allowUnderscores) {
+      key = 'usernameInvalidCharactersAll';
+    } else if (allowNumbers) {
+      key = 'usernameInvalidCharactersNumbers';
+    } else if (allowUnderscores) {
+      key = 'usernameInvalidCharactersUnderscores';
+    } else {
+      key = 'usernameInvalidCharactersLettersOnly';
+    }
+    return key.tr();
+  }
+
+  // ===========================================================================
+  // Account Management
+  // ===========================================================================
+
+  static get logout => 'logout'.tr();
+  static String get deleteAccount => 'deleteAccount'.tr();
+  static String get deleteAccountWarning => 'deleteAccountWarning'.tr();
+  static String get accountDeletedSuccessfully =>
+      'accountDeletedSuccessfully'.tr();
+  static String get accountDeletionFailed => 'accountDeletionFailed'.tr();
+
   // ===========================================================================
   // Onboarding
   // ===========================================================================
@@ -140,9 +236,9 @@ abstract class LocalizationKeys {
   /// Expects a translation string like: "money_named_args": {"one": "{name} has {money} dollar", "other": "{name} has {money} dollars"}
   /// Example output: Jane has 10.23 dollars
   static String moneyNamedArgs(double money) => 'money_named_args'.plural(
-        money,
-        namedArgs: {'name': 'Jane', 'money': '10.23'},
-      );
+    money,
+    namedArgs: {'name': 'Jane', 'money': '10.23'},
+  );
 
   /// Example of pluralization with compact number formatting.
   /// Expects a translation string like: "money": {"one": "You have {} dollar", "other": "You have {} dollars"}
@@ -157,8 +253,8 @@ abstract class LocalizationKeys {
   /// Expects a translation string like: "INFO: the date today is {currentDate}."
   /// Example Output: INFO: the date today is 2020-11-27T16:40:42.657.
   static String dateLogging() => 'dateLogging'.tr(
-        namedArgs: {'currentDate': DateTime.now().toIso8601String()},
-      );
+    namedArgs: {'currentDate': DateTime.now().toIso8601String()},
+  );
 }
 
 /// Raw error message keys (non-localized).
@@ -185,4 +281,3 @@ abstract class ErrorKeys {
   static const String pleaseMakeSureConnectedToInternet =
       'pleaseMakeSureConnectedToInternet';
 }
-

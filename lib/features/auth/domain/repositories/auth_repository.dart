@@ -41,4 +41,6 @@ abstract class AuthRepository {
   ///
   /// This will clear any cached user data and delete the authentication token.
   Future<void> logout();
+
+  Future<void> deleteAccount();
 }

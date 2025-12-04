@@ -14,23 +14,23 @@ import '../models/requests/register_request.dart';
 class AuthEndpoints {
   /// Returns the endpoint for logging in a user.
   APIEndpoint login(LoginRequest request) => APIEndpoint(
-        endpoint: '/login',
+        endpoint: '/auth//login',
         method: HttpMethod.post,
         body: request.toJson(),
       );
 
   /// Returns the endpoint for registering a new user.
   APIEndpoint register(RegisterRequest request) => APIEndpoint(
-        endpoint: '/register',
+        endpoint: '/auth//register',
         method: HttpMethod.post,
         body: request.toJson(),
       );
 
   /// Returns the endpoint for logging out the current user.
   APIEndpoint logout() =>
-      APIEndpoint(endpoint: '/logout', method: HttpMethod.post);
+      APIEndpoint(endpoint: '/auth//logout', method: HttpMethod.post);
 
   /// Returns the endpoint for deleting the current user's account.
   APIEndpoint deleteAccount() =>
-      APIEndpoint(endpoint: '/profile/delete-account', method: HttpMethod.post);
+      APIEndpoint(endpoint: '/auth/delete', method: HttpMethod.post);
 }

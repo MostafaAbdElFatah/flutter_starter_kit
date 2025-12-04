@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/di/injection.dart';
+import '../../../../core/assets/localization_keys.dart';
+import '../../../../core/di/di.dart' as di;
+import '../../../../core/utils/validators/email_validator.dart';
+import '../../../../core/utils/validators/password_validator.dart';
 import '../cubit/auth_cubit.dart';
 
 
@@ -11,7 +14,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<AuthCubit>(),
+      create: (context) => di.get<AuthCubit>(),
       child: const _LoginForm(),
     );
   }
@@ -64,25 +67,21 @@ class _LoginFormState extends State<_LoginForm> {
                 children: [
                   TextFormField(
                     controller: _emailController,
-                    decoration: const InputDecoration(labelText: 'Email'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      return null;
-                    },
+                    decoration: InputDecoration(labelText: LocalizationKeys.email),
+                    validator: EmailValidator.validateEmail,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _passwordController,
-                    decoration: const InputDecoration(labelText: 'Password'),
+                    decoration: InputDecoration(labelText: LocalizationKeys.password),
                     obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      return null;
-                    },
+                    validator: PasswordValidator.validatePassword,
+                    // Custom Password Requirements
+                    // validator: (value) => PasswordValidator.validatePassword(
+                    //   value,
+                    //   minLength: 12,
+                    //   requireSpecialChar: false,
+                    // ),
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(

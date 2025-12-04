@@ -35,7 +35,6 @@ class HiveStorageService implements StorageService {
 
       if (encryptionKeyString == null) {
         // If no key exists, generate a new one and save it securely.
-        Log.info('No Hive encryption key found, generating a new one.');
         final key = Hive.generateSecureKey();
         encryptionKeyString = base64UrlEncode(key);
         await _secureStorage.write(

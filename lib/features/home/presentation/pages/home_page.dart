@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter_kit/core/utils/app_locale.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/assets/localization_keys.dart';
 import '../../../../core/di/di.dart' as di;
-import '../widgets/environment_switcher.dart';
+import '../../../../core/router/app_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -17,10 +17,9 @@ class HomePage extends StatelessWidget {
         title: Text(LocalizationKeys.homeTitle),
         actions: [
           IconButton(
-            onPressed: context.toggleLanguage,
-            icon: Icon(Icons.language),
+            onPressed: () => GoRouter.of(context).goToSettings(),
+            icon: const Icon(Icons.settings),
           ),
-          EnvironmentSwitcher(),
         ],
       ),
       body: Center(

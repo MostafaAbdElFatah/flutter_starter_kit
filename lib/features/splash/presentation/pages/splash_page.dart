@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/router/app_router.dart';
 import '../bloc/splash_cubit.dart';
 import '../../../../core/di/di.dart' as di;
 
@@ -15,11 +16,11 @@ class SplashPage extends StatelessWidget {
       child: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
           if (state == SplashState.onboarding) {
-            context.go('/onboarding');
+            GoRouter.of(context).goToOnboarding();
           } else if (state == SplashState.authenticated) {
-            context.go('/home');
+            GoRouter.of(context).goToHome();
           } else if (state == SplashState.unauthenticated) {
-            context.go('/login'); // TODO: Go to login
+            GoRouter.of(context).goToLogin();
           }
         },
         child: const Scaffold(

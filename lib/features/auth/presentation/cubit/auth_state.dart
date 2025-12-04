@@ -34,6 +34,14 @@ final class AuthAuthenticated extends AuthState {
   List<Object?> get props => [user];
 }
 
+/// The state representing a logged-out or unauthenticated user.
+final class AuthUnauthenticated extends AuthState {
+  const AuthUnauthenticated();
+
+  @override
+  List<Object?> get props => [];
+}
+
 /// The state indicating that an error has occurred during authentication.
 ///
 /// This state holds an error [message] that can be displayed to the user.

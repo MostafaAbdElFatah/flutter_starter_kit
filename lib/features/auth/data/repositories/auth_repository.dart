@@ -118,9 +118,18 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> logout() async {
     try {
       // Attempt to log out from the server, but don't let it block the local logout.
-      _remoteDataSource.logout().catchError((error) {
-        Failure.handle(error);
-      });
+      await _remoteDataSource.logout();
+    } finally {
+      // Ensure local data is always cleared.
+      await _deleteUser();
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    try {
+      // Attempt to log out from the server, but don't let it block the local logout.
+      await _remoteDataSource.deleteAccount();
     } finally {
       // Ensure local data is always cleared.
       await _deleteUser();

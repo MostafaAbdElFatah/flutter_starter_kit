@@ -16,6 +16,8 @@ abstract class AuthRemoteDataSource {
 
   Future<void> logout();
 
+  Future<void> deleteAccount();
+
   /// Logs in a user with the given [request].
   ///
   /// Returns a [LoginUser] object on success.
@@ -48,22 +50,6 @@ class AuthRemoteDataSourceImpl extends RemoteDataSource
     required super.connectivity,
     required AuthEndpoints authEndpoints,
   }) : _authEndpoints = authEndpoints;
-
-  @override
-  Future<void> logout() async {
-    final response = await fetch<APIResponse>(
-      // Specifies the target endpoint for the logout request.
-      target: _authEndpoints.logout(),
-      // Provides the function to deserialize the JSON response into a LoginResponse object.
-      fromJson: APIResponse.fromJson,
-    );
-
-    // If the request is successful (statusCode 200),
-    if (response.statusCode == 200) return;
-
-    // Otherwise, throw a ServerException with a descriptive error message.
-    throw ServerException(response.errorMessage);
-  }
 
   @override
   Future<LoginUser> login(LoginRequest request) async {
@@ -102,6 +88,38 @@ class AuthRemoteDataSourceImpl extends RemoteDataSource
     if (response.statusCode == 200 && response.data != null) {
       return response.data!;
     }
+
+    // Otherwise, throw a ServerException with a descriptive error message.
+    throw ServerException(response.errorMessage);
+  }
+
+  @override
+  Future<void> logout() async {
+    final response = await fetch<APIResponse>(
+      // Specifies the target endpoint for the logout request.
+      target: _authEndpoints.logout(),
+      // Provides the function to deserialize the JSON response into a LoginResponse object.
+      fromJson: APIResponse.fromJson,
+    );
+
+    // If the request is successful (statusCode 200),
+    if (response.statusCode == 200) return;
+
+    // Otherwise, throw a ServerException with a descriptive error message.
+    throw ServerException(response.errorMessage);
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    final response = await fetch<APIResponse>(
+      // Specifies the target endpoint for the logout request.
+      target: _authEndpoints.deleteAccount(),
+      // Provides the function to deserialize the JSON response into a LoginResponse object.
+      fromJson: APIResponse.fromJson,
+    );
+
+    // If the request is successful (statusCode 200),
+    if (response.statusCode == 200) return;
 
     // Otherwise, throw a ServerException with a descriptive error message.
     throw ServerException(response.errorMessage);

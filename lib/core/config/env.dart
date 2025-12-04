@@ -16,7 +16,16 @@ abstract class EnvDev {
   /// The API key for the development environment.
   @EnviedField(varName: 'API_KEY', obfuscate: true)
   static final String apiKey = _EnvDev.apiKey;
+
+  /// The API key for the development user environment.
+  @EnviedField(varName: 'ENV_USER', obfuscate: true)
+  static final String envUser = _EnvDev.envUser;
+
+  /// The API key for the development pass environment.
+  @EnviedField(varName: 'ENV_PASS', obfuscate: true)
+  static final String envPass = _EnvDev.envPass;
 }
+
 
 /// Provides access to production environment variables.
 ///
@@ -32,6 +41,14 @@ abstract class EnvProd {
   /// The API key for the production environment.
   @EnviedField(varName: 'API_KEY', obfuscate: true)
   static final String apiKey = _EnvProd.apiKey;
+
+  /// The API key for the development user environment.
+  @EnviedField(varName: 'ENV_USER', obfuscate: true)
+  static final String envUser = _EnvDev.envUser;
+
+  /// The API key for the development pass environment.
+  @EnviedField(varName: 'ENV_PASS', obfuscate: true)
+  static final String envPass = _EnvDev.envPass;
 }
 
 /// Provides access to staging environment variables.
@@ -48,6 +65,14 @@ abstract class EnvStage {
   /// The API key for the staging environment.
   @EnviedField(varName: 'API_KEY', obfuscate: true)
   static final String apiKey = _EnvStage.apiKey;
+
+  /// The API key for the development user environment.
+  @EnviedField(varName: 'ENV_USER', obfuscate: true)
+  static final String envUser = _EnvDev.envUser;
+
+  /// The API key for the development pass environment.
+  @EnviedField(varName: 'ENV_PASS', obfuscate: true)
+  static final String envPass = _EnvDev.envPass;
 }
 
 /// Provides access to test environment variables.
@@ -64,4 +89,12 @@ abstract class EnvTest {
   /// The API key for the test environment.
   @EnviedField(varName: 'API_KEY', obfuscate: true)
   static final String apiKey = _EnvTest.apiKey;
+
+  /// The API key for the development user environment.
+  @EnviedField(varName: 'ENV_USER', obfuscate: true)
+  static final String envUser = _EnvDev.envUser;
+
+  /// The API key for the development pass environment.
+  @EnviedField(varName: 'ENV_PASS', obfuscate: true)
+  static final String envPass = _EnvDev.envPass;
 }
