@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/config/app_config.dart';
 import '../../../../core/di/di.dart' as di;
 import '../dialogs/environment_changed_dialog.dart';
 
