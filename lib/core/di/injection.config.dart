@@ -32,6 +32,20 @@ import '../../features/auth/domain/usecases/login_usecase.dart' as _i188;
 import '../../features/auth/domain/usecases/logout_usecase.dart' as _i48;
 import '../../features/auth/domain/usecases/register_usecase.dart' as _i941;
 import '../../features/auth/presentation/cubit/auth_cubit.dart' as _i117;
+import '../../features/environments_dev/data/datasources/environment_local_data_source.dart'
+    as _i766;
+import '../../features/environments_dev/data/datasources/storage/env_config_service.dart'
+    as _i629;
+import '../../features/environments_dev/data/repositories/environment_repository.dart'
+    as _i135;
+import '../../features/environments_dev/domain/repositories/environment_repository.dart'
+    as _i365;
+import '../../features/environments_dev/domain/usecases/get_current_config_use_case.dart'
+    as _i223;
+import '../../features/environments_dev/domain/usecases/get_environment_config_use_case.dart'
+    as _i572;
+import '../../features/environments_dev/domain/usecases/switch_environment_use_case.dart'
+    as _i808;
 import '../../features/onboarding/data/datasources/onboarding_local_datasource.dart'
     as _i804;
 import '../../features/onboarding/data/repositories/onboarding_repository_impl.dart'
@@ -45,7 +59,6 @@ import '../../features/onboarding/domain/usecases/complete_onboarding_usecase.da
 import '../../features/onboarding/presentation/bloc/onboarding_cubit.dart'
     as _i153;
 import '../../features/splash/presentation/bloc/splash_cubit.dart' as _i955;
-import '../config/config_service.dart' as _i628;
 import '../network/api_client.dart' as _i557;
 import '../network/api_interceptor.dart' as _i724;
 import '../network/dio_api_client.dart' as _i167;
@@ -87,12 +100,14 @@ extension GetItInjectableX on _i174.GetIt {
       final i = _i131.HiveStorageService(gh<_i666.SecureStorageService>());
       return i.init().then((_) => i);
     }, preResolve: true);
-    gh.factory<_i628.ConfigService>(
-      () => _i628.ConfigService(storageService: gh<_i865.StorageService>()),
+    gh.factory<_i766.EnvLocalDataSource>(
+      () => _i629.EnvConfigStorageService(
+        storageService: gh<_i865.StorageService>(),
+      ),
     );
     gh.lazySingleton<_i724.APIInterceptor>(
       () => _i724.APIInterceptor(
-        configService: gh<_i628.ConfigService>(),
+        configService: gh<_i629.EnvConfigService>(),
         secureStorage: gh<_i666.SecureStorageService>(),
       ),
     );
@@ -105,8 +120,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(gh<_i724.APIInterceptor>()),
     );
+    gh.lazySingleton<_i365.EnvironmentRepository>(
+      () => _i135.EnvironmentRepositoryImpl(gh<_i766.EnvLocalDataSource>()),
+    );
     gh.lazySingleton<_i804.OnboardingLocalDataSource>(
       () => _i804.OnboardingLocalDataSourceImpl(gh<_i865.StorageService>()),
+    );
+    gh.lazySingleton<_i223.GetCurrentAppConfigUseCase>(
+      () => _i223.GetCurrentAppConfigUseCase(gh<_i365.EnvironmentRepository>()),
+    );
+    gh.lazySingleton<_i572.GetEnvironmentConfigUseCase>(
+      () =>
+          _i572.GetEnvironmentConfigUseCase(gh<_i365.EnvironmentRepository>()),
+    );
+    gh.lazySingleton<_i808.SwitchEnvironmentUseCase>(
+      () => _i808.SwitchEnvironmentUseCase(gh<_i365.EnvironmentRepository>()),
     );
     gh.lazySingleton<_i557.APIClient>(
       () => _i167.DioAPIClient(gh<_i361.Dio>()),

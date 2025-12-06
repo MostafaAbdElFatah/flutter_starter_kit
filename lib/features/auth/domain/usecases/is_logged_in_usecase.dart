@@ -8,7 +8,7 @@ import '../repositories/auth_repository.dart';
 /// This use case is responsible for determining the user's authentication status
 /// by checking for the presence of a locally stored authentication token.
 @lazySingleton
-class IsLoggedInUseCase extends UseCase<AuthRepository>  {
+class IsLoggedInUseCase extends UseCase<AuthRepository>{
 
   /// Creates an instance of [IsLoggedInUseCase].
   ///

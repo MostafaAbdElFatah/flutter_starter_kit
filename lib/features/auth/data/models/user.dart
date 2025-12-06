@@ -15,23 +15,6 @@ final class UserModel extends User {
     required super.isVerified,
   });
 
-  /// Creates a copy of this [UserModel] but with the given fields replaced with the new values.
-  UserModel copyWith({
-    String? id,
-    String? name,
-    String? email,
-    String? avatarUrl,
-    bool? isVerified,
-  }) {
-    return UserModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      avatarUrl: avatarUrl ?? this.avatarUrl,
-      isVerified: isVerified ?? this.isVerified,
-    );
-  }
-
   /// Creates a [UserModel] instance from a JSON map.
   ///
   /// This factory is used to deserialize the response from an API call.

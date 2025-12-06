@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 /// Base abstract class representing a use case in your application.
 ///
 /// [R] is the type of the repository used by the use case.
@@ -10,5 +12,5 @@ abstract class UseCase<R> {
   UseCase(this._repository);
 
   /// Exposes the repository instance.
-  R get repository => _repository;
+  @protected R get repository => _repository;
 }

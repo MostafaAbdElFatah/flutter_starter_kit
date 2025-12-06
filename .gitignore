@@ -47,4 +47,4 @@ app.*.map.json
 /.env.prod
 /.env.stage
 /.env.test
-/lib/core/config/env.g.dart
+/lib/features/environments_dev/data/env/env.g.dart

@@ -8,7 +8,7 @@ import '../repositories/auth_repository.dart';
 /// This class encapsulates the business logic for logging out. It interacts with
 /// the [AuthRepository] to clear local session data and sign the user out.
 @lazySingleton
-class LogoutUseCase  extends UseCase<AuthRepository>  {
+class LogoutUseCase extends UseCase<AuthRepository>{
 
   /// Creates an instance of [LogoutUseCase].
   ///

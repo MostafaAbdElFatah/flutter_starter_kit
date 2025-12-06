@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/config/config_service.dart';
 import '../../../../core/di/di.dart' as di;
 import '../../../../core/assets/localization_keys.dart';
 

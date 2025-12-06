@@ -10,7 +10,7 @@ import '../repositories/auth_repository.dart';
 /// the [AuthRepository] to perform the login operation and returns the result
 /// to the presentation layer.
 @lazySingleton
-class LoginUseCase extends UseCase<AuthRepository> {
+class LoginUseCase extends UseCase<AuthRepository>{
   /// Creates an instance of [LoginUseCase].
   ///
   /// Requires an [AuthRepository] to be injected.

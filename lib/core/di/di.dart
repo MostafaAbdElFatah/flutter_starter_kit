@@ -5,17 +5,16 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-import '../config/config_service.dart';
 import 'injection.dart' show configureDependencies;
 
 /// A global service locator instance for dependency injection.
 final _sl = GetIt.instance;
 
-/// A convenient global accessor for the application's [ConfigService].
-///
-/// This provides easy access to configuration settings without needing to
-/// repeatedly look up the service from the service locator.
-final ConfigService configService = _sl<ConfigService>();
+// /// A convenient global accessor for the application's [ConfigService].
+// ///
+// /// This provides easy access to configuration settings without needing to
+// /// repeatedly look up the service from the service locator.
+// final ConfigService configService = _sl<ConfigService>();
 
 /// A top-level convenience function for resolving dependencies from the service locator.
 ///

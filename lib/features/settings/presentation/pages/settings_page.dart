@@ -11,7 +11,7 @@ import '../../../../core/utils/app_locale.dart';
 import '../../../../core/assets/localization_keys.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../dialogs/delete_account_dialog.dart';
-import '../dialogs/developer_login_dialog.dart';
+import '../../../environments_dev/presentation/dialogs/developer_login_dialog.dart';
 import '../widgets/settings_tile.dart';
 
 class SettingsPage extends StatelessWidget {

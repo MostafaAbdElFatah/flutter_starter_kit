@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/assets/localization_keys.dart';
-import '../../../../core/config/app_config.dart';
-import '../../../../core/config/config_service.dart';
+import '../../data/datasources/storage/env_config_service.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/utils/validators/url_validator.dart';
 import '../widgets/environment_switcher.dart';

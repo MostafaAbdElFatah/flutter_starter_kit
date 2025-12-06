@@ -9,7 +9,7 @@ import '../repositories/auth_repository.dart';
 /// This use case is responsible for checking if a user session exists and
 /// returning the [User] object if one is found.
 @lazySingleton
-class GetAuthenticatedUserUseCase extends UseCase<AuthRepository> {
+class GetAuthenticatedUserUseCase extends UseCase<AuthRepository>{
   /// Creates an instance of [GetAuthenticatedUserUseCase].
   ///
   /// Requires an [AuthRepository] to be injected.

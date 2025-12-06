@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../config/config_service.dart';
+import '../../features/environments_dev/data/datasources/storage/env_config_service.dart';
 import '../storage/secure_storage_service.dart';
 import '../utils/log.dart';
 import 'api_endpoint.dart';
@@ -14,12 +14,12 @@ import 'api_endpoint.dart';
 
 @lazySingleton
 class APIInterceptor extends Interceptor {
-  final ConfigService _configService;
+  final EnvConfigService _configService;
   final SecureStorageService _secureStorage;
 
   /// Creates a new [APIInterceptor] instance.
   APIInterceptor({
-    required ConfigService configService,
+    required EnvConfigService configService,
     required SecureStorageService secureStorage,
   }) : _configService = configService,
        _secureStorage = secureStorage;

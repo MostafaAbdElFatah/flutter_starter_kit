@@ -1,8 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import '../constants/app_constants.dart';
-import '../storage/hive_storage_service.dart';
-import '../config/config_service.dart';
 import 'api_endpoint.dart';
 
 typedef APICallback<T> =

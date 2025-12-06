@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_starter_kit/features/auth/domain/usecases/delete_account_usecase.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/entities/user.dart';
+import '../../domain/usecases/delete_account_usecase.dart';
 import '../../domain/usecases/get_authenticated_user_usecase.dart';
 import '../../domain/usecases/is_logged_in_usecase.dart';
 import '../../domain/usecases/login_usecase.dart';
@@ -18,7 +18,7 @@ part 'auth_cubit_impl.dart';
 /// This contract ensures that any implementation of the [AuthCubit] provides a
 /// standardized interface for managing user authentication. It covers essential
 /// functionalities such as checking the current auth status, logging in, registering,
-/// logging out, and handling social sign-ins.
+/// logging out, and deleting an account.
 abstract class AuthCubit extends Cubit<AuthState> {
   /// Creates an [AuthCubit] instance with an initial state.
   AuthCubit(super.initialState);
@@ -65,12 +65,16 @@ abstract class AuthCubit extends Cubit<AuthState> {
     required String password,
   });
 
-
   /// Logs out the currently authenticated user.
   ///
   /// This method should clear any local session data and reset the
   /// authentication state to [AuthInitial].
   Future<void> logout();
 
+  /// Deletes the currently authenticated user's account.
+  ///
+  /// This method should handle the logic for permanently deleting the user's
+  /// account from the server and clearing all local data. After deletion,
+  /// the state should be reset to [AuthInitial].
   Future<void> deleteAccount();
 }
