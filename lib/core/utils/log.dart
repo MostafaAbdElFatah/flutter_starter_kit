@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
-import '../di/di.dart' as di show configService;
+import '../di/di.dart' as di;
 
 /// A utility class for logging messages.
 /// This class provides a consistent way of logging messages throughout the application.
@@ -25,7 +25,7 @@ class Log {
   );
 
   static bool get shouldDebug {
-    final currentConfig = di.configService.currentConfig;
+    final currentConfig = di.envConfigService.currentConfig;
     return kDebugMode && currentConfig.isDev;
   }
 
