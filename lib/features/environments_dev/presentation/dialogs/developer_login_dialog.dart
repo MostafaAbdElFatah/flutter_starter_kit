@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/di/di.dart' as di;
 import '../../../../core/assets/localization_keys.dart';
+import '../../../../core/router/app_router.dart';
+import '../cubit/environment_cubit.dart';
 
 class DeveloperLoginDialog extends StatefulWidget {
   final Function(bool) onLoginResult;
@@ -9,6 +13,21 @@ class DeveloperLoginDialog extends StatefulWidget {
 
   @override
   State<DeveloperLoginDialog> createState() => _DeveloperLoginDialogState();
+
+  static Future<void> show(BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => BlocProvider(
+        create: (context) => di.get<EnvironmentCubit>(),
+        child: DeveloperLoginDialog(
+          onLoginResult: (bool p1) {
+            GoRouter.of(context).goToEnvironmentConfig();
+          },
+        ),
+      ),
+    );
+  }
 }
 
 class _DeveloperLoginDialogState extends State<DeveloperLoginDialog> {
@@ -26,22 +45,13 @@ class _DeveloperLoginDialogState extends State<DeveloperLoginDialog> {
 
   void _login() {
     if (_formKey.currentState!.validate()) {
-      // Check credentials against AppConfig
-      // Note: In a real app, these should probably be hashed or checked against a secure source.
-      // For this requirement, we check against AppConfig.
-      
-      // Since AppConfig is static/singleton-like in how it's accessed usually, 
-      // we might need to define these credentials in AppConfig first.
-      // For now, let's assume hardcoded check based on "in AppConfig" requirement.
-      // We will add `devUsername` and `devPassword` to AppConfig later.
-      
       // Placeholder check until AppConfig is updated
-      final config = di.get<ConfigService>().currentConfig;
-      final validUsername = config.devUsername;
-      final validPassword = config.devPassword;
+      final devUsername = _usernameController.text.trim();
+      final devPassword = _passwordController.text.trim();
 
-      if (_usernameController.text == validUsername && 
-          _passwordController.text == validPassword) {
+      if (EnvironmentCubit.of(
+        context,
+      ).loginAsDeveloper(username: devUsername, password: devPassword)) {
         Navigator.of(context).pop();
         widget.onLoginResult(true);
       } else {
@@ -64,7 +74,8 @@ class _DeveloperLoginDialogState extends State<DeveloperLoginDialog> {
             TextFormField(
               controller: _usernameController,
               decoration: InputDecoration(labelText: LocalizationKeys.username),
-              validator: (value) => value!.isEmpty ? LocalizationKeys.required : null,
+              validator: (value) =>
+                  value!.isEmpty ? LocalizationKeys.required : null,
             ),
             const SizedBox(height: 10),
             TextFormField(
@@ -72,12 +83,15 @@ class _DeveloperLoginDialogState extends State<DeveloperLoginDialog> {
               decoration: InputDecoration(
                 labelText: LocalizationKeys.password,
                 suffixIcon: IconButton(
-                  icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
+                  icon: Icon(
+                    _isObscure ? Icons.visibility : Icons.visibility_off,
+                  ),
                   onPressed: () => setState(() => _isObscure = !_isObscure),
                 ),
               ),
               obscureText: _isObscure,
-              validator: (value) => value!.isEmpty ? LocalizationKeys.required : null,
+              validator: (value) =>
+                  value!.isEmpty ? LocalizationKeys.required : null,
             ),
           ],
         ),
@@ -87,10 +101,7 @@ class _DeveloperLoginDialogState extends State<DeveloperLoginDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(LocalizationKeys.cancel),
         ),
-        ElevatedButton(
-          onPressed: _login,
-          child: Text(LocalizationKeys.login),
-        ),
+        ElevatedButton(onPressed: _login, child: Text(LocalizationKeys.login)),
       ],
     );
   }

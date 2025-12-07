@@ -36,16 +36,20 @@ import '../../features/environments_dev/data/datasources/environment_local_data_
     as _i766;
 import '../../features/environments_dev/data/datasources/storage/env_config_service.dart'
     as _i629;
-import '../../features/environments_dev/data/repositories/environment_repository.dart'
-    as _i135;
+import '../../features/environments_dev/data/repositories/environment_repository_impl.dart'
+    as _i305;
 import '../../features/environments_dev/domain/repositories/environment_repository.dart'
     as _i365;
+import '../../features/environments_dev/domain/usecases/developer_login_usecase.dart'
+    as _i668;
 import '../../features/environments_dev/domain/usecases/get_current_config_use_case.dart'
     as _i223;
 import '../../features/environments_dev/domain/usecases/get_environment_config_use_case.dart'
     as _i572;
-import '../../features/environments_dev/domain/usecases/switch_environment_use_case.dart'
-    as _i808;
+import '../../features/environments_dev/domain/usecases/update_environment_configuration_use_case.dart'
+    as _i4;
+import '../../features/environments_dev/presentation/cubit/environment_cubit.dart'
+    as _i266;
 import '../../features/onboarding/data/datasources/onboarding_local_datasource.dart'
     as _i804;
 import '../../features/onboarding/data/repositories/onboarding_repository_impl.dart'
@@ -120,11 +124,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(gh<_i724.APIInterceptor>()),
     );
-    gh.lazySingleton<_i365.EnvironmentRepository>(
-      () => _i135.EnvironmentRepositoryImpl(gh<_i766.EnvLocalDataSource>()),
-    );
     gh.lazySingleton<_i804.OnboardingLocalDataSource>(
       () => _i804.OnboardingLocalDataSourceImpl(gh<_i865.StorageService>()),
+    );
+    gh.lazySingleton<_i365.EnvironmentRepository>(
+      () => _i305.EnvironmentRepositoryImpl(gh<_i766.EnvLocalDataSource>()),
+    );
+    gh.lazySingleton<_i668.DeveloperLoginUseCase>(
+      () => _i668.DeveloperLoginUseCase(gh<_i365.EnvironmentRepository>()),
     );
     gh.lazySingleton<_i223.GetCurrentAppConfigUseCase>(
       () => _i223.GetCurrentAppConfigUseCase(gh<_i365.EnvironmentRepository>()),
@@ -133,11 +140,21 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i572.GetEnvironmentConfigUseCase(gh<_i365.EnvironmentRepository>()),
     );
-    gh.lazySingleton<_i808.SwitchEnvironmentUseCase>(
-      () => _i808.SwitchEnvironmentUseCase(gh<_i365.EnvironmentRepository>()),
+    gh.lazySingleton<_i4.UpdateEnvironmentConfigUseCase>(
+      () =>
+          _i4.UpdateEnvironmentConfigUseCase(gh<_i365.EnvironmentRepository>()),
     );
     gh.lazySingleton<_i557.APIClient>(
       () => _i167.DioAPIClient(gh<_i361.Dio>()),
+    );
+    gh.factory<_i266.EnvironmentCubit>(
+      () => _i266.EnvironmentCubitImpl(
+        developerLoginUseCase: gh<_i668.DeveloperLoginUseCase>(),
+        getCurrentAppConfigUseCase: gh<_i223.GetCurrentAppConfigUseCase>(),
+        getEnvironmentConfigUseCase: gh<_i572.GetEnvironmentConfigUseCase>(),
+        updateEnvironmentConfigUseCase:
+            gh<_i4.UpdateEnvironmentConfigUseCase>(),
+      ),
     );
     gh.lazySingleton<_i430.OnboardingRepository>(
       () =>

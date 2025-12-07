@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentEnv = di.configService.currentConfig.environment;
+    final currentEnv = di.envConfigService.currentConfig.environment;
 
     return Scaffold(
       appBar: AppBar(

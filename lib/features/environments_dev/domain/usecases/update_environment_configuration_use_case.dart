@@ -10,11 +10,12 @@ import '../entities/environment.dart';
 /// This class encapsulates the business logic for updating the active configuration,
 /// providing a clean and testable interface for the presentation layer.
 @lazySingleton
-final class SwitchEnvironmentUseCase extends UseCase<EnvironmentRepository> {
-  /// Creates an instance of [SwitchEnvironmentUseCase].
+final class UpdateEnvironmentConfigUseCase
+    extends UseCase<EnvironmentRepository> {
+  /// Creates an instance of [UpdateEnvironmentConfigUseCase].
   ///
   /// Requires an [EnvironmentRepository] to be injected.
-  SwitchEnvironmentUseCase(super.repository);
+  UpdateEnvironmentConfigUseCase(super.repository);
 
   /// Executes the use case.
   ///
@@ -25,5 +26,8 @@ final class SwitchEnvironmentUseCase extends UseCase<EnvironmentRepository> {
   /// - [environment]: The new [Environment] to switch to.
   /// - [baseUrlConfig]: The new [BaseUrlConfig] to apply.
   Future<void> call(Environment environment, {BaseUrlConfig? baseUrlConfig}) =>
-      repository.updateConfiguration(environment, baseUrlConfig: baseUrlConfig);
+      repository.updateConfiguration(
+        environment: environment,
+        baseUrlConfig: baseUrlConfig,
+      );
 }

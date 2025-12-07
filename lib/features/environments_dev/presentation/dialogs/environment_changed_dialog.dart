@@ -9,7 +9,7 @@ import '../../../../core/assets/localization_keys.dart';
 Future<void> showEnvironmentChangedDialog(
   BuildContext context, {
   required String envName,
-  required VoidCallback environmentChanged,
+  required VoidCallback onRestart,
 }) async {
   return showDialog(
     context: context,
@@ -21,7 +21,7 @@ Future<void> showEnvironmentChangedDialog(
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
-            environmentChanged();
+            onRestart();
           },
           child: Text(LocalizationKeys.ok),
         ),

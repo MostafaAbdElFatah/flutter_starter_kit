@@ -13,6 +13,7 @@ typedef EnvConfigService = EnvLocalDataSource;
 /// This service is responsible for retrieving and persisting environment-specific
 /// settings. It interacts with a [StorageService] to read and write the
 /// application's environment and base URL configuration.
+@Injectable(as: EnvConfigService)
 @Injectable(as: EnvLocalDataSource)
 class EnvConfigStorageService implements EnvLocalDataSource {
   /// The key used to store the selected environment in persistent storage.

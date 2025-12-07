@@ -1,26 +1,29 @@
 import '../entities/app_env_config.dart';
 import '../entities/base_url_config.dart';
+import '../entities/developer_credentials.dart';
 import '../entities/environment.dart';
 
-/// An abstract repository that defines the contract for environment configuration.
+/// An abstract repository that defines the contract for managing environment configurations.
+///
+/// This repository abstracts the data sources and provides a clean API for the
+/// domain layer to interact with environment-related data.
 abstract class EnvironmentRepository {
   /// Retrieves the current application configuration.
-  ///
-  /// **Note**: This is a computed property that reads from persistent storage
-  /// every time it is accessed. It fetches the saved environment and base URL
-  /// configuration, then constructs and returns a new [AppConfig] instance.
   AppConfig get currentConfig;
 
-  /// Retrieves the configuration for Environment.
-  ///
-  /// every time it is accessed. It fetches the saved environment and base URL
-  /// configuration for this env, then constructs and returns a new [AppConfig] instance.
+  /// Retrieves the static configuration for a specific [Environment].
   AppConfig getConfigForEnvironment(Environment env);
 
-  /// Saves the selected environment and base URL configuration to persistent storage.
+  /// Updates the application's configuration.
   ///
-  /// This method updates the stored settings for both the environment and the
-  /// custom base URL. The application typically needs to be restarted for these
-  /// changes to take full effect across the app.
-  Future<void> updateConfiguration(Environment environment, {BaseUrlConfig? baseUrlConfig});
+  /// This method persists the new environment and/or base URL settings.
+  Future<void> updateConfiguration({
+    required Environment environment,
+    BaseUrlConfig? baseUrlConfig,
+  });
+
+  /// Attempts to log in as a developer with the given [credentials].
+  ///
+  /// Returns `true` if the credentials are valid, otherwise `false`.
+  bool loginAsDeveloper(DeveloperCredentials credentials);
 }

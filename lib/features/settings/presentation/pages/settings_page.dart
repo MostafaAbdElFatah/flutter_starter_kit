@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_starter_kit/core/router/app_router.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'dart:async';
 import 'dart:math';
@@ -20,37 +19,48 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => di.get<AuthCubit>())],
+      providers: _getBlocProviders(),
       child: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is AuthUnauthenticated) {
-            // Navigate to home
-            context.go('/');
-          } else if (state is AuthError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
-          }
-        },
-        builder: (context, state) {
-          if (state is AuthLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return const _SettingsPage();
-        },
+        listener: _authStateListener,
+        builder: _authStateBuilder,
       ),
     );
   }
+
+  List<BlocProvider> _getBlocProviders() {
+    return [
+      BlocProvider(create: (context) => di.get<AuthCubit>()),
+      // Uncomment when ready to use SettingsCubit
+      // BlocProvider(create: (context) => di.get<SettingsCubit>()),
+    ];
+  }
+
+  void _authStateListener(BuildContext context, AuthState state) {
+    if (state is AuthUnauthenticated) {
+      context.go('/');
+    } else if (state is AuthError) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(state.message)));
+    }
+  }
+
+  Widget _authStateBuilder(BuildContext context, AuthState state) {
+    if (state is AuthLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    return const _SettingsPageContent();
+  }
 }
 
-class _SettingsPage extends StatefulWidget {
-  const _SettingsPage();
+class _SettingsPageContent extends StatefulWidget {
+  const _SettingsPageContent();
 
   @override
-  State<_SettingsPage> createState() => _SettingsPageState();
+  State<_SettingsPageContent> createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<_SettingsPage> {
+class _SettingsPageState extends State<_SettingsPageContent> {
   // Shake detection variables
   static const double _shakeThreshold = 2.7;
   static const int _minTimeBetweenShakes = 1000;
@@ -128,18 +138,6 @@ class _SettingsPageState extends State<_SettingsPage> {
     }
   }
 
-  void _showDeveloperLoginDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => DeveloperLoginDialog(
-        onLoginResult: (bool p1) {
-          GoRouter.of(context).goToEnvironmentConfig();
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,7 +172,7 @@ class _SettingsPageState extends State<_SettingsPage> {
               SettingsTile(
                 icon: Icons.developer_mode,
                 title: LocalizationKeys.environmentConfig,
-                onTap: _showDeveloperLoginDialog,
+                onTap: () => DeveloperLoginDialog.show(context),
               ),
             ],
           ],
