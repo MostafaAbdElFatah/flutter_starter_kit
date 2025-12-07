@@ -15,6 +15,18 @@ enum Environment {
   /// Testing environment, used for automated tests.
   test;
 
+  /// Returns `true` if the current environment is [Environment.dev].
+  bool get isDev => this == Environment.dev;
+
+  /// Returns `true` if the current environment is [Environment.stage].
+  bool get isStage => this == Environment.stage;
+
+  /// Returns `true` if the current environment is [Environment.prod].
+  bool get isProd => this == Environment.prod;
+
+  /// Returns `true` if the current environment is [Environment.test].
+  bool get isTest => this == Environment.test;
+
   /// Returns a display-friendly name for the app based on the environment.
   String get appName {
     switch (this) {

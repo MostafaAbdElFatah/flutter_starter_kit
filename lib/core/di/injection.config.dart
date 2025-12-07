@@ -44,6 +44,8 @@ import '../../features/environments_dev/domain/usecases/developer_login_usecase.
     as _i668;
 import '../../features/environments_dev/domain/usecases/get_current_config_use_case.dart'
     as _i223;
+import '../../features/environments_dev/domain/usecases/get_current_environment_use_case.dart'
+    as _i272;
 import '../../features/environments_dev/domain/usecases/get_environment_config_use_case.dart'
     as _i572;
 import '../../features/environments_dev/domain/usecases/update_environment_configuration_use_case.dart'
@@ -133,8 +135,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i668.DeveloperLoginUseCase>(
       () => _i668.DeveloperLoginUseCase(gh<_i365.EnvironmentRepository>()),
     );
-    gh.lazySingleton<_i223.GetCurrentAppConfigUseCase>(
-      () => _i223.GetCurrentAppConfigUseCase(gh<_i365.EnvironmentRepository>()),
+    gh.lazySingleton<_i223.GetCurrentApiConfigUseCase>(
+      () => _i223.GetCurrentApiConfigUseCase(gh<_i365.EnvironmentRepository>()),
+    );
+    gh.lazySingleton<_i272.GetCurrentEnvironmentUseCase>(
+      () =>
+          _i272.GetCurrentEnvironmentUseCase(gh<_i365.EnvironmentRepository>()),
     );
     gh.lazySingleton<_i572.GetEnvironmentConfigUseCase>(
       () =>
@@ -147,18 +153,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i557.APIClient>(
       () => _i167.DioAPIClient(gh<_i361.Dio>()),
     );
-    gh.factory<_i266.EnvironmentCubit>(
-      () => _i266.EnvironmentCubitImpl(
-        developerLoginUseCase: gh<_i668.DeveloperLoginUseCase>(),
-        getCurrentAppConfigUseCase: gh<_i223.GetCurrentAppConfigUseCase>(),
-        getEnvironmentConfigUseCase: gh<_i572.GetEnvironmentConfigUseCase>(),
-        updateEnvironmentConfigUseCase:
-            gh<_i4.UpdateEnvironmentConfigUseCase>(),
-      ),
-    );
     gh.lazySingleton<_i430.OnboardingRepository>(
       () =>
           _i452.OnboardingRepositoryImpl(gh<_i804.OnboardingLocalDataSource>()),
+    );
+    gh.factory<_i266.EnvironmentCubit>(
+      () => _i266.EnvironmentCubitImpl(
+        developerLoginUseCase: gh<_i668.DeveloperLoginUseCase>(),
+        getCurrentApiConfigUseCase: gh<_i223.GetCurrentApiConfigUseCase>(),
+        getEnvironmentConfigUseCase: gh<_i572.GetEnvironmentConfigUseCase>(),
+        getCurrentEnvironmentUseCase: gh<_i272.GetCurrentEnvironmentUseCase>(),
+        updateEnvironmentConfigUseCase:
+            gh<_i4.UpdateEnvironmentConfigUseCase>(),
+      ),
     );
     gh.lazySingleton<_i161.AuthRemoteDataSource>(
       () => _i161.AuthRemoteDataSourceImpl(

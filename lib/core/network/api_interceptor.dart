@@ -29,7 +29,7 @@ class APIInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final appConfig = _configService.currentConfig;
+    final appConfig = _configService.currentApiConfig;
 
     // Add the API key to the request headers.
     options.headers['X-Api-Key'] = appConfig.apiKey;
@@ -48,7 +48,7 @@ class APIInterceptor extends Interceptor {
 
     if (endpoint != null && endpoint.isCompositeUrl) {
       // BASE + ENDPOINT -> inject the current base URL from ConfigService
-      options.baseUrl = _configService.currentConfig.baseUrl;
+      options.baseUrl = _configService.currentApiConfig.baseUrl;
       options.extra.remove('endpoint');
       Log.debug("[DEBUG] options ${options.toString()}");
     }

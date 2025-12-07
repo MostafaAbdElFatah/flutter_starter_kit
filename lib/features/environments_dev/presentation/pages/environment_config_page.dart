@@ -4,9 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/di/di.dart' as di;
 import '../../../../core/assets/localization_keys.dart';
 import '../../../../core/utils/validators/url_validator.dart';
-import '../../domain/entities/base_url_config.dart';
 import '../../domain/entities/environment.dart';
 import '../dialogs/environment_changed_dialog.dart';
+import '../widgets/base_url_type_segmented_button.dart';
+import '../widgets/environment_dropdown_button.dart';
 import '../widgets/environment_switcher.dart';
 import '../cubit/environment_cubit.dart';
 
@@ -31,14 +32,17 @@ class _EnvironmentConfigPage extends StatefulWidget {
 
 class _EnvironmentConfigPageState extends State<_EnvironmentConfigPage> {
   final _formKey = GlobalKey<FormState>();
-  Set<int> _selectedMode = {0}; // 0: Default, 1: Custom
   final _baseUrlController = TextEditingController();
-  final environmentNotifier = ValueNotifier<Environment>(Environment.dev);
+  final _environmentNotifier = ValueNotifier<Environment>(Environment.dev);
 
   @override
   void initState() {
     super.initState();
-    EnvironmentCubit.of(context).init();
+    Future.delayed(
+      Duration(milliseconds: 100),
+      EnvironmentCubit.of(context).init,
+    );
+    ;
   }
 
   @override
@@ -47,28 +51,20 @@ class _EnvironmentConfigPageState extends State<_EnvironmentConfigPage> {
     super.dispose();
   }
 
-  Future<void> _saveConfig(Environment env) async {
+  Future<void> _saveConfig() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     _formKey.currentState!.save();
-
-    BaseUrlConfig baseUrlConfig = BaseUrlConfig.defaultUrl();
-    // If custom mode is selected, set the custom base URL
-    if (_selectedMode.contains(1)) {
-      baseUrlConfig = BaseUrlConfig.custom(_baseUrlController.text);
-    }
 
     // Save environment (this also clears custom base URL in ConfigService)
     await EnvironmentCubit.of(
       context,
-    ).updateConfiguration(environment: env, baseUrlConfig: baseUrlConfig);
+    ).updateConfiguration(baseUrl: _baseUrlController.text.trim());
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(LocalizationKeys.configurationSaved)),
       );
     }
-
-    environmentNotifier.value = env; // trigger rebuild
   }
 
   @override
@@ -78,19 +74,20 @@ class _EnvironmentConfigPageState extends State<_EnvironmentConfigPage> {
         title: Text(LocalizationKeys.environmentConfig),
         actions: [
           ValueListenableBuilder<Environment>(
-            valueListenable: environmentNotifier,
+            valueListenable: _environmentNotifier,
             builder: (context, value, _) {
               return EnvironmentSwitcher(
                 currentEnvironment: value,
-                onEnvironmentSelected: (env) {
+                onEnvironmentSelected: (environment) {
                   EnvironmentCubit.of(
                     context,
-                  ).updateConfiguration(environment: env);
+                  ).switchEnvironmentConfiguration(environment);
+
                   // Show dialog to restart
                   if (context.mounted) {
                     showEnvironmentChangedDialog(
                       context,
-                      envName: env.name,
+                      envName: environment.name,
                       onRestart: () {},
                     );
                   }
@@ -100,11 +97,20 @@ class _EnvironmentConfigPageState extends State<_EnvironmentConfigPage> {
           ),
         ],
       ),
-      body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
+      body: BlocConsumer<EnvironmentCubit, EnvironmentState>(
+        listener: (context, state) {
+          if (state is EnvironmentLoaded) {
+            Future.delayed(Duration(milliseconds: 100), () {
+              _baseUrlController.text = state.config.baseUrl;
+              _environmentNotifier.value = state.config.environment;
+            });
+          }
+        },
         builder: (context, state) {
           if (state is! EnvironmentLoaded) {
             return const Center(child: CircularProgressIndicator());
           }
+
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(
@@ -118,31 +124,18 @@ class _EnvironmentConfigPageState extends State<_EnvironmentConfigPage> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  SegmentedButton<int>(
-                    segments: [
-                      ButtonSegment<int>(
-                        value: 0,
-                        label: Text(LocalizationKeys.defaultMode),
-                        icon: Icon(Icons.check_circle_outline),
-                      ),
-                      ButtonSegment<int>(
-                        value: 1,
-                        label: Text(LocalizationKeys.customMode),
-                        icon: Icon(Icons.edit),
-                      ),
-                    ],
-                    selected: _selectedMode,
-                    onSelectionChanged: (Set<int> newSelection) {
-                      setState(() {
-                        _selectedMode = newSelection;
-                        _baseUrlController.text = state.config.baseUrl;
-                      });
-                    },
+                  BaseUrlTypeSegmentedButton(
+                    key: GlobalKey(),
+                    selectedBaseUrlType: state.config.baseUrlConfig.type,
+                    onSelectionChanged: (newSelection) => EnvironmentCubit.of(
+                      context,
+                    ).onBaseUrlTypeChanged(newSelection.first),
                   ),
                   const SizedBox(height: 24),
                   TextFormField(
+                    key: GlobalKey(),
                     controller: _baseUrlController,
-                    enabled: _selectedMode.contains(1),
+                    enabled: state.config.baseUrlConfig.isCustom,
                     decoration: InputDecoration(
                       labelText: LocalizationKeys.baseUrl,
                       border: OutlineInputBorder(),
@@ -150,36 +143,16 @@ class _EnvironmentConfigPageState extends State<_EnvironmentConfigPage> {
                     validator: UrlValidator.validateUrl,
                   ),
                   const SizedBox(height: 16),
-                  //   _initAppConfig(AppConfig appConfig) {
-                  // _selectedEnv = appConfig.environment;
-                  // _baseUrlController.text = appConfig.baseUrl;
-                  // _selectedMode = {appConfig.baseUrlConfig.type.index};
-                  // }
-                  DropdownButtonFormField<Environment>(
+                  EnvironmentDropdownButtonFormField(
+                    key: GlobalKey(),
                     initialValue: state.config.environment,
-                    decoration: InputDecoration(
-                      labelText: LocalizationKeys.environment,
-                      border: OutlineInputBorder(),
-                    ),
-                    items: Environment.values.map((env) {
-                      return DropdownMenuItem(
-                        value: env,
-                        child: Text(
-                          env.toString().split('.').last.toUpperCase(),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        EnvironmentCubit.of(
-                          context,
-                        ).switchEnvironmentConfiguration(value);
-                      }
-                    },
+                    onChanged: (environment) => EnvironmentCubit.of(
+                      context,
+                    ).switchEnvironmentConfiguration(environment),
                   ),
                   const SizedBox(height: 60),
                   ElevatedButton(
-                    onPressed: () => _saveConfig(state.config.environment),
+                    onPressed: () => _saveConfig(),
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 50),
                     ),

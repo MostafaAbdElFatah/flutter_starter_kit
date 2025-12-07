@@ -1,7 +1,7 @@
-import 'package:injectable/injectable.dart';
+import 'package:injectable/injectable.dart' hide Environment;
 
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
-import '../entities/api_config.dart';
+import '../entities/environment.dart';
 import '../repositories/environment_repository.dart';
 
 /// A use case for retrieving the current application configuration.
@@ -9,15 +9,15 @@ import '../repositories/environment_repository.dart';
 /// This class encapsulates the business logic for fetching the current [AppConfig],
 /// providing a clean and testable interface for the presentation layer.
 @lazySingleton
-final class GetCurrentApiConfigUseCase extends UseCase<EnvironmentRepository>{
+final class GetCurrentEnvironmentUseCase extends UseCase<EnvironmentRepository>{
 
-  /// Creates an instance of [GetCurrentApiConfigUseCase].
+  /// Creates an instance of [GetCurrentEnvironmentUseCase].
   ///
   /// Requires an [EnvironmentRepository] to be injected.
-  GetCurrentApiConfigUseCase(super.repository);
+  GetCurrentEnvironmentUseCase(super.repository);
 
   /// Executes the use case.
   ///
-  /// Returns the current [AppConfig] synchronously.
-  ApiConfig call() => repository.currentApiConfig;
+  /// Returns the current [Environment] synchronously.
+  Environment call() => repository.currentEnvironment;
 }

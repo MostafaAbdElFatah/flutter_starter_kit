@@ -1,30 +1,53 @@
-import '../../domain/entities/app_env_config.dart';
+import '../../domain/entities/api_config.dart';
 import '../../domain/entities/environment.dart';
+import '../models/auth_config.dart';
 import '../models/base_url_config.dart';
 
-/// An abstract class representing the local data source for authentication.
+/// An abstract class defining the contract for the local data source that manages
+/// environment-specific configurations.
 ///
-/// This class defines the contract for caching authentication-related data,
-/// such as the user's profile and authentication token.
+/// This data source is responsible for persisting and retrieving settings related
+/// to the application's current runtime environment (e.g., dev, prod) and
+/// any associated custom configurations like a base URL.
 abstract class EnvLocalDataSource {
-  /// Retrieves the current application configuration.
+  /// Retrieves the API configuration for the currently selected environment.
   ///
-  /// **Note**: This is a computed property that reads from persistent storage
-  /// every time it is accessed. It fetches the saved environment and base URL
-  /// configuration, then constructs and returns a new [AppConfig] instance.
-  AppConfig get currentConfig;
+  /// This is a convenience getter that combines `currentEnvironment` and
+  /// `getConfigForEnvironment`. It provides the API key and base URL for the
+  /// active environment.
+  ApiConfig get currentApiConfig;
 
-  /// Retrieves the configuration for Environment.
+  /// Retrieves the currently selected [Environment] from persistent storage.
   ///
-  /// every time it is accessed. It fetches the saved environment and base URL
-  /// configuration for this env, then constructs and returns a new [AppConfig] instance.
-  AppConfig getConfigForEnvironment(Environment env);
+  /// If no environment is explicitly set, it should return a default, typically [Environment.dev].
+  Environment get currentEnvironment;
 
-  /// Saves the selected environment and base URL configuration to persistent storage.
+  /// Retrieves the developer authentication credentials for a given [Environment].
   ///
-  /// This method updates the stored settings for both the environment and the
-  /// custom base URL. The application typically needs to be restarted for these
-  /// changes to take full effect across the app.
+  /// These credentials (username/password) are typically loaded from environment
+  /// variables and are used for accessing developer-only features.
+  ///
+  /// ### Parameters:
+  /// - [env]: The environment for which to get the auth config.
+  AuthConfig getAuthConfigForEnvironment(Environment env);
+
+  /// Retrieves the static API configuration (API key and default URL) for a given [Environment].
+  ///
+  /// This data is typically loaded from compile-time environment variables.
+  ///
+  /// ### Parameters:
+  /// - [env]: The environment for which to get the API config.
+  ApiConfig getConfigForEnvironment(Environment env);
+
+  /// Updates and persists the application's configuration.
+  ///
+  /// This method saves the selected [environment] and an optional [baseUrlConfig]
+  /// to persistent storage. The application typically needs to be restarted for
+  /// these changes to take full effect.
+  ///
+  /// ### Parameters:
+  /// - [environment]: The new environment to save.
+  /// - [baseUrlConfig]: The new base URL configuration to save.
   Future<void> updateConfiguration(
     Environment environment, {
     BaseUrlConfigModel? baseUrlConfig,

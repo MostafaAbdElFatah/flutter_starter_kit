@@ -25,8 +25,8 @@ class Log {
   );
 
   static bool get shouldDebug {
-    final currentConfig = di.envConfigService.currentConfig;
-    return kDebugMode && currentConfig.isDev;
+    final currentEnvironment = di.envConfigService.currentEnvironment;
+    return kDebugMode && !currentEnvironment.isProd;
   }
 
   /// Logs a trace message.

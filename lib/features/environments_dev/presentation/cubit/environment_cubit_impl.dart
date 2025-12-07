@@ -7,55 +7,72 @@ part of 'environment_cubit.dart';
 /// with the appropriate use cases.
 @Injectable(as: EnvironmentCubit)
 final class EnvironmentCubitImpl extends EnvironmentCubit {
+  late ApiConfig _config;
+
   final DeveloperLoginUseCase _developerLoginUseCase;
-  final GetCurrentAppConfigUseCase _getCurrentAppConfigUseCase;
+  final GetCurrentApiConfigUseCase _getCurrentApiConfigUseCase;
   final GetEnvironmentConfigUseCase _getEnvironmentConfigUseCase;
+  final GetCurrentEnvironmentUseCase _getCurrentEnvironmentUseCase;
   final UpdateEnvironmentConfigUseCase _updateEnvironmentConfigUseCase;
 
   /// Creates an instance of [EnvironmentCubitImpl].
   EnvironmentCubitImpl({
     required DeveloperLoginUseCase developerLoginUseCase,
-    required GetCurrentAppConfigUseCase getCurrentAppConfigUseCase,
+    required GetCurrentApiConfigUseCase getCurrentApiConfigUseCase,
     required GetEnvironmentConfigUseCase getEnvironmentConfigUseCase,
+    required GetCurrentEnvironmentUseCase getCurrentEnvironmentUseCase,
     required UpdateEnvironmentConfigUseCase updateEnvironmentConfigUseCase,
   }) : _developerLoginUseCase = developerLoginUseCase,
-       _getCurrentAppConfigUseCase = getCurrentAppConfigUseCase,
+       _getCurrentApiConfigUseCase = getCurrentApiConfigUseCase,
        _getEnvironmentConfigUseCase = getEnvironmentConfigUseCase,
+       _getCurrentEnvironmentUseCase = getCurrentEnvironmentUseCase,
        _updateEnvironmentConfigUseCase = updateEnvironmentConfigUseCase,
        super(const EnvironmentInitial());
 
+  ApiConfig get currentConfig => _getCurrentApiConfigUseCase();
+
   @override
-  Future<void> init() async {
-    emit(const EnvironmentLoading());
-    final config = _getCurrentAppConfigUseCase();
-    emit(EnvironmentLoaded(config));
+  void init() {
+    final environment = _getCurrentEnvironmentUseCase();
+    switchEnvironmentConfiguration(environment);
   }
 
   @override
-  Future<void> updateConfiguration({
-    required Environment environment,
-    BaseUrlConfig? baseUrlConfig,
-  }) async {
+  bool loginAsDeveloper({required String username, required String password}) =>
+      _developerLoginUseCase(username: username, password: password);
+
+  @override
+  Future<void> updateConfiguration({String? baseUrl}) async {
     emit(const EnvironmentLoading());
+    BaseUrlConfig baseUrlConfig = BaseUrlConfig.defaultUrl();
+    // If custom mode is selected, set the custom base URL
+    if (_config.baseUrlConfig.isCustom) {
+      baseUrlConfig = BaseUrlConfig.custom(baseUrl);
+    }
+
     await _updateEnvironmentConfigUseCase(
-      environment,
+      _config.environment,
       baseUrlConfig: baseUrlConfig,
     );
+
     // After updating, reload the config to ensure the UI reflects the change.
-    final config = _getCurrentAppConfigUseCase();
-    emit(EnvironmentLoaded(config));
+    _config = _getEnvironmentConfigUseCase(_config.environment);
+    emit(EnvironmentLoaded(_config));
   }
 
   @override
   void switchEnvironmentConfiguration(Environment environment) {
     emit(const EnvironmentLoading());
-    final config = _getEnvironmentConfigUseCase(environment);
-    emit(EnvironmentLoaded(config));
+    _config = _getEnvironmentConfigUseCase(environment);
+    emit(EnvironmentLoaded(_config));
   }
 
   @override
-  bool loginAsDeveloper({
-    required String username,
-    required String password,
-  }) => _developerLoginUseCase(username: username, password: password);
+  void onBaseUrlTypeChanged(BaseUrlType newBaseUrlType) {
+    emit(const EnvironmentLoading());
+    _config = _config.copyWith(
+      baseUrlConfig: _config.baseUrlConfig.copyWith(type: newBaseUrlType),
+    );
+    emit(EnvironmentLoaded(_config));
+  }
 }

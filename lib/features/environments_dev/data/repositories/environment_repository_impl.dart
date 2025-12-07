@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart' hide Environment;
 
-import '../../domain/entities/app_env_config.dart';
+import '../../domain/entities/api_config.dart';
 import '../../domain/entities/base_url_config.dart';
 import '../../domain/entities/developer_credentials.dart';
 import '../../domain/entities/environment.dart';
@@ -19,12 +19,28 @@ class EnvironmentRepositoryImpl implements EnvironmentRepository {
   /// Creates an instance of [EnvironmentRepositoryImpl].
   EnvironmentRepositoryImpl(this._localDataSource);
 
+  /// Retrieves the API configuration for the currently selected environment.
+  ///
+  /// This is a convenience getter that combines `currentEnvironment` and
+  /// `getConfigForEnvironment`. It provides the API key and base URL for the
+  /// active environment.
   @override
-  AppConfig get currentConfig => _localDataSource.currentConfig;
+  ApiConfig get currentApiConfig => _localDataSource.currentApiConfig;
 
+  /// Retrieves the currently selected [Environment] from persistent storage.
+  ///
+  /// If no environment is explicitly set, it should return a default, typically [Environment.dev].
   @override
-  AppConfig getConfigForEnvironment(Environment env) =>
-      _localDataSource.getConfigForEnvironment(env);
+  Environment get currentEnvironment => _localDataSource.currentEnvironment;
+
+  /// Retrieves the static API configuration (API key and default URL) for a given [Environment].
+  ///
+  /// This data is typically loaded from compile-time environment variables.
+  ///
+  /// ### Parameters:
+  /// - [env]: The environment for which to get the API config.
+  @override
+  ApiConfig getConfigForEnvironment(Environment env) => _localDataSource.getConfigForEnvironment(env);
 
   @override
   Future<void> updateConfiguration({
@@ -37,15 +53,8 @@ class EnvironmentRepositoryImpl implements EnvironmentRepository {
 
   @override
   bool loginAsDeveloper(DeveloperCredentials credentials) {
-    // Check credentials against AppConfig
-    // Note: In a real app, these should probably be hashed or checked against a secure source.
-    // For this requirement, we check against AppConfig.
-
-    // Since AppConfig is static/singleton-like in how it's accessed usually,
-    // we might need to define these credentials in AppConfig first.
-    // For now, let's assume hardcoded check based on "in AppConfig" requirement.
-    // We will add `devUsername` and `devPassword` to AppConfig later.
-    final config = _localDataSource.currentConfig;
+    final env = _localDataSource.currentEnvironment;
+    final config = _localDataSource.getAuthConfigForEnvironment(env);
     final isValid =
         credentials.username == config.devUsername &&
         credentials.password == config.devPassword;

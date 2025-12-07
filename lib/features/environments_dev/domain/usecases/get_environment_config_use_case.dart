@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart' hide Environment;
 
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
-import '../entities/app_env_config.dart';
+import '../entities/api_config.dart';
 import '../entities/environment.dart';
 import '../repositories/environment_repository.dart';
 
@@ -20,5 +20,5 @@ final class GetEnvironmentConfigUseCase extends UseCase<EnvironmentRepository>{
   /// Executes the use case.
   ///
   /// Returns the [AppEnvConfig] for the specified [env].
-  AppConfig call(Environment env) => repository.getConfigForEnvironment(env);
+  ApiConfig call(Environment env) => repository.getConfigForEnvironment(env);
 }

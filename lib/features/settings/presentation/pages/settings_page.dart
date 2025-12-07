@@ -5,6 +5,7 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'dart:async';
 import 'dart:math';
 
+import '../../../../core/di/di.dart' as di;
 import '../../../../core/utils/app_locale.dart';
 import '../../../../core/assets/localization_keys.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
@@ -12,14 +13,30 @@ import '../dialogs/delete_account_dialog.dart';
 import '../../../environments_dev/presentation/dialogs/developer_login_dialog.dart';
 import '../widgets/settings_tile.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => di.get<AuthCubit>()),
+        // Uncomment when ready to use SettingsCubit
+        // BlocProvider(create: (context) => di.get<SettingsCubit>()),
+      ],
+      child: SettingsPageContent(),
+    );
+  }
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class SettingsPageContent extends StatefulWidget {
+  const SettingsPageContent({super.key});
+
+  @override
+  State<SettingsPageContent> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPageContent> {
   // Shake detection variables
   static const double _shakeThreshold = 2.7;
   static const int _minTimeBetweenShakes = 1000;
