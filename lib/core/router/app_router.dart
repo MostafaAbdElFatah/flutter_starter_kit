@@ -1,4 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/auth/presentation/cubit/auth_cubit.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
@@ -6,7 +8,7 @@ import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/environments_dev/presentation/pages/environment_config_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
-
+import '../di/di.dart' as di;
 
 /// Route path constants for type-safe navigation
 class AppRoutes {
@@ -51,7 +53,14 @@ class AppRouter {
         routes: [
           GoRoute(
             path: 'settings',
-            builder: (context, state) => const SettingsPage(),
+            builder: (context, state) => MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (context) => di.get<AuthCubit>()),
+                // Uncomment when ready to use SettingsCubit
+                // BlocProvider(create: (context) => di.get<SettingsCubit>()),
+              ],
+              child: const SettingsPage(),
+            ),
             routes: [
               GoRoute(
                 path: 'environmentConfig',

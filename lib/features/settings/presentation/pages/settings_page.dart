@@ -5,7 +5,6 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'dart:async';
 import 'dart:math';
 
-import '../../../../core/di/di.dart' as di;
 import '../../../../core/utils/app_locale.dart';
 import '../../../../core/assets/localization_keys.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
@@ -13,54 +12,14 @@ import '../dialogs/delete_account_dialog.dart';
 import '../../../environments_dev/presentation/dialogs/developer_login_dialog.dart';
 import '../widgets/settings_tile.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: _getBlocProviders(),
-      child: BlocConsumer<AuthCubit, AuthState>(
-        listener: _authStateListener,
-        builder: _authStateBuilder,
-      ),
-    );
-  }
-
-  List<BlocProvider> _getBlocProviders() {
-    return [
-      BlocProvider(create: (context) => di.get<AuthCubit>()),
-      // Uncomment when ready to use SettingsCubit
-      // BlocProvider(create: (context) => di.get<SettingsCubit>()),
-    ];
-  }
-
-  void _authStateListener(BuildContext context, AuthState state) {
-    if (state is AuthUnauthenticated) {
-      context.go('/');
-    } else if (state is AuthError) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(state.message)));
-    }
-  }
-
-  Widget _authStateBuilder(BuildContext context, AuthState state) {
-    if (state is AuthLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    return const _SettingsPageContent();
-  }
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsPageContent extends StatefulWidget {
-  const _SettingsPageContent();
-
-  @override
-  State<_SettingsPageContent> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<_SettingsPageContent> {
+class _SettingsPageState extends State<SettingsPage> {
   // Shake detection variables
   static const double _shakeThreshold = 2.7;
   static const int _minTimeBetweenShakes = 1000;
@@ -138,44 +97,57 @@ class _SettingsPageState extends State<_SettingsPageContent> {
     }
   }
 
+  void _authStateListener(BuildContext context, AuthState state) {
+    if (state is AuthUnauthenticated) {
+      context.go('/');
+    } else if (state is AuthError) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(state.message)));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(LocalizationKeys.settings)),
-      body: GestureDetector(
-        onTap: _onDeviceTapped, // Detect taps on the background
-        behavior: HitTestBehavior.translucent,
-        child: ListView(
-          children: [
-            SettingsTile(
-              icon: Icons.language,
-              title: LocalizationKeys.changeLanguage,
-              onTap: context.toggleLanguage,
-            ),
-            SettingsTile(
-              icon: Icons.logout,
-              title: LocalizationKeys.logout,
-              onTap: AuthCubit.of(context).logout,
-            ),
-            SettingsTile(
-              icon: Icons.delete_forever,
-              title: LocalizationKeys.deleteAccount,
-              iconColor: Colors.red,
-              textColor: Colors.red,
-              onTap: () => showDeleteAccountDialog(
-                context,
-                deleteAccount: AuthCubit.of(context).deleteAccount,
-              ),
-            ),
-            if (_showHiddenMenu) ...[
-              const Divider(),
+    return BlocListener<AuthCubit, AuthState>(
+      listener: _authStateListener,
+      child: Scaffold(
+        appBar: AppBar(title: Text(LocalizationKeys.settings)),
+        body: GestureDetector(
+          onTap: _onDeviceTapped, // Detect taps on the background
+          behavior: HitTestBehavior.translucent,
+          child: ListView(
+            children: [
               SettingsTile(
-                icon: Icons.developer_mode,
-                title: LocalizationKeys.environmentConfig,
-                onTap: () => DeveloperLoginDialog.show(context),
+                icon: Icons.language,
+                title: LocalizationKeys.changeLanguage,
+                onTap: context.toggleLanguage,
               ),
+              SettingsTile(
+                icon: Icons.logout,
+                title: LocalizationKeys.logout,
+                onTap: AuthCubit.of(context).logout,
+              ),
+              SettingsTile(
+                icon: Icons.delete_forever,
+                title: LocalizationKeys.deleteAccount,
+                iconColor: Colors.red,
+                textColor: Colors.red,
+                onTap: () => showDeleteAccountDialog(
+                  context,
+                  deleteAccount: AuthCubit.of(context).deleteAccount,
+                ),
+              ),
+              if (_showHiddenMenu) ...[
+                const Divider(),
+                SettingsTile(
+                  icon: Icons.developer_mode,
+                  title: LocalizationKeys.environmentConfig,
+                  onTap: () => DeveloperLoginDialog.show(context),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
