@@ -24,7 +24,10 @@ class Log {
     ),
   );
 
+  static bool overrideShouldDebugForTests = false;
+
   static bool get shouldDebug {
+    if(overrideShouldDebugForTests) return kDebugMode;
     final currentEnvironment = di.envConfigService.currentEnvironment;
     return kDebugMode && !currentEnvironment.isProd;
   }

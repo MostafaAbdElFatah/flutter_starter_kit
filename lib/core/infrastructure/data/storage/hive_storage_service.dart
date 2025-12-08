@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import '../../../utils/log.dart';
@@ -24,8 +23,8 @@ class HiveStorageService implements StorageService {
   /// implementation of secure storage, making it more testable and maintainable.
   HiveStorageService(this._secureStorage);
 
-  @PostConstruct(preResolve: true)
   @override
+  @PostConstruct(preResolve: true)
   Future<void> init() async {
     try {
       // Retrieve the encryption key from secure storage.
