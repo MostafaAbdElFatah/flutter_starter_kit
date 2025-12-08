@@ -19,8 +19,13 @@ class HomePage extends StatelessWidget {
         title: Text(LocalizationKeys.homeTitle),
         actions: [
           IconButton(
-            onPressed: () => GoRouter.of(context).goToSettings(),
+            onPressed: () => GoRouter.of(context).pushSettings(),
             icon: const Icon(Icons.settings),
+          ),
+
+          IconButton(
+            onPressed: () => GoRouter.of(context).pushLogin(),
+            icon: const Icon(Icons.login),
           ),
         ],
       ),

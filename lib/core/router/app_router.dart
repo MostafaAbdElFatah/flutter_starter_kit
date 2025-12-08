@@ -14,8 +14,8 @@ class AppRoutes {
   static const register = '/register';
   static const onboarding = '/onboarding';
   static const home = '/home';
-  static const settings = '/home/settings';
-  static const environmentConfig = '/home/settings/environmentConfig';
+  static const settings = '/settings';
+  static const environmentConfig = '/environment-config';
 }
 
 /// Application router configuration
@@ -25,11 +25,13 @@ class AppRouter {
   static final router = GoRouter(
     initialLocation: AppRoutes.splash,
     routes: [
-      // Auth routes
+      // Splash
       GoRoute(
         path: AppRoutes.splash,
         builder: (context, state) => const SplashPage(),
       ),
+
+      // Auth routes (top-level for easy access from anywhere)
       GoRoute(
         path: AppRoutes.login,
         builder: (context, state) => const LoginPage(),
@@ -38,27 +40,29 @@ class AppRouter {
         path: AppRoutes.register,
         builder: (context, state) => const RegisterPage(),
       ),
+
+      // Onboarding
       GoRoute(
         path: AppRoutes.onboarding,
         builder: (context, state) => const OnboardingPage(),
       ),
 
-      // Home and nested routes
+      // Home
       GoRoute(
         path: AppRoutes.home,
         builder: (context, state) => const HomePage(),
-        routes: [
-          GoRoute(
-            path: 'settings',
-            builder: (context, state) => const SettingsPage(),
-            routes: [
-              GoRoute(
-                path: 'environmentConfig',
-                builder: (context, state) => const EnvironmentConfigPage(),
-              ),
-            ],
-          ),
-        ],
+      ),
+
+      // Settings (top-level so it's accessible from anywhere)
+      GoRoute(
+        path: AppRoutes.settings,
+        builder: (context, state) => const SettingsPage(),
+      ),
+
+      // Environment Config (top-level)
+      GoRoute(
+        path: AppRoutes.environmentConfig,
+        builder: (context, state) => const EnvironmentConfigPage(),
       ),
     ],
   );
@@ -72,4 +76,9 @@ extension GoRouterExtension on GoRouter {
   void goToHome() => go(AppRoutes.home);
   void goToSettings() => go(AppRoutes.settings);
   void goToEnvironmentConfig() => go(AppRoutes.environmentConfig);
+
+  // Navigation with back stack
+  void pushLogin() => push(AppRoutes.login);
+  void pushSettings() => push(AppRoutes.settings);
+  void pushEnvironmentConfig() => push(AppRoutes.environmentConfig);
 }

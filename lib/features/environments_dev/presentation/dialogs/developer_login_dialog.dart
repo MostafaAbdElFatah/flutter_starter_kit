@@ -22,7 +22,7 @@ class DeveloperLoginDialog extends StatefulWidget {
         create: (context) => di.get<EnvironmentCubit>(),
         child: DeveloperLoginDialog(
           onLoginResult: (bool p1) {
-            GoRouter.of(context).goToEnvironmentConfig();
+            GoRouter.of(context).pushEnvironmentConfig();
           },
         ),
       ),
