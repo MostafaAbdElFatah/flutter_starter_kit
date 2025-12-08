@@ -79,6 +79,7 @@ extension GoRouterExtension on GoRouter {
 
   // Navigation with back stack
   void pushLogin() => push(AppRoutes.login);
+  void pushRegister() => push(AppRoutes.register);
   void pushSettings() => push(AppRoutes.settings);
   void pushEnvironmentConfig() => push(AppRoutes.environmentConfig);
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+
+import '../../../../core/assets/localization_keys.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/utils/validators/email_validator.dart';
 import '../../../../core/utils/validators/password_validator.dart';
@@ -44,7 +47,7 @@ class _RegisterFormState extends State<_RegisterForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
+      appBar: AppBar(title: Text(LocalizationKeys.register)),
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {

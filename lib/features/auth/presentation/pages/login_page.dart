@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+
+import '../../../../core/router/app_router.dart';
 import '../../../../core/assets/localization_keys.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/di/di.dart' as di;
 import '../../../../core/utils/validators/email_validator.dart';
 import '../../../../core/utils/validators/password_validator.dart';
 import '../cubit/auth_cubit.dart';
-
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -42,7 +43,7 @@ class _LoginFormState extends State<_LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: Text(LocalizationKeys.login)),
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
@@ -67,21 +68,25 @@ class _LoginFormState extends State<_LoginForm> {
                 children: [
                   TextFormField(
                     controller: _emailController,
-                    decoration: InputDecoration(labelText: LocalizationKeys.email),
+                    decoration: InputDecoration(
+                      labelText: LocalizationKeys.email,
+                    ),
                     validator: EmailValidator.validateEmail,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _passwordController,
-                    decoration: InputDecoration(labelText: LocalizationKeys.password),
+                    decoration: InputDecoration(
+                      labelText: LocalizationKeys.password,
+                    ),
                     obscureText: true,
-                    validator: PasswordValidator.validatePassword,
+                    //validator: PasswordValidator.validatePassword,
                     // Custom Password Requirements
-                    // validator: (value) => PasswordValidator.validatePassword(
-                    //   value,
-                    //   minLength: 12,
-                    //   requireSpecialChar: false,
-                    // ),
+                    validator: (value) => PasswordValidator.validatePassword(
+                      value,
+                      minLength: 8,
+                      requireSpecialChar: false,
+                    ),
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
@@ -95,8 +100,9 @@ class _LoginFormState extends State<_LoginForm> {
                     },
                     child: const Text('Login'),
                   ),
+                  const SizedBox(height: 24),
                   TextButton(
-                    onPressed: () => context.push('/register'),
+                    onPressed: () => GoRouter.of(context).pushRegister(),
                     child: const Text('Go to Register'),
                   ),
                 ],

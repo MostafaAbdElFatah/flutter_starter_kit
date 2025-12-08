@@ -16,7 +16,7 @@ void main() async {
       path: AppLocale.path,
       supportedLocales: AppLocale.supportedLocales,
       fallbackLocale: AppLocale.defaultLocale,
-      //startLocale: AppLocale.defaultLocale,
+      startLocale: AppLocale.defaultLocale,
       child: Phoenix(child: const App()),
     ),
   );

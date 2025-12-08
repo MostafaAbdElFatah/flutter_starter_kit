@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,7 +56,9 @@ class _SettingsPageState extends State<SettingsPageContent> {
   @override
   void initState() {
     super.initState();
-    _startListeningToAccelerometer();
+    if(Platform.isAndroid || Platform.isIOS) {
+      _startListeningToAccelerometer();
+    }
   }
 
   @override

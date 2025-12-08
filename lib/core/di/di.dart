@@ -55,5 +55,20 @@ abstract class InjectionModule {
 
   /// Provides a lazy singleton instance of [FlutterSecureStorage].
   @lazySingleton
-  FlutterSecureStorage get flutterSecureStorage => const FlutterSecureStorage();
+  FlutterSecureStorage get flutterSecureStorage{
+    final secureStorage = const FlutterSecureStorage(
+      aOptions: AndroidOptions(
+        encryptedSharedPreferences: true,
+      ),
+      iOptions: IOSOptions(
+        accessibility: KeychainAccessibility.first_unlock,
+      ),
+      // Add macOS options
+      mOptions: MacOsOptions(
+        accessibility: KeychainAccessibility.first_unlock,
+      ),
+    );
+
+    return secureStorage;
+  }
 }

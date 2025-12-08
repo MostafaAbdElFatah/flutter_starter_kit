@@ -9,5 +9,7 @@ class OnboardingCubit extends Cubit<void> {
 
   OnboardingCubit(this._completeOnboardingUseCase) : super(null);
 
+  static OnboardingCubit of(context) => BlocProvider.of(context);
+
   Future<void> completeOnboarding() => _completeOnboardingUseCase(NoParams());
 }
