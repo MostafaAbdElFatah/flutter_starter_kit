@@ -38,7 +38,7 @@ class AuthCubitImpl extends AuthCubit {
   @override
   Future<void> checkAuthStatus() async {
     try {
-      final loggedUser = await _getAuthenticatedUserUseCase();
+      final loggedUser = await _getAuthenticatedUserUseCase(NoParams());
       loggedUser != null
           ? emit(AuthAuthenticated(loggedUser))
           : emit(const AuthUnauthenticated());
@@ -56,7 +56,9 @@ class AuthCubitImpl extends AuthCubit {
   void login({required String email, required String password}) async {
     emit(const AuthLoading());
     try {
-      final user = await _loginUseCase(email: email, password: password);
+      final user = await _loginUseCase(
+        LoginCredentials(email: email, password: password),
+      );
       emit(AuthAuthenticated(user));
     } catch (e) {
       emit(AuthError(e.toString()));
@@ -76,9 +78,7 @@ class AuthCubitImpl extends AuthCubit {
     emit(const AuthLoading());
     try {
       final user = await _registerUseCase(
-        name: name,
-        email: email,
-        password: password,
+        RegisterCredentials(name: name, email: email, password: password),
       );
       emit(AuthAuthenticated(user));
     } catch (e) {
@@ -94,7 +94,7 @@ class AuthCubitImpl extends AuthCubit {
   Future<void> logout() async {
     emit(const AuthLoading());
     try {
-      await _logoutUseCase();
+      await _logoutUseCase(NoParams());
       emit(const AuthUnauthenticated());
     } catch (e) {
       emit(AuthError(e.toString()));
@@ -109,7 +109,7 @@ class AuthCubitImpl extends AuthCubit {
   Future<void> deleteAccount() async {
     emit(const AuthLoading());
     try {
-      await _deleteAccountUsecase();
+      await _deleteAccountUsecase(NoParams());
       emit(const AuthUnauthenticated());
     } catch (e) {
       emit(AuthError(e.toString()));

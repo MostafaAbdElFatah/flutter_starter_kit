@@ -1,7 +1,8 @@
 import '../entities/api_config.dart';
-import '../entities/base_url_config.dart';
-import '../entities/developer_credentials.dart';
 import '../entities/environment.dart';
+import '../usecases/developer_login_usecase.dart';
+import '../usecases/get_environment_config_use_case.dart';
+import '../usecases/update_environment_configuration_use_case.dart';
 
 /// An abstract repository that defines the contract for managing environment configurations.
 ///
@@ -26,18 +27,15 @@ abstract class EnvironmentRepository {
   ///
   /// ### Parameters:
   /// - [env]: The environment for which to get the API config.
-  ApiConfig getConfigForEnvironment(Environment env);
+  ApiConfig getConfigForEnvironment(EnvironmentConfigGetParams params);
 
   /// Updates the application's configuration.
   ///
   /// This method persists the new environment and/or base URL settings.
-  Future<void> updateConfiguration({
-    required Environment environment,
-    BaseUrlConfig? baseUrlConfig,
-  });
+  Future<void> updateConfiguration(EnvironmentConfigUpdateParams params);
 
-  /// Attempts to log in as a developer with the given [credentials].
+  /// Attempts to log in as a developer with the given [LoginParams].
   ///
   /// Returns `true` if the credentials are valid, otherwise `false`.
-  bool loginAsDeveloper(DeveloperCredentials credentials);
+  bool loginAsDeveloper(DevLoginParams params);
 }

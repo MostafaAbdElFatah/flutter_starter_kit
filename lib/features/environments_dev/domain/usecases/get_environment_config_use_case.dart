@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart' hide Environment;
 
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
@@ -10,7 +11,7 @@ import '../repositories/environment_repository.dart';
 /// This class encapsulates the business logic for fetching the configuration
 /// details (like API keys and default URLs) for a given [Environment].
 @lazySingleton
-final class GetEnvironmentConfigUseCase extends UseCase<EnvironmentRepository>{
+final class GetEnvironmentConfigUseCase extends UseCase<EnvironmentRepository, ApiConfig, EnvironmentConfigGetParams>{
 
   /// Creates an instance of [GetEnvironmentConfigUseCase].
   ///
@@ -20,5 +21,15 @@ final class GetEnvironmentConfigUseCase extends UseCase<EnvironmentRepository>{
   /// Executes the use case.
   ///
   /// Returns the [AppEnvConfig] for the specified [env].
-  ApiConfig call(Environment env) => repository.getConfigForEnvironment(env);
+  @override
+  ApiConfig call(EnvironmentConfigGetParams params) => repository.getConfigForEnvironment(params);
+}
+
+class EnvironmentConfigGetParams extends Equatable{
+
+  final Environment env;
+  const EnvironmentConfigGetParams(this.env);
+
+  @override
+  List<Object?> get props => [env];
 }

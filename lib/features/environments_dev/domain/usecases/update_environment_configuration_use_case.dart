@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart' hide Environment;
 
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
@@ -11,7 +12,7 @@ import '../entities/environment.dart';
 /// providing a clean and testable interface for the presentation layer.
 @lazySingleton
 final class UpdateEnvironmentConfigUseCase
-    extends UseCase<EnvironmentRepository> {
+    extends AsyncUseCase<EnvironmentRepository, void, EnvironmentConfigUpdateParams> {
   /// Creates an instance of [UpdateEnvironmentConfigUseCase].
   ///
   /// Requires an [EnvironmentRepository] to be injected.
@@ -25,9 +26,16 @@ final class UpdateEnvironmentConfigUseCase
   /// ### Parameters:
   /// - [environment]: The new [Environment] to switch to.
   /// - [baseUrlConfig]: The new [BaseUrlConfig] to apply.
-  Future<void> call(Environment environment, {BaseUrlConfig? baseUrlConfig}) =>
-      repository.updateConfiguration(
-        environment: environment,
-        baseUrlConfig: baseUrlConfig,
-      );
+  @override
+  Future<void> call(EnvironmentConfigUpdateParams params) =>
+      repository.updateConfiguration(params);
+}
+
+class EnvironmentConfigUpdateParams extends Equatable{
+  final Environment environment;
+  final BaseUrlConfig? baseUrlConfig;
+  const EnvironmentConfigUpdateParams(this.environment, {this.baseUrlConfig});
+
+  @override
+  List<Object?> get props => [environment, baseUrlConfig];
 }

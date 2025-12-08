@@ -16,6 +16,16 @@ final class RegisterRequest extends RegisterCredentials {
     super.deviceName,
   });
 
+  RegisterRequest.credentials({
+    required RegisterCredentials credentials,
+    super.confirmPassword,
+    super.deviceName,
+  }) : super(
+         email: credentials.email,
+         name: credentials.name,
+         password: credentials.password,
+       );
+
   /// Creates a new [RegisterRequest] instance with updated fields.
   ///
   /// This method is useful for creating a modified copy of the object without
@@ -54,21 +64,21 @@ final class RegisterRequest extends RegisterCredentials {
   /// The resulting map is cleaned to remove any `null` values,
   /// ensuring a compact JSON payload for API requests.
   Map<String, dynamic> toJson() => {
-        "name": name,
-        "email": email,
-        "password": password,
-        "password_confirmation": confirmPassword,
-        "device_name": deviceName,
-      }..removeNulls;
+    "name": name,
+    "email": email,
+    "password": password,
+    "password_confirmation": confirmPassword,
+    "device_name": deviceName,
+  }..removeNulls;
 
   /// Converts this data transfer object into a [RegisterCredentials] domain entity.
   ///
   /// This is useful for mapping data from the data layer to the domain layer.
   RegisterCredentials toEntity() => RegisterCredentials(
-        name: name,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-        deviceName: deviceName,
-      );
+    name: name,
+    email: email,
+    password: password,
+    confirmPassword: confirmPassword,
+    deviceName: deviceName,
+  );
 }

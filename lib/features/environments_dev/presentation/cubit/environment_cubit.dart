@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart' hide Environment;
 
+import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../domain/entities/api_config.dart';
 import '../../domain/entities/base_url_config.dart';
 import '../../domain/entities/base_url_type.dart';

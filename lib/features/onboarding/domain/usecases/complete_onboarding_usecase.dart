@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../repositories/onboarding_repository.dart';
 
@@ -7,12 +8,14 @@ import '../repositories/onboarding_repository.dart';
 ///
 /// This class encapsulates the business logic for completing the onboarding flow.
 @lazySingleton
-class CompleteOnboardingUseCase extends UseCase<OnboardingRepository> {
+class CompleteOnboardingUseCase
+    extends AsyncUseCase<OnboardingRepository, void, NoParams> {
   /// Creates an instance of [CompleteOnboardingUseCase].
   CompleteOnboardingUseCase(super.repository);
 
   /// Executes the use case.
   ///
   /// This will persist the onboarding completion status.
-  Future<void> call() => repository.completeOnboarding();
+  @override
+  Future<void> call(NoParams params) => repository.completeOnboarding();
 }

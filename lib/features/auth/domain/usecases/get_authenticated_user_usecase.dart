@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../entities/user.dart';
 import '../repositories/auth_repository.dart';
@@ -9,7 +10,7 @@ import '../repositories/auth_repository.dart';
 /// This use case is responsible for checking if a user session exists and
 /// returning the [User] object if one is found.
 @lazySingleton
-class GetAuthenticatedUserUseCase extends UseCase<AuthRepository>{
+class GetAuthenticatedUserUseCase extends AsyncUseCase<AuthRepository, User?, NoParams>{
   /// Creates an instance of [GetAuthenticatedUserUseCase].
   ///
   /// Requires an [AuthRepository] to be injected.
@@ -19,5 +20,6 @@ class GetAuthenticatedUserUseCase extends UseCase<AuthRepository>{
   ///
   /// Returns the authenticated [User] object if a session is active, otherwise
   /// returns `null`.
-  Future<User?> call() => repository.getAuthenticatedUser();
+  @override
+  Future<User?> call(NoParams params) => repository.getAuthenticatedUser();
 }

@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart' hide Environment;
 
+import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../entities/environment.dart';
 import '../repositories/environment_repository.dart';
@@ -9,7 +10,7 @@ import '../repositories/environment_repository.dart';
 /// This class encapsulates the business logic for fetching the current [AppConfig],
 /// providing a clean and testable interface for the presentation layer.
 @lazySingleton
-final class GetCurrentEnvironmentUseCase extends UseCase<EnvironmentRepository>{
+final class GetCurrentEnvironmentUseCase extends UseCase<EnvironmentRepository, Environment, NoParams>{
 
   /// Creates an instance of [GetCurrentEnvironmentUseCase].
   ///
@@ -19,5 +20,6 @@ final class GetCurrentEnvironmentUseCase extends UseCase<EnvironmentRepository>{
   /// Executes the use case.
   ///
   /// Returns the current [Environment] synchronously.
-  Environment call() => repository.currentEnvironment;
+  @override
+  Environment call(NoParams params) => repository.currentEnvironment;
 }

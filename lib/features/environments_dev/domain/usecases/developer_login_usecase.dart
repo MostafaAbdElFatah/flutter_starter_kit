@@ -1,7 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
-import '../entities/developer_credentials.dart';
 import '../repositories/environment_repository.dart';
 
 /// A use case for authenticating a developer.
@@ -9,7 +9,8 @@ import '../repositories/environment_repository.dart';
 /// This class encapsulates the business logic for developer login, providing a
 /// clean and testable interface for the presentation layer.
 @lazySingleton
-final class DeveloperLoginUseCase extends UseCase<EnvironmentRepository> {
+final class DeveloperLoginUseCase
+    extends UseCase<EnvironmentRepository, bool, DevLoginParams> {
   /// Creates an instance of [DeveloperLoginUseCase].
   ///
   /// Requires an [EnvironmentRepository] to be injected.
@@ -21,8 +22,16 @@ final class DeveloperLoginUseCase extends UseCase<EnvironmentRepository> {
   /// authenticate them.
   ///
   /// Returns `true` if the login is successful, otherwise `false`.
-  bool call({required String username, required String password}) =>
-      repository.loginAsDeveloper(
-        DeveloperCredentials(username: username, password: password),
-      );
+  @override
+  bool call(DevLoginParams params) => repository.loginAsDeveloper(params);
+}
+
+class DevLoginParams extends Equatable {
+  final String username;
+  final String password;
+
+  const DevLoginParams({required this.username, required this.password});
+
+  @override
+  List<Object?> get props => [username, password];
 }

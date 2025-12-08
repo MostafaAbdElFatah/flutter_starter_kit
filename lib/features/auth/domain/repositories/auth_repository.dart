@@ -1,3 +1,5 @@
+import '../entities/login_credentials.dart';
+import '../entities/register_credentials.dart';
 import '../entities/user.dart';
 
 /// An abstract repository that defines the contract for authentication-related operations.
@@ -9,17 +11,13 @@ abstract class AuthRepository {
   ///
   /// Returns a [Future] that completes with either an [Exception] if the
   /// operation fails, or a [User] object if the login is successful.
-  Future<User> login({required String email, required String password});
+  Future<User> login(LoginCredentials params);
 
   /// Registers a new user with the given [name], [email], and [password].
   ///
   /// Returns a [Future] that completes with either an [Exception] if the
   /// operation fails, or a [User] object if the registration is successful.
-  Future<User> register({
-    required String name,
-    required String email,
-    required String password,
-  });
+  Future<User> register(RegisterCredentials params);
 
   /// Checks if a user is currently logged in.
   ///

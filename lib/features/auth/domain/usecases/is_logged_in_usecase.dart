@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../repositories/auth_repository.dart';
 
@@ -8,7 +9,7 @@ import '../repositories/auth_repository.dart';
 /// This use case is responsible for determining the user's authentication status
 /// by checking for the presence of a locally stored authentication token.
 @lazySingleton
-class IsLoggedInUseCase extends UseCase<AuthRepository>{
+class IsLoggedInUseCase extends AsyncUseCase<AuthRepository, bool, NoParams>{
 
   /// Creates an instance of [IsLoggedInUseCase].
   ///
@@ -20,5 +21,6 @@ class IsLoggedInUseCase extends UseCase<AuthRepository>{
   /// Returns a [Future] that completes with a boolean indicating whether the
   /// user is logged in. It returns `true` if a token is found, and `false`
   /// otherwise. In case of an error, it defaults to `false`.
-  Future<bool> call() => repository.isLoggedIn();
+  @override
+  Future<bool> call(NoParams params) => repository.isLoggedIn();
 }

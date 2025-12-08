@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../repositories/auth_repository.dart';
 
@@ -8,7 +9,7 @@ import '../repositories/auth_repository.dart';
 /// This class encapsulates the business logic for logging out. It interacts with
 /// the [AuthRepository] to clear local session data and sign the user out.
 @lazySingleton
-class LogoutUseCase extends UseCase<AuthRepository>{
+class LogoutUseCase extends AsyncUseCase<AuthRepository, void, NoParams>{
 
   /// Creates an instance of [LogoutUseCase].
   ///
@@ -18,5 +19,5 @@ class LogoutUseCase extends UseCase<AuthRepository>{
   /// Executes the logout use case.
   ///
   /// This will clear any cached user data and delete the authentication token.
-  Future<void> call() => repository.logout();
+  Future<void> call(NoParams params) => repository.logout();
 }

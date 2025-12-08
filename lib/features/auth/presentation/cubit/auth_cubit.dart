@@ -2,6 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/infrastructure/domain/entities/no_params.dart';
+import '../../domain/entities/login_credentials.dart';
+import '../../domain/entities/register_credentials.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/usecases/delete_account_usecase.dart';
 import '../../domain/usecases/get_authenticated_user_usecase.dart';

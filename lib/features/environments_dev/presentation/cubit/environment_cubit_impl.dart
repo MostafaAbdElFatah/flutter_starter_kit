@@ -29,17 +29,19 @@ final class EnvironmentCubitImpl extends EnvironmentCubit {
        _updateEnvironmentConfigUseCase = updateEnvironmentConfigUseCase,
        super(const EnvironmentInitial());
 
-  ApiConfig get currentConfig => _getCurrentApiConfigUseCase();
+  ApiConfig get currentConfig => _getCurrentApiConfigUseCase(NoParams());
 
   @override
   void init() {
-    final environment = _getCurrentEnvironmentUseCase();
+    final environment = _getCurrentEnvironmentUseCase(NoParams());
     switchEnvironmentConfiguration(environment);
   }
 
   @override
   bool loginAsDeveloper({required String username, required String password}) =>
-      _developerLoginUseCase(username: username, password: password);
+      _developerLoginUseCase(
+        DevLoginParams(username: username, password: password),
+      );
 
   @override
   Future<void> updateConfiguration({String? baseUrl}) async {
@@ -51,19 +53,25 @@ final class EnvironmentCubitImpl extends EnvironmentCubit {
     }
 
     await _updateEnvironmentConfigUseCase(
-      _config.environment,
-      baseUrlConfig: baseUrlConfig,
+      EnvironmentConfigUpdateParams(
+        _config.environment,
+        baseUrlConfig: baseUrlConfig,
+      ),
     );
 
     // After updating, reload the config to ensure the UI reflects the change.
-    _config = _getEnvironmentConfigUseCase(_config.environment);
+    _config = _getEnvironmentConfigUseCase(
+      EnvironmentConfigGetParams(_config.environment),
+    );
     emit(EnvironmentLoaded(_config));
   }
 
   @override
   void switchEnvironmentConfiguration(Environment environment) {
     emit(const EnvironmentLoading());
-    _config = _getEnvironmentConfigUseCase(environment);
+    _config = _getEnvironmentConfigUseCase(
+      EnvironmentConfigGetParams(environment),
+    );
     emit(EnvironmentLoaded(_config));
   }
 

@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
+import '../entities/register_credentials.dart';
 import '../entities/user.dart';
 import '../repositories/auth_repository.dart';
 
@@ -10,7 +11,8 @@ import '../repositories/auth_repository.dart';
 /// with the [AuthRepository] to perform the registration and returns the result
 /// to the presentation layer.
 @lazySingleton
-class RegisterUseCase extends UseCase<AuthRepository>{
+class RegisterUseCase
+    extends AsyncUseCase<AuthRepository, User, RegisterCredentials> {
   /// Creates an instance of [RegisterUseCase].
   ///
   /// Requires an [AuthRepository] to be injected.
@@ -23,9 +25,6 @@ class RegisterUseCase extends UseCase<AuthRepository>{
   ///
   /// Returns a [Future] that completes with either an [Exception] if the
   /// operation fails, or a [User] object if the registration is successful.
-  Future<User> call({
-    required String name,
-    required String email,
-    required String password,
-  }) => repository.register(name: name, email: email, password: password);
+  @override
+  Future<User> call(RegisterCredentials params) => repository.register(params);
 }

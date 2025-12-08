@@ -2,6 +2,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/utils/device_services.dart';
+import '../../domain/entities/login_credentials.dart';
+import '../../domain/entities/register_credentials.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_datasource.dart';
@@ -59,12 +61,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<User> login({required String email, required String password}) async {
+  Future<User> login(LoginCredentials params) async {
     try {
       final deviceName = await _deviceServices.getDeviceModel();
-      final request = LoginRequest(
-        email: email,
-        password: password,
+      final request = LoginRequest.credentials(
+        credentials: params,
         deviceName: deviceName,
       );
       // Make the API call and process the response.
@@ -77,17 +78,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<User> register({
-    required String name,
-    required String email,
-    required String password,
-  }) async {
+  Future<User> register(RegisterCredentials params) async {
     try {
       final deviceName = await _deviceServices.getDeviceModel();
-      final request = RegisterRequest(
-        name: name,
-        email: email,
-        password: password,
+      final request = RegisterRequest.credentials(
+        credentials: params,
         deviceName: deviceName,
       );
       // Make the API call and process the response.

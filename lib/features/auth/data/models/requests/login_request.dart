@@ -16,15 +16,20 @@ final class LoginRequest extends LoginCredentials {
     required super.deviceName,
   });
 
+  LoginRequest.credentials({
+    required LoginCredentials credentials,
+    super.deviceName,
+  }) : super(email: credentials.email, password: credentials.password);
+
   /// Creates a [LoginRequest] instance from a JSON map.
   ///
   /// This factory is used to deserialize the response from an API call
   /// or to reconstruct the object from a local data source.
   factory LoginRequest.fromJson(Map<String, dynamic> json) => LoginRequest(
-        email: json["email"],
-        password: json["password"],
-        deviceName: json["device_name"],
-      );
+    email: json["email"],
+    password: json["password"],
+    deviceName: json["device_name"],
+  );
 
   /// Creates a new [LoginRequest] instance with updated fields.
   ///
@@ -34,12 +39,11 @@ final class LoginRequest extends LoginCredentials {
     String? email,
     String? password,
     String? deviceName,
-  }) =>
-      LoginRequest(
-        email: email ?? this.email,
-        password: password ?? this.password,
-        deviceName: deviceName ?? this.deviceName,
-      );
+  }) => LoginRequest(
+    email: email ?? this.email,
+    password: password ?? this.password,
+    deviceName: deviceName ?? this.deviceName,
+  );
 
   /// Converts this [LoginRequest] instance into a JSON map.
   ///
@@ -53,8 +57,8 @@ final class LoginRequest extends LoginCredentials {
   ///
   /// This is useful for mapping data from the data layer to the domain layer.
   LoginCredentials toEntity() => LoginCredentials(
-        email: email,
-        password: password,
-        deviceName: deviceName,
-      );
+    email: email,
+    password: password,
+    deviceName: deviceName,
+  );
 }
