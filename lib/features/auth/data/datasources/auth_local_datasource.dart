@@ -1,8 +1,8 @@
-import 'package:flutter_starter_kit/features/auth/data/models/user.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/storage/secure_storage_service.dart';
-import '../../../../core/storage/storage_service.dart';
+import '../../../../core/infrastructure/data/storage/secure_storage_service.dart';
+import '../../../../core/infrastructure/data/storage/storage_service.dart';
+import '../models/user.dart';
 
 /// An abstract class representing the local data source for authentication.
 ///

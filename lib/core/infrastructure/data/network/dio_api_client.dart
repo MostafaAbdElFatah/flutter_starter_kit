@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../assets/localization_keys.dart';
-import '../errors/failure.dart';
-import '../utils/log.dart';
+import '../../../assets/localization_keys.dart';
+import '../../../errors/failure.dart';
+import '../../../utils/log.dart';
 import 'api_client.dart';
 import 'api_endpoint.dart';
 
