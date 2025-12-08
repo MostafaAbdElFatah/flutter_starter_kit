@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 /// A typedef for a callback function that converts JSON data into a specified type [T].
 ///
