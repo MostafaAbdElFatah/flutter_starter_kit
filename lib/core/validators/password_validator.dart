@@ -1,4 +1,4 @@
-import '../../assets/localization_keys.dart';
+import '../assets/localization_keys.dart';
 
 /// Validator class for password validation
 class PasswordValidator {
@@ -53,17 +53,18 @@ class PasswordValidator {
   }
 
   static String getPasswordStrength(String? value) {
-    if (value == null || value.isEmpty) return 'weak';
+    final trimmedValue = value?.trim();
+    if (trimmedValue == null || trimmedValue.isEmpty) return 'very_weak';
 
     int strength = 0;
 
-    if (value.length >= 8) strength++;
-    if (value.length >= 12) strength++;
-    if (value.contains(RegExp(r'[A-Z]'))) strength++;
-    if (value.contains(RegExp(r'[a-z]'))) strength++;
-    if (value.contains(RegExp(r'[0-9]'))) strength++;
-    if (value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) strength++;
-
+    if (trimmedValue.length >= 8) strength++;
+    if (trimmedValue.length >= 12) strength++;
+    if (trimmedValue.contains(RegExp(r'[A-Z]'))) strength++;
+    if (trimmedValue.contains(RegExp(r'[a-z]'))) strength++;
+    if (trimmedValue.contains(RegExp(r'[0-9]'))) strength++;
+    if (trimmedValue.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) strength++;
+    if (strength <= 1) return 'very_weak';
     if (strength <= 2) return 'weak';
     if (strength <= 4) return 'medium';
     if (strength <= 5) return 'strong';

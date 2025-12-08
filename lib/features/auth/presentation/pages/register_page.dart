@@ -5,9 +5,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/assets/localization_keys.dart';
 import '../../../../core/di/injection.dart';
-import '../../../../core/utils/validators/email_validator.dart';
-import '../../../../core/utils/validators/password_validator.dart';
-import '../../../../core/utils/validators/user_name_validator.dart';
+import '../../../../core/validators/email_validator.dart';
+import '../../../../core/validators/password_validator.dart';
+import '../../../../core/validators/user_name_validator.dart';
 import '../cubit/auth_cubit.dart';
 
 class RegisterPage extends StatelessWidget {

@@ -1,4 +1,4 @@
-import '../../assets/localization_keys.dart';
+import '../assets/localization_keys.dart';
 
 /// Validator class for username validation
 class UsernameValidator {

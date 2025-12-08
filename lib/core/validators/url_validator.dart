@@ -1,4 +1,4 @@
-import '../../assets/localization_keys.dart';
+import '../assets/localization_keys.dart';
 
 /// Validator class for URL validation
 class UrlValidator {
@@ -43,10 +43,7 @@ class UrlValidator {
     return hostRegex.hasMatch(host);
   }
 
-  static String? validateUrlOptional(
-      String? value, {
-        bool required = true,
-      }) {
+  static String? validateUrlOptional(String? value, {bool required = true}) {
     if (value == null || value.trim().isEmpty) {
       return required ? LocalizationKeys.urlRequired : null;
     }
