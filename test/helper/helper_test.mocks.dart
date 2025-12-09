@@ -3,47 +3,76 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i10;
+import 'dart:async' as _i11;
 
-import 'package:connectivity_plus/connectivity_plus.dart' as _i18;
+import 'package:connectivity_plus/connectivity_plus.dart' as _i28;
 import 'package:connectivity_plus_platform_interface/connectivity_plus_platform_interface.dart'
-    as _i19;
+    as _i29;
+import 'package:device_info_plus/device_info_plus.dart' as _i38;
+import 'package:device_info_plus/src/model/android_device_info.dart' as _i15;
+import 'package:device_info_plus/src/model/ios_device_info.dart' as _i14;
+import 'package:device_info_plus/src/model/linux_device_info.dart' as _i16;
+import 'package:device_info_plus/src/model/macos_device_info.dart' as _i18;
+import 'package:device_info_plus/src/model/web_browser_info.dart' as _i17;
+import 'package:device_info_plus/src/model/windows_device_info.dart' as _i19;
+import 'package:device_info_plus_platform_interface/model/base_device_info.dart'
+    as _i20;
 import 'package:dio/src/adapter.dart' as _i4;
-import 'package:dio/src/cancel_token.dart' as _i13;
+import 'package:dio/src/cancel_token.dart' as _i23;
 import 'package:dio/src/dio.dart' as _i7;
-import 'package:dio/src/dio_exception.dart' as _i20;
+import 'package:dio/src/dio_exception.dart' as _i30;
 import 'package:dio/src/dio_mixin.dart' as _i3;
 import 'package:dio/src/options.dart' as _i2;
 import 'package:dio/src/response.dart' as _i6;
 import 'package:dio/src/transformer.dart' as _i5;
-import 'package:flutter/foundation.dart' as _i23;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i11;
+import 'package:flutter/foundation.dart' as _i33;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i12;
 import 'package:flutter_starter_kit/core/infrastructure/data/network/api_client.dart'
-    as _i21;
+    as _i31;
 import 'package:flutter_starter_kit/core/infrastructure/data/network/api_endpoint.dart'
-    as _i17;
-import 'package:flutter_starter_kit/core/infrastructure/data/network/network_connectivity.dart'
-    as _i22;
-import 'package:flutter_starter_kit/core/infrastructure/data/storage/secure_storage_service.dart'
-    as _i25;
-import 'package:flutter_starter_kit/core/infrastructure/data/storage/storage_service.dart'
-    as _i24;
-import 'package:flutter_starter_kit/features/environments_dev/data/models/auth_config.dart'
-    as _i12;
-import 'package:flutter_starter_kit/features/environments_dev/data/models/base_url_config.dart'
     as _i27;
+import 'package:flutter_starter_kit/core/infrastructure/data/network/network_connectivity.dart'
+    as _i32;
+import 'package:flutter_starter_kit/core/infrastructure/data/storage/secure_storage_service.dart'
+    as _i35;
+import 'package:flutter_starter_kit/core/infrastructure/data/storage/storage_service.dart'
+    as _i34;
+import 'package:flutter_starter_kit/core/utils/device_services.dart' as _i40;
+import 'package:flutter_starter_kit/core/utils/platform_checker.dart' as _i39;
+import 'package:flutter_starter_kit/features/auth/data/datasources/auth_local_datasource.dart'
+    as _i43;
+import 'package:flutter_starter_kit/features/auth/data/datasources/auth_remote_datasource.dart'
+    as _i44;
+import 'package:flutter_starter_kit/features/auth/data/models/requests/login_request.dart'
+    as _i45;
+import 'package:flutter_starter_kit/features/auth/data/models/requests/register_request.dart'
+    as _i46;
+import 'package:flutter_starter_kit/features/auth/data/models/responses/login_response.dart'
+    as _i22;
+import 'package:flutter_starter_kit/features/auth/data/models/user.dart'
+    as _i21;
+import 'package:flutter_starter_kit/features/auth/domain/entities/login_credentials.dart'
+    as _i41;
+import 'package:flutter_starter_kit/features/auth/domain/entities/register_credentials.dart'
+    as _i42;
+import 'package:flutter_starter_kit/features/auth/domain/entities/user.dart'
+    as _i10;
+import 'package:flutter_starter_kit/features/environments_dev/data/models/auth_config.dart'
+    as _i13;
+import 'package:flutter_starter_kit/features/environments_dev/data/models/base_url_config.dart'
+    as _i37;
 import 'package:flutter_starter_kit/features/environments_dev/data/storage/environment_config_service.dart'
-    as _i26;
+    as _i36;
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/api_config.dart'
     as _i9;
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/base_url_config.dart'
     as _i8;
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/base_url_type.dart'
-    as _i16;
+    as _i26;
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/environment.dart'
-    as _i15;
+    as _i25;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i14;
+import 'package:mockito/src/dummies.dart' as _i24;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -107,45 +136,113 @@ class _FakeInterceptorState_8<T> extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeFuture_9<T> extends _i1.SmartFake implements _i10.Future<T> {
-  _FakeFuture_9(Object parent, Invocation parentInvocation)
+class _FakeUser_9 extends _i1.SmartFake implements _i10.User {
+  _FakeUser_9(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeIOSOptions_10 extends _i1.SmartFake implements _i11.IOSOptions {
-  _FakeIOSOptions_10(Object parent, Invocation parentInvocation)
+class _FakeFuture_10<T> extends _i1.SmartFake implements _i11.Future<T> {
+  _FakeFuture_10(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeAndroidOptions_11 extends _i1.SmartFake
-    implements _i11.AndroidOptions {
-  _FakeAndroidOptions_11(Object parent, Invocation parentInvocation)
+class _FakeIOSOptions_11 extends _i1.SmartFake implements _i12.IOSOptions {
+  _FakeIOSOptions_11(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeLinuxOptions_12 extends _i1.SmartFake implements _i11.LinuxOptions {
-  _FakeLinuxOptions_12(Object parent, Invocation parentInvocation)
+class _FakeAndroidOptions_12 extends _i1.SmartFake
+    implements _i12.AndroidOptions {
+  _FakeAndroidOptions_12(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeWindowsOptions_13 extends _i1.SmartFake
-    implements _i11.WindowsOptions {
-  _FakeWindowsOptions_13(Object parent, Invocation parentInvocation)
+class _FakeLinuxOptions_13 extends _i1.SmartFake implements _i12.LinuxOptions {
+  _FakeLinuxOptions_13(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeWebOptions_14 extends _i1.SmartFake implements _i11.WebOptions {
-  _FakeWebOptions_14(Object parent, Invocation parentInvocation)
+class _FakeWindowsOptions_14 extends _i1.SmartFake
+    implements _i12.WindowsOptions {
+  _FakeWindowsOptions_14(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeMacOsOptions_15 extends _i1.SmartFake implements _i11.MacOsOptions {
-  _FakeMacOsOptions_15(Object parent, Invocation parentInvocation)
+class _FakeWebOptions_15 extends _i1.SmartFake implements _i12.WebOptions {
+  _FakeWebOptions_15(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeAuthConfig_16 extends _i1.SmartFake implements _i12.AuthConfig {
-  _FakeAuthConfig_16(Object parent, Invocation parentInvocation)
+class _FakeMacOsOptions_16 extends _i1.SmartFake implements _i12.MacOsOptions {
+  _FakeMacOsOptions_16(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeAuthConfig_17 extends _i1.SmartFake implements _i13.AuthConfig {
+  _FakeAuthConfig_17(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeIosUtsname_18 extends _i1.SmartFake implements _i14.IosUtsname {
+  _FakeIosUtsname_18(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeAndroidBuildVersion_19 extends _i1.SmartFake
+    implements _i15.AndroidBuildVersion {
+  _FakeAndroidBuildVersion_19(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeAndroidDeviceInfo_20 extends _i1.SmartFake
+    implements _i15.AndroidDeviceInfo {
+  _FakeAndroidDeviceInfo_20(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeIosDeviceInfo_21 extends _i1.SmartFake
+    implements _i14.IosDeviceInfo {
+  _FakeIosDeviceInfo_21(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeLinuxDeviceInfo_22 extends _i1.SmartFake
+    implements _i16.LinuxDeviceInfo {
+  _FakeLinuxDeviceInfo_22(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeWebBrowserInfo_23 extends _i1.SmartFake
+    implements _i17.WebBrowserInfo {
+  _FakeWebBrowserInfo_23(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeMacOsDeviceInfo_24 extends _i1.SmartFake
+    implements _i18.MacOsDeviceInfo {
+  _FakeMacOsDeviceInfo_24(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeWindowsDeviceInfo_25 extends _i1.SmartFake
+    implements _i19.WindowsDeviceInfo {
+  _FakeWindowsDeviceInfo_25(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeBaseDeviceInfo_26 extends _i1.SmartFake
+    implements _i20.BaseDeviceInfo {
+  _FakeBaseDeviceInfo_26(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeUserModel_27 extends _i1.SmartFake implements _i21.UserModel {
+  _FakeUserModel_27(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeLoginUser_28 extends _i1.SmartFake implements _i22.LoginUser {
+  _FakeLoginUser_28(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -223,12 +320,12 @@ class MockDio extends _i1.Mock implements _i7.Dio {
   );
 
   @override
-  _i10.Future<_i6.Response<T>> head<T>(
+  _i11.Future<_i6.Response<T>> head<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -241,7 +338,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #cancelToken: cancelToken,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -257,14 +354,14 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> headUri<T>(
+  _i11.Future<_i6.Response<T>> headUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -272,7 +369,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               [uri],
               {#data: data, #options: options, #cancelToken: cancelToken},
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -283,15 +380,15 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> get<T>(
+  _i11.Future<_i6.Response<T>> get<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
       (super.noSuchMethod(
@@ -306,7 +403,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #onReceiveProgress: onReceiveProgress,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -323,14 +420,14 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> getUri<T>(
+  _i11.Future<_i6.Response<T>> getUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
       (super.noSuchMethod(
@@ -344,7 +441,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #onReceiveProgress: onReceiveProgress,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -360,15 +457,15 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> post<T>(
+  _i11.Future<_i6.Response<T>> post<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -385,7 +482,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #onReceiveProgress: onReceiveProgress,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -403,14 +500,14 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> postUri<T>(
+  _i11.Future<_i6.Response<T>> postUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -426,7 +523,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #onReceiveProgress: onReceiveProgress,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -443,15 +540,15 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> put<T>(
+  _i11.Future<_i6.Response<T>> put<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -468,7 +565,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #onReceiveProgress: onReceiveProgress,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -486,14 +583,14 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> putUri<T>(
+  _i11.Future<_i6.Response<T>> putUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -509,7 +606,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #onReceiveProgress: onReceiveProgress,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -526,15 +623,15 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> patch<T>(
+  _i11.Future<_i6.Response<T>> patch<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -551,7 +648,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #onReceiveProgress: onReceiveProgress,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -569,14 +666,14 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> patchUri<T>(
+  _i11.Future<_i6.Response<T>> patchUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -592,7 +689,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #onReceiveProgress: onReceiveProgress,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -609,15 +706,15 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> delete<T>(
+  _i11.Future<_i6.Response<T>> delete<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -630,7 +727,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #cancelToken: cancelToken,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -646,14 +743,14 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> deleteUri<T>(
+  _i11.Future<_i6.Response<T>> deleteUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -661,7 +758,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               [uri],
               {#data: data, #options: options, #cancelToken: cancelToken},
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -672,15 +769,15 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<dynamic>> download(
+  _i11.Future<_i6.Response<dynamic>> download(
     String? urlPath,
     dynamic savePath, {
     _i2.ProgressCallback? onReceiveProgress,
     Map<String, dynamic>? queryParameters,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     bool? deleteOnError = true,
     _i2.FileAccessMode? fileAccessMode = _i2.FileAccessMode.write,
     String? lengthHeader = 'content-length',
@@ -702,7 +799,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #options: options,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<dynamic>>.value(
+            returnValue: _i11.Future<_i6.Response<dynamic>>.value(
               _FakeResponse_4<dynamic>(
                 this,
                 Invocation.method(
@@ -722,14 +819,14 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<dynamic>>);
+          as _i11.Future<_i6.Response<dynamic>>);
 
   @override
-  _i10.Future<_i6.Response<dynamic>> downloadUri(
+  _i11.Future<_i6.Response<dynamic>> downloadUri(
     Uri? uri,
     dynamic savePath, {
     _i2.ProgressCallback? onReceiveProgress,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     bool? deleteOnError = true,
     _i2.FileAccessMode? fileAccessMode = _i2.FileAccessMode.write,
     String? lengthHeader = 'content-length',
@@ -750,7 +847,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #options: options,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<dynamic>>.value(
+            returnValue: _i11.Future<_i6.Response<dynamic>>.value(
               _FakeResponse_4<dynamic>(
                 this,
                 Invocation.method(
@@ -769,14 +866,14 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<dynamic>>);
+          as _i11.Future<_i6.Response<dynamic>>);
 
   @override
-  _i10.Future<_i6.Response<T>> request<T>(
+  _i11.Future<_i6.Response<T>> request<T>(
     String? url, {
     Object? data,
     Map<String, dynamic>? queryParameters,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     _i2.Options? options,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
@@ -794,7 +891,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #onReceiveProgress: onReceiveProgress,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -812,13 +909,13 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> requestUri<T>(
+  _i11.Future<_i6.Response<T>> requestUri<T>(
     Uri? uri, {
     Object? data,
-    _i13.CancelToken? cancelToken,
+    _i23.CancelToken? cancelToken,
     _i2.Options? options,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
@@ -835,7 +932,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
                 #onReceiveProgress: onReceiveProgress,
               },
             ),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(
@@ -852,20 +949,20 @@ class MockDio extends _i1.Mock implements _i7.Dio {
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
-  _i10.Future<_i6.Response<T>> fetch<T>(_i2.RequestOptions? requestOptions) =>
+  _i11.Future<_i6.Response<T>> fetch<T>(_i2.RequestOptions? requestOptions) =>
       (super.noSuchMethod(
             Invocation.method(#fetch, [requestOptions]),
-            returnValue: _i10.Future<_i6.Response<T>>.value(
+            returnValue: _i11.Future<_i6.Response<T>>.value(
               _FakeResponse_4<T>(
                 this,
                 Invocation.method(#fetch, [requestOptions]),
               ),
             ),
           )
-          as _i10.Future<_i6.Response<T>>);
+          as _i11.Future<_i6.Response<T>>);
 
   @override
   _i7.Dio clone({
@@ -906,7 +1003,7 @@ class MockAPIConfig extends _i1.Mock implements _i9.APIConfig {
   String get apiKey =>
       (super.noSuchMethod(
             Invocation.getter(#apiKey),
-            returnValue: _i14.dummyValue<String>(
+            returnValue: _i24.dummyValue<String>(
               this,
               Invocation.getter(#apiKey),
             ),
@@ -914,12 +1011,12 @@ class MockAPIConfig extends _i1.Mock implements _i9.APIConfig {
           as String);
 
   @override
-  _i15.Environment get environment =>
+  _i25.Environment get environment =>
       (super.noSuchMethod(
             Invocation.getter(#environment),
-            returnValue: _i15.Environment.dev,
+            returnValue: _i25.Environment.dev,
           )
-          as _i15.Environment);
+          as _i25.Environment);
 
   @override
   _i8.BaseUrlConfig get baseUrlConfig =>
@@ -936,7 +1033,7 @@ class MockAPIConfig extends _i1.Mock implements _i9.APIConfig {
   String get appName =>
       (super.noSuchMethod(
             Invocation.getter(#appName),
-            returnValue: _i14.dummyValue<String>(
+            returnValue: _i24.dummyValue<String>(
               this,
               Invocation.getter(#appName),
             ),
@@ -947,7 +1044,7 @@ class MockAPIConfig extends _i1.Mock implements _i9.APIConfig {
   String get defaultBaseUrl =>
       (super.noSuchMethod(
             Invocation.getter(#defaultBaseUrl),
-            returnValue: _i14.dummyValue<String>(
+            returnValue: _i24.dummyValue<String>(
               this,
               Invocation.getter(#defaultBaseUrl),
             ),
@@ -958,7 +1055,7 @@ class MockAPIConfig extends _i1.Mock implements _i9.APIConfig {
   String get baseUrl =>
       (super.noSuchMethod(
             Invocation.getter(#baseUrl),
-            returnValue: _i14.dummyValue<String>(
+            returnValue: _i24.dummyValue<String>(
               this,
               Invocation.getter(#baseUrl),
             ),
@@ -989,7 +1086,7 @@ class MockAPIConfig extends _i1.Mock implements _i9.APIConfig {
   _i9.APIConfig copyWith({
     String? baseUrl,
     String? apiKey,
-    _i15.Environment? environment,
+    _i25.Environment? environment,
     _i8.BaseUrlConfig? baseUrlConfig,
   }) =>
       (super.noSuchMethod(
@@ -1012,10 +1109,10 @@ class MockAPIConfig extends _i1.Mock implements _i9.APIConfig {
           as _i9.APIConfig);
 
   @override
-  String baseUrlFor(_i16.BaseUrlType? type) =>
+  String baseUrlFor(_i26.BaseUrlType? type) =>
       (super.noSuchMethod(
             Invocation.method(#baseUrlFor, [type]),
-            returnValue: _i14.dummyValue<String>(
+            returnValue: _i24.dummyValue<String>(
               this,
               Invocation.method(#baseUrlFor, [type]),
             ),
@@ -1026,18 +1123,18 @@ class MockAPIConfig extends _i1.Mock implements _i9.APIConfig {
 /// A class which mocks [APIEndpoint].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAPIEndpoint extends _i1.Mock implements _i17.APIEndpoint {
+class MockAPIEndpoint extends _i1.Mock implements _i27.APIEndpoint {
   MockAPIEndpoint() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i17.HttpMethod get method =>
+  _i27.HttpMethod get method =>
       (super.noSuchMethod(
             Invocation.getter(#method),
-            returnValue: _i17.HttpMethod.get,
+            returnValue: _i27.HttpMethod.get,
           )
-          as _i17.HttpMethod);
+          as _i27.HttpMethod);
 
   @override
   bool get isFullUrl =>
@@ -1056,7 +1153,7 @@ class MockAPIEndpoint extends _i1.Mock implements _i17.APIEndpoint {
   String get path =>
       (super.noSuchMethod(
             Invocation.getter(#path),
-            returnValue: _i14.dummyValue<String>(
+            returnValue: _i24.dummyValue<String>(
               this,
               Invocation.getter(#path),
             ),
@@ -1067,28 +1164,28 @@ class MockAPIEndpoint extends _i1.Mock implements _i17.APIEndpoint {
 /// A class which mocks [Connectivity].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockConnectivity extends _i1.Mock implements _i18.Connectivity {
+class MockConnectivity extends _i1.Mock implements _i28.Connectivity {
   MockConnectivity() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i10.Stream<List<_i19.ConnectivityResult>> get onConnectivityChanged =>
+  _i11.Stream<List<_i29.ConnectivityResult>> get onConnectivityChanged =>
       (super.noSuchMethod(
             Invocation.getter(#onConnectivityChanged),
-            returnValue: _i10.Stream<List<_i19.ConnectivityResult>>.empty(),
+            returnValue: _i11.Stream<List<_i29.ConnectivityResult>>.empty(),
           )
-          as _i10.Stream<List<_i19.ConnectivityResult>>);
+          as _i11.Stream<List<_i29.ConnectivityResult>>);
 
   @override
-  _i10.Future<List<_i19.ConnectivityResult>> checkConnectivity() =>
+  _i11.Future<List<_i29.ConnectivityResult>> checkConnectivity() =>
       (super.noSuchMethod(
             Invocation.method(#checkConnectivity, []),
-            returnValue: _i10.Future<List<_i19.ConnectivityResult>>.value(
-              <_i19.ConnectivityResult>[],
+            returnValue: _i11.Future<List<_i29.ConnectivityResult>>.value(
+              <_i29.ConnectivityResult>[],
             ),
           )
-          as _i10.Future<List<_i19.ConnectivityResult>>);
+          as _i11.Future<List<_i29.ConnectivityResult>>);
 }
 
 /// A class which mocks [RequestInterceptorHandler].
@@ -1101,17 +1198,17 @@ class MockRequestInterceptorHandler extends _i1.Mock
   }
 
   @override
-  _i10.Future<_i3.InterceptorState<dynamic>> get future =>
+  _i11.Future<_i3.InterceptorState<dynamic>> get future =>
       (super.noSuchMethod(
             Invocation.getter(#future),
-            returnValue: _i10.Future<_i3.InterceptorState<dynamic>>.value(
+            returnValue: _i11.Future<_i3.InterceptorState<dynamic>>.value(
               _FakeInterceptorState_8<dynamic>(
                 this,
                 Invocation.getter(#future),
               ),
             ),
           )
-          as _i10.Future<_i3.InterceptorState<dynamic>>);
+          as _i11.Future<_i3.InterceptorState<dynamic>>);
 
   @override
   bool get isCompleted =>
@@ -1135,7 +1232,7 @@ class MockRequestInterceptorHandler extends _i1.Mock
 
   @override
   void reject(
-    _i20.DioException? error, [
+    _i30.DioException? error, [
     bool? callFollowingErrorInterceptor = false,
   ]) => super.noSuchMethod(
     Invocation.method(#reject, [error, callFollowingErrorInterceptor]),
@@ -1143,21 +1240,104 @@ class MockRequestInterceptorHandler extends _i1.Mock
   );
 }
 
+/// A class which mocks [UserModel].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockUserModel extends _i1.Mock implements _i21.UserModel {
+  MockUserModel() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get id =>
+      (super.noSuchMethod(
+            Invocation.getter(#id),
+            returnValue: _i24.dummyValue<String>(this, Invocation.getter(#id)),
+          )
+          as String);
+
+  @override
+  String get email =>
+      (super.noSuchMethod(
+            Invocation.getter(#email),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#email),
+            ),
+          )
+          as String);
+
+  @override
+  bool get isVerified =>
+      (super.noSuchMethod(Invocation.getter(#isVerified), returnValue: false)
+          as bool);
+
+  @override
+  List<Object?> get props =>
+      (super.noSuchMethod(Invocation.getter(#props), returnValue: <Object?>[])
+          as List<Object?>);
+
+  @override
+  Map<String, dynamic> toJson() =>
+      (super.noSuchMethod(
+            Invocation.method(#toJson, []),
+            returnValue: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
+
+  @override
+  _i10.User toEntity() =>
+      (super.noSuchMethod(
+            Invocation.method(#toEntity, []),
+            returnValue: _FakeUser_9(this, Invocation.method(#toEntity, [])),
+          )
+          as _i10.User);
+
+  @override
+  _i10.User copyWith({
+    String? id,
+    String? email,
+    String? name,
+    String? avatarUrl,
+    bool? isVerified,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#copyWith, [], {
+              #id: id,
+              #email: email,
+              #name: name,
+              #avatarUrl: avatarUrl,
+              #isVerified: isVerified,
+            }),
+            returnValue: _FakeUser_9(
+              this,
+              Invocation.method(#copyWith, [], {
+                #id: id,
+                #email: email,
+                #name: name,
+                #avatarUrl: avatarUrl,
+                #isVerified: isVerified,
+              }),
+            ),
+          )
+          as _i10.User);
+}
+
 /// A class which mocks [APIClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAPIClient extends _i1.Mock implements _i21.APIClient {
+class MockAPIClient extends _i1.Mock implements _i31.APIClient {
   MockAPIClient() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i10.Future<Model> get<Model>(
+  _i11.Future<Model> get<Model>(
     String? path, {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required _i21.APICallback<dynamic>? fromJson,
+    required _i31.APICallback<dynamic>? fromJson,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1171,8 +1351,8 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
               },
             ),
             returnValue:
-                _i14.ifNotNull(
-                  _i14.dummyValueOrNull<Model>(
+                _i24.ifNotNull(
+                  _i24.dummyValueOrNull<Model>(
                     this,
                     Invocation.method(
                       #get,
@@ -1185,9 +1365,9 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                       },
                     ),
                   ),
-                  (Model v) => _i10.Future<Model>.value(v),
+                  (Model v) => _i11.Future<Model>.value(v),
                 ) ??
-                _FakeFuture_9<Model>(
+                _FakeFuture_10<Model>(
                   this,
                   Invocation.method(
                     #get,
@@ -1201,15 +1381,15 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                   ),
                 ),
           )
-          as _i10.Future<Model>);
+          as _i11.Future<Model>);
 
   @override
-  _i10.Future<Model> post<Model>(
+  _i11.Future<Model> post<Model>(
     String? path, {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required _i21.APICallback<dynamic>? fromJson,
+    required _i31.APICallback<dynamic>? fromJson,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1223,8 +1403,8 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
               },
             ),
             returnValue:
-                _i14.ifNotNull(
-                  _i14.dummyValueOrNull<Model>(
+                _i24.ifNotNull(
+                  _i24.dummyValueOrNull<Model>(
                     this,
                     Invocation.method(
                       #post,
@@ -1237,9 +1417,9 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                       },
                     ),
                   ),
-                  (Model v) => _i10.Future<Model>.value(v),
+                  (Model v) => _i11.Future<Model>.value(v),
                 ) ??
-                _FakeFuture_9<Model>(
+                _FakeFuture_10<Model>(
                   this,
                   Invocation.method(
                     #post,
@@ -1253,15 +1433,15 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                   ),
                 ),
           )
-          as _i10.Future<Model>);
+          as _i11.Future<Model>);
 
   @override
-  _i10.Future<Model> put<Model>(
+  _i11.Future<Model> put<Model>(
     String? path, {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required _i21.APICallback<dynamic>? fromJson,
+    required _i31.APICallback<dynamic>? fromJson,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1275,8 +1455,8 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
               },
             ),
             returnValue:
-                _i14.ifNotNull(
-                  _i14.dummyValueOrNull<Model>(
+                _i24.ifNotNull(
+                  _i24.dummyValueOrNull<Model>(
                     this,
                     Invocation.method(
                       #put,
@@ -1289,9 +1469,9 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                       },
                     ),
                   ),
-                  (Model v) => _i10.Future<Model>.value(v),
+                  (Model v) => _i11.Future<Model>.value(v),
                 ) ??
-                _FakeFuture_9<Model>(
+                _FakeFuture_10<Model>(
                   this,
                   Invocation.method(
                     #put,
@@ -1305,15 +1485,15 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                   ),
                 ),
           )
-          as _i10.Future<Model>);
+          as _i11.Future<Model>);
 
   @override
-  _i10.Future<Model> delete<Model>(
+  _i11.Future<Model> delete<Model>(
     String? path, {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required _i21.APICallback<dynamic>? fromJson,
+    required _i31.APICallback<dynamic>? fromJson,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1327,8 +1507,8 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
               },
             ),
             returnValue:
-                _i14.ifNotNull(
-                  _i14.dummyValueOrNull<Model>(
+                _i24.ifNotNull(
+                  _i24.dummyValueOrNull<Model>(
                     this,
                     Invocation.method(
                       #delete,
@@ -1341,9 +1521,9 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                       },
                     ),
                   ),
-                  (Model v) => _i10.Future<Model>.value(v),
+                  (Model v) => _i11.Future<Model>.value(v),
                 ) ??
-                _FakeFuture_9<Model>(
+                _FakeFuture_10<Model>(
                   this,
                   Invocation.method(
                     #delete,
@@ -1357,15 +1537,15 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                   ),
                 ),
           )
-          as _i10.Future<Model>);
+          as _i11.Future<Model>);
 
   @override
-  _i10.Future<Model> patch<Model>(
+  _i11.Future<Model> patch<Model>(
     String? path, {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required _i21.APICallback<dynamic>? fromJson,
+    required _i31.APICallback<dynamic>? fromJson,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1379,8 +1559,8 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
               },
             ),
             returnValue:
-                _i14.ifNotNull(
-                  _i14.dummyValueOrNull<Model>(
+                _i24.ifNotNull(
+                  _i24.dummyValueOrNull<Model>(
                     this,
                     Invocation.method(
                       #patch,
@@ -1393,9 +1573,9 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                       },
                     ),
                   ),
-                  (Model v) => _i10.Future<Model>.value(v),
+                  (Model v) => _i11.Future<Model>.value(v),
                 ) ??
-                _FakeFuture_9<Model>(
+                _FakeFuture_10<Model>(
                   this,
                   Invocation.method(
                     #patch,
@@ -1409,18 +1589,18 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                   ),
                 ),
           )
-          as _i10.Future<Model>);
+          as _i11.Future<Model>);
 
   @override
-  _i10.Future<Model> request<Model>(
+  _i11.Future<Model> request<Model>(
     _i2.RequestOptions? options, {
-    required _i21.APICallback<dynamic>? fromJson,
+    required _i31.APICallback<dynamic>? fromJson,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#request, [options], {#fromJson: fromJson}),
             returnValue:
-                _i14.ifNotNull(
-                  _i14.dummyValueOrNull<Model>(
+                _i24.ifNotNull(
+                  _i24.dummyValueOrNull<Model>(
                     this,
                     Invocation.method(
                       #request,
@@ -1428,20 +1608,20 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                       {#fromJson: fromJson},
                     ),
                   ),
-                  (Model v) => _i10.Future<Model>.value(v),
+                  (Model v) => _i11.Future<Model>.value(v),
                 ) ??
-                _FakeFuture_9<Model>(
+                _FakeFuture_10<Model>(
                   this,
                   Invocation.method(#request, [options], {#fromJson: fromJson}),
                 ),
           )
-          as _i10.Future<Model>);
+          as _i11.Future<Model>);
 
   @override
-  _i10.Future<Model> fetch<Model>({
+  _i11.Future<Model> fetch<Model>({
     bool? isFormData = false,
-    required _i17.APIEndpoint? target,
-    required _i21.APICallback<dynamic>? fromJson,
+    required _i27.APIEndpoint? target,
+    required _i31.APICallback<dynamic>? fromJson,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#fetch, [], {
@@ -1450,8 +1630,8 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
               #fromJson: fromJson,
             }),
             returnValue:
-                _i14.ifNotNull(
-                  _i14.dummyValueOrNull<Model>(
+                _i24.ifNotNull(
+                  _i24.dummyValueOrNull<Model>(
                     this,
                     Invocation.method(#fetch, [], {
                       #isFormData: isFormData,
@@ -1459,9 +1639,9 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                       #fromJson: fromJson,
                     }),
                   ),
-                  (Model v) => _i10.Future<Model>.value(v),
+                  (Model v) => _i11.Future<Model>.value(v),
                 ) ??
-                _FakeFuture_9<Model>(
+                _FakeFuture_10<Model>(
                   this,
                   Invocation.method(#fetch, [], {
                     #isFormData: isFormData,
@@ -1470,103 +1650,103 @@ class MockAPIClient extends _i1.Mock implements _i21.APIClient {
                   }),
                 ),
           )
-          as _i10.Future<Model>);
+          as _i11.Future<Model>);
 }
 
 /// A class which mocks [NetworkConnectivity].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNetworkConnectivity extends _i1.Mock
-    implements _i22.NetworkConnectivity {
+    implements _i32.NetworkConnectivity {
   MockNetworkConnectivity() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i10.Future<bool> get isConnected =>
+  _i11.Future<bool> get isConnected =>
       (super.noSuchMethod(
             Invocation.getter(#isConnected),
-            returnValue: _i10.Future<bool>.value(false),
+            returnValue: _i11.Future<bool>.value(false),
           )
-          as _i10.Future<bool>);
+          as _i11.Future<bool>);
 }
 
 /// A class which mocks [FlutterSecureStorage].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockFlutterSecureStorage extends _i1.Mock
-    implements _i11.FlutterSecureStorage {
+    implements _i12.FlutterSecureStorage {
   MockFlutterSecureStorage() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i11.IOSOptions get iOptions =>
+  _i12.IOSOptions get iOptions =>
       (super.noSuchMethod(
             Invocation.getter(#iOptions),
-            returnValue: _FakeIOSOptions_10(this, Invocation.getter(#iOptions)),
+            returnValue: _FakeIOSOptions_11(this, Invocation.getter(#iOptions)),
           )
-          as _i11.IOSOptions);
+          as _i12.IOSOptions);
 
   @override
-  _i11.AndroidOptions get aOptions =>
+  _i12.AndroidOptions get aOptions =>
       (super.noSuchMethod(
             Invocation.getter(#aOptions),
-            returnValue: _FakeAndroidOptions_11(
+            returnValue: _FakeAndroidOptions_12(
               this,
               Invocation.getter(#aOptions),
             ),
           )
-          as _i11.AndroidOptions);
+          as _i12.AndroidOptions);
 
   @override
-  _i11.LinuxOptions get lOptions =>
+  _i12.LinuxOptions get lOptions =>
       (super.noSuchMethod(
             Invocation.getter(#lOptions),
-            returnValue: _FakeLinuxOptions_12(
+            returnValue: _FakeLinuxOptions_13(
               this,
               Invocation.getter(#lOptions),
             ),
           )
-          as _i11.LinuxOptions);
+          as _i12.LinuxOptions);
 
   @override
-  _i11.WindowsOptions get wOptions =>
+  _i12.WindowsOptions get wOptions =>
       (super.noSuchMethod(
             Invocation.getter(#wOptions),
-            returnValue: _FakeWindowsOptions_13(
+            returnValue: _FakeWindowsOptions_14(
               this,
               Invocation.getter(#wOptions),
             ),
           )
-          as _i11.WindowsOptions);
+          as _i12.WindowsOptions);
 
   @override
-  _i11.WebOptions get webOptions =>
+  _i12.WebOptions get webOptions =>
       (super.noSuchMethod(
             Invocation.getter(#webOptions),
-            returnValue: _FakeWebOptions_14(
+            returnValue: _FakeWebOptions_15(
               this,
               Invocation.getter(#webOptions),
             ),
           )
-          as _i11.WebOptions);
+          as _i12.WebOptions);
 
   @override
-  _i11.MacOsOptions get mOptions =>
+  _i12.MacOsOptions get mOptions =>
       (super.noSuchMethod(
             Invocation.getter(#mOptions),
-            returnValue: _FakeMacOsOptions_15(
+            returnValue: _FakeMacOsOptions_16(
               this,
               Invocation.getter(#mOptions),
             ),
           )
-          as _i11.MacOsOptions);
+          as _i12.MacOsOptions);
 
   @override
   void registerListener({
     required String? key,
-    required _i23.ValueChanged<String?>? listener,
+    required _i33.ValueChanged<String?>? listener,
   }) => super.noSuchMethod(
     Invocation.method(#registerListener, [], {#key: key, #listener: listener}),
     returnValueForMissingStub: null,
@@ -1575,7 +1755,7 @@ class MockFlutterSecureStorage extends _i1.Mock
   @override
   void unregisterListener({
     required String? key,
-    required _i23.ValueChanged<String?>? listener,
+    required _i33.ValueChanged<String?>? listener,
   }) => super.noSuchMethod(
     Invocation.method(#unregisterListener, [], {
       #key: key,
@@ -1598,15 +1778,15 @@ class MockFlutterSecureStorage extends _i1.Mock
   );
 
   @override
-  _i10.Future<void> write({
+  _i11.Future<void> write({
     required String? key,
     required String? value,
-    _i11.IOSOptions? iOptions,
-    _i11.AndroidOptions? aOptions,
-    _i11.LinuxOptions? lOptions,
-    _i11.WebOptions? webOptions,
-    _i11.MacOsOptions? mOptions,
-    _i11.WindowsOptions? wOptions,
+    _i12.IOSOptions? iOptions,
+    _i12.AndroidOptions? aOptions,
+    _i12.LinuxOptions? lOptions,
+    _i12.WebOptions? webOptions,
+    _i12.MacOsOptions? mOptions,
+    _i12.WindowsOptions? wOptions,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#write, [], {
@@ -1619,20 +1799,20 @@ class MockFlutterSecureStorage extends _i1.Mock
               #mOptions: mOptions,
               #wOptions: wOptions,
             }),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i10.Future<String?> read({
+  _i11.Future<String?> read({
     required String? key,
-    _i11.IOSOptions? iOptions,
-    _i11.AndroidOptions? aOptions,
-    _i11.LinuxOptions? lOptions,
-    _i11.WebOptions? webOptions,
-    _i11.MacOsOptions? mOptions,
-    _i11.WindowsOptions? wOptions,
+    _i12.IOSOptions? iOptions,
+    _i12.AndroidOptions? aOptions,
+    _i12.LinuxOptions? lOptions,
+    _i12.WebOptions? webOptions,
+    _i12.MacOsOptions? mOptions,
+    _i12.WindowsOptions? wOptions,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#read, [], {
@@ -1644,19 +1824,19 @@ class MockFlutterSecureStorage extends _i1.Mock
               #mOptions: mOptions,
               #wOptions: wOptions,
             }),
-            returnValue: _i10.Future<String?>.value(),
+            returnValue: _i11.Future<String?>.value(),
           )
-          as _i10.Future<String?>);
+          as _i11.Future<String?>);
 
   @override
-  _i10.Future<bool> containsKey({
+  _i11.Future<bool> containsKey({
     required String? key,
-    _i11.IOSOptions? iOptions,
-    _i11.AndroidOptions? aOptions,
-    _i11.LinuxOptions? lOptions,
-    _i11.WebOptions? webOptions,
-    _i11.MacOsOptions? mOptions,
-    _i11.WindowsOptions? wOptions,
+    _i12.IOSOptions? iOptions,
+    _i12.AndroidOptions? aOptions,
+    _i12.LinuxOptions? lOptions,
+    _i12.WebOptions? webOptions,
+    _i12.MacOsOptions? mOptions,
+    _i12.WindowsOptions? wOptions,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#containsKey, [], {
@@ -1668,19 +1848,19 @@ class MockFlutterSecureStorage extends _i1.Mock
               #mOptions: mOptions,
               #wOptions: wOptions,
             }),
-            returnValue: _i10.Future<bool>.value(false),
+            returnValue: _i11.Future<bool>.value(false),
           )
-          as _i10.Future<bool>);
+          as _i11.Future<bool>);
 
   @override
-  _i10.Future<void> delete({
+  _i11.Future<void> delete({
     required String? key,
-    _i11.IOSOptions? iOptions,
-    _i11.AndroidOptions? aOptions,
-    _i11.LinuxOptions? lOptions,
-    _i11.WebOptions? webOptions,
-    _i11.MacOsOptions? mOptions,
-    _i11.WindowsOptions? wOptions,
+    _i12.IOSOptions? iOptions,
+    _i12.AndroidOptions? aOptions,
+    _i12.LinuxOptions? lOptions,
+    _i12.WebOptions? webOptions,
+    _i12.MacOsOptions? mOptions,
+    _i12.WindowsOptions? wOptions,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#delete, [], {
@@ -1692,19 +1872,19 @@ class MockFlutterSecureStorage extends _i1.Mock
               #mOptions: mOptions,
               #wOptions: wOptions,
             }),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i10.Future<Map<String, String>> readAll({
-    _i11.IOSOptions? iOptions,
-    _i11.AndroidOptions? aOptions,
-    _i11.LinuxOptions? lOptions,
-    _i11.WebOptions? webOptions,
-    _i11.MacOsOptions? mOptions,
-    _i11.WindowsOptions? wOptions,
+  _i11.Future<Map<String, String>> readAll({
+    _i12.IOSOptions? iOptions,
+    _i12.AndroidOptions? aOptions,
+    _i12.LinuxOptions? lOptions,
+    _i12.WebOptions? webOptions,
+    _i12.MacOsOptions? mOptions,
+    _i12.WindowsOptions? wOptions,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#readAll, [], {
@@ -1715,20 +1895,20 @@ class MockFlutterSecureStorage extends _i1.Mock
               #mOptions: mOptions,
               #wOptions: wOptions,
             }),
-            returnValue: _i10.Future<Map<String, String>>.value(
+            returnValue: _i11.Future<Map<String, String>>.value(
               <String, String>{},
             ),
           )
-          as _i10.Future<Map<String, String>>);
+          as _i11.Future<Map<String, String>>);
 
   @override
-  _i10.Future<void> deleteAll({
-    _i11.IOSOptions? iOptions,
-    _i11.AndroidOptions? aOptions,
-    _i11.LinuxOptions? lOptions,
-    _i11.WebOptions? webOptions,
-    _i11.MacOsOptions? mOptions,
-    _i11.WindowsOptions? wOptions,
+  _i11.Future<void> deleteAll({
+    _i12.IOSOptions? iOptions,
+    _i12.AndroidOptions? aOptions,
+    _i12.LinuxOptions? lOptions,
+    _i12.WebOptions? webOptions,
+    _i12.MacOsOptions? mOptions,
+    _i12.WindowsOptions? wOptions,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#deleteAll, [], {
@@ -1739,68 +1919,68 @@ class MockFlutterSecureStorage extends _i1.Mock
               #mOptions: mOptions,
               #wOptions: wOptions,
             }),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i10.Future<bool?> isCupertinoProtectedDataAvailable() =>
+  _i11.Future<bool?> isCupertinoProtectedDataAvailable() =>
       (super.noSuchMethod(
             Invocation.method(#isCupertinoProtectedDataAvailable, []),
-            returnValue: _i10.Future<bool?>.value(),
+            returnValue: _i11.Future<bool?>.value(),
           )
-          as _i10.Future<bool?>);
+          as _i11.Future<bool?>);
 }
 
 /// A class which mocks [StorageService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockStorageService extends _i1.Mock implements _i24.StorageService {
+class MockStorageService extends _i1.Mock implements _i34.StorageService {
   MockStorageService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i10.Future<void> init() =>
+  _i11.Future<void> init() =>
       (super.noSuchMethod(
             Invocation.method(#init, []),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i10.Future<void> delete(dynamic key) =>
+  _i11.Future<void> delete(dynamic key) =>
       (super.noSuchMethod(
             Invocation.method(#delete, [key]),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i10.Future<void> put({required dynamic key, required dynamic value}) =>
+  _i11.Future<void> put({required dynamic key, required dynamic value}) =>
       (super.noSuchMethod(
             Invocation.method(#put, [], {#key: key, #value: value}),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i10.Future<void> putJson({required dynamic key, required dynamic value}) =>
+  _i11.Future<void> putJson({required dynamic key, required dynamic value}) =>
       (super.noSuchMethod(
             Invocation.method(#putJson, [], {#key: key, #value: value}),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 
   @override
   T? getJson<T>({
     required dynamic key,
-    required _i24.StorageCallback<T>? fromJson,
+    required _i34.StorageCallback<T>? fromJson,
     dynamic defaultValue,
   }) =>
       (super.noSuchMethod(
@@ -1815,7 +1995,7 @@ class MockStorageService extends _i1.Mock implements _i24.StorageService {
   @override
   List<T> getList<T>({
     required dynamic key,
-    required _i24.StorageCallback<T>? fromJson,
+    required _i34.StorageCallback<T>? fromJson,
     dynamic defaultValue,
   }) =>
       (super.noSuchMethod(
@@ -1833,78 +2013,78 @@ class MockStorageService extends _i1.Mock implements _i24.StorageService {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSecureStorageService extends _i1.Mock
-    implements _i25.SecureStorageService {
+    implements _i35.SecureStorageService {
   MockSecureStorageService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i10.Future<void> saveToken(String? token) =>
+  _i11.Future<void> saveToken(String? token) =>
       (super.noSuchMethod(
             Invocation.method(#saveToken, [token]),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i10.Future<String?> getToken() =>
+  _i11.Future<String?> getToken() =>
       (super.noSuchMethod(
             Invocation.method(#getToken, []),
-            returnValue: _i10.Future<String?>.value(),
+            returnValue: _i11.Future<String?>.value(),
           )
-          as _i10.Future<String?>);
+          as _i11.Future<String?>);
 
   @override
-  _i10.Future<void> deleteToken() =>
+  _i11.Future<void> deleteToken() =>
       (super.noSuchMethod(
             Invocation.method(#deleteToken, []),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i10.Future<void> write({required String? key, required String? value}) =>
+  _i11.Future<void> write({required String? key, required String? value}) =>
       (super.noSuchMethod(
             Invocation.method(#write, [], {#key: key, #value: value}),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i10.Future<String?> read({required String? key}) =>
+  _i11.Future<String?> read({required String? key}) =>
       (super.noSuchMethod(
             Invocation.method(#read, [], {#key: key}),
-            returnValue: _i10.Future<String?>.value(),
+            returnValue: _i11.Future<String?>.value(),
           )
-          as _i10.Future<String?>);
+          as _i11.Future<String?>);
 
   @override
-  _i10.Future<void> delete({required String? key}) =>
+  _i11.Future<void> delete({required String? key}) =>
       (super.noSuchMethod(
             Invocation.method(#delete, [], {#key: key}),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i10.Future<void> deleteAll() =>
+  _i11.Future<void> deleteAll() =>
       (super.noSuchMethod(
             Invocation.method(#deleteAll, []),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
 }
 
 /// A class which mocks [EnvironmentConfigService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockEnvironmentConfigService extends _i1.Mock
-    implements _i26.EnvironmentConfigService {
+    implements _i36.EnvironmentConfigService {
   MockEnvironmentConfigService() {
     _i1.throwOnMissingStub(this);
   }
@@ -1921,26 +2101,26 @@ class MockEnvironmentConfigService extends _i1.Mock
           as _i9.APIConfig);
 
   @override
-  _i15.Environment get currentEnvironment =>
+  _i25.Environment get currentEnvironment =>
       (super.noSuchMethod(
             Invocation.getter(#currentEnvironment),
-            returnValue: _i15.Environment.dev,
+            returnValue: _i25.Environment.dev,
           )
-          as _i15.Environment);
+          as _i25.Environment);
 
   @override
-  _i12.AuthConfig getAuthConfigForEnvironment(_i15.Environment? env) =>
+  _i13.AuthConfig getAuthConfigForEnvironment(_i25.Environment? env) =>
       (super.noSuchMethod(
             Invocation.method(#getAuthConfigForEnvironment, [env]),
-            returnValue: _FakeAuthConfig_16(
+            returnValue: _FakeAuthConfig_17(
               this,
               Invocation.method(#getAuthConfigForEnvironment, [env]),
             ),
           )
-          as _i12.AuthConfig);
+          as _i13.AuthConfig);
 
   @override
-  _i9.APIConfig getConfigForEnvironment(_i15.Environment? env) =>
+  _i9.APIConfig getConfigForEnvironment(_i25.Environment? env) =>
       (super.noSuchMethod(
             Invocation.method(#getConfigForEnvironment, [env]),
             returnValue: _FakeAPIConfig_7(
@@ -1951,9 +2131,9 @@ class MockEnvironmentConfigService extends _i1.Mock
           as _i9.APIConfig);
 
   @override
-  _i10.Future<void> updateConfiguration(
-    _i15.Environment? environment, {
-    _i27.BaseUrlConfigModel? baseUrlConfig,
+  _i11.Future<void> updateConfiguration(
+    _i25.Environment? environment, {
+    _i37.BaseUrlConfigModel? baseUrlConfig,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1961,8 +2141,840 @@ class MockEnvironmentConfigService extends _i1.Mock
               [environment],
               {#baseUrlConfig: baseUrlConfig},
             ),
-            returnValue: _i10.Future<void>.value(),
-            returnValueForMissingStub: _i10.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i10.Future<void>);
+          as _i11.Future<void>);
+}
+
+/// A class which mocks [IosUtsname].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockIosUtsname extends _i1.Mock implements _i14.IosUtsname {
+  MockIosUtsname() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get sysname =>
+      (super.noSuchMethod(
+            Invocation.getter(#sysname),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#sysname),
+            ),
+          )
+          as String);
+
+  @override
+  String get nodename =>
+      (super.noSuchMethod(
+            Invocation.getter(#nodename),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#nodename),
+            ),
+          )
+          as String);
+
+  @override
+  String get release =>
+      (super.noSuchMethod(
+            Invocation.getter(#release),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#release),
+            ),
+          )
+          as String);
+
+  @override
+  String get version =>
+      (super.noSuchMethod(
+            Invocation.getter(#version),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#version),
+            ),
+          )
+          as String);
+
+  @override
+  String get machine =>
+      (super.noSuchMethod(
+            Invocation.getter(#machine),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#machine),
+            ),
+          )
+          as String);
+}
+
+/// A class which mocks [IosDeviceInfo].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockIosDeviceInfo extends _i1.Mock implements _i14.IosDeviceInfo {
+  MockIosDeviceInfo() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get name =>
+      (super.noSuchMethod(
+            Invocation.getter(#name),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#name),
+            ),
+          )
+          as String);
+
+  @override
+  String get systemName =>
+      (super.noSuchMethod(
+            Invocation.getter(#systemName),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#systemName),
+            ),
+          )
+          as String);
+
+  @override
+  String get systemVersion =>
+      (super.noSuchMethod(
+            Invocation.getter(#systemVersion),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#systemVersion),
+            ),
+          )
+          as String);
+
+  @override
+  String get model =>
+      (super.noSuchMethod(
+            Invocation.getter(#model),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#model),
+            ),
+          )
+          as String);
+
+  @override
+  String get modelName =>
+      (super.noSuchMethod(
+            Invocation.getter(#modelName),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#modelName),
+            ),
+          )
+          as String);
+
+  @override
+  String get localizedModel =>
+      (super.noSuchMethod(
+            Invocation.getter(#localizedModel),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#localizedModel),
+            ),
+          )
+          as String);
+
+  @override
+  bool get isPhysicalDevice =>
+      (super.noSuchMethod(
+            Invocation.getter(#isPhysicalDevice),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
+  int get physicalRamSize =>
+      (super.noSuchMethod(Invocation.getter(#physicalRamSize), returnValue: 0)
+          as int);
+
+  @override
+  int get availableRamSize =>
+      (super.noSuchMethod(Invocation.getter(#availableRamSize), returnValue: 0)
+          as int);
+
+  @override
+  bool get isiOSAppOnMac =>
+      (super.noSuchMethod(Invocation.getter(#isiOSAppOnMac), returnValue: false)
+          as bool);
+
+  @override
+  _i14.IosUtsname get utsname =>
+      (super.noSuchMethod(
+            Invocation.getter(#utsname),
+            returnValue: _FakeIosUtsname_18(this, Invocation.getter(#utsname)),
+          )
+          as _i14.IosUtsname);
+
+  @override
+  int get freeDiskSize =>
+      (super.noSuchMethod(Invocation.getter(#freeDiskSize), returnValue: 0)
+          as int);
+
+  @override
+  int get totalDiskSize =>
+      (super.noSuchMethod(Invocation.getter(#totalDiskSize), returnValue: 0)
+          as int);
+
+  @override
+  Map<String, dynamic> get data =>
+      (super.noSuchMethod(
+            Invocation.getter(#data),
+            returnValue: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
+
+  @override
+  Map<String, dynamic> toMap() =>
+      (super.noSuchMethod(
+            Invocation.method(#toMap, []),
+            returnValue: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
+}
+
+/// A class which mocks [AndroidDeviceInfo].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAndroidDeviceInfo extends _i1.Mock implements _i15.AndroidDeviceInfo {
+  MockAndroidDeviceInfo() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i15.AndroidBuildVersion get version =>
+      (super.noSuchMethod(
+            Invocation.getter(#version),
+            returnValue: _FakeAndroidBuildVersion_19(
+              this,
+              Invocation.getter(#version),
+            ),
+          )
+          as _i15.AndroidBuildVersion);
+
+  @override
+  String get board =>
+      (super.noSuchMethod(
+            Invocation.getter(#board),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#board),
+            ),
+          )
+          as String);
+
+  @override
+  String get bootloader =>
+      (super.noSuchMethod(
+            Invocation.getter(#bootloader),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#bootloader),
+            ),
+          )
+          as String);
+
+  @override
+  String get brand =>
+      (super.noSuchMethod(
+            Invocation.getter(#brand),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#brand),
+            ),
+          )
+          as String);
+
+  @override
+  String get device =>
+      (super.noSuchMethod(
+            Invocation.getter(#device),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#device),
+            ),
+          )
+          as String);
+
+  @override
+  String get display =>
+      (super.noSuchMethod(
+            Invocation.getter(#display),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#display),
+            ),
+          )
+          as String);
+
+  @override
+  String get fingerprint =>
+      (super.noSuchMethod(
+            Invocation.getter(#fingerprint),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#fingerprint),
+            ),
+          )
+          as String);
+
+  @override
+  String get hardware =>
+      (super.noSuchMethod(
+            Invocation.getter(#hardware),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#hardware),
+            ),
+          )
+          as String);
+
+  @override
+  String get host =>
+      (super.noSuchMethod(
+            Invocation.getter(#host),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#host),
+            ),
+          )
+          as String);
+
+  @override
+  String get id =>
+      (super.noSuchMethod(
+            Invocation.getter(#id),
+            returnValue: _i24.dummyValue<String>(this, Invocation.getter(#id)),
+          )
+          as String);
+
+  @override
+  String get manufacturer =>
+      (super.noSuchMethod(
+            Invocation.getter(#manufacturer),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#manufacturer),
+            ),
+          )
+          as String);
+
+  @override
+  String get model =>
+      (super.noSuchMethod(
+            Invocation.getter(#model),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#model),
+            ),
+          )
+          as String);
+
+  @override
+  String get product =>
+      (super.noSuchMethod(
+            Invocation.getter(#product),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#product),
+            ),
+          )
+          as String);
+
+  @override
+  String get name =>
+      (super.noSuchMethod(
+            Invocation.getter(#name),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#name),
+            ),
+          )
+          as String);
+
+  @override
+  List<String> get supported32BitAbis =>
+      (super.noSuchMethod(
+            Invocation.getter(#supported32BitAbis),
+            returnValue: <String>[],
+          )
+          as List<String>);
+
+  @override
+  List<String> get supported64BitAbis =>
+      (super.noSuchMethod(
+            Invocation.getter(#supported64BitAbis),
+            returnValue: <String>[],
+          )
+          as List<String>);
+
+  @override
+  List<String> get supportedAbis =>
+      (super.noSuchMethod(
+            Invocation.getter(#supportedAbis),
+            returnValue: <String>[],
+          )
+          as List<String>);
+
+  @override
+  String get tags =>
+      (super.noSuchMethod(
+            Invocation.getter(#tags),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#tags),
+            ),
+          )
+          as String);
+
+  @override
+  String get type =>
+      (super.noSuchMethod(
+            Invocation.getter(#type),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#type),
+            ),
+          )
+          as String);
+
+  @override
+  bool get isPhysicalDevice =>
+      (super.noSuchMethod(
+            Invocation.getter(#isPhysicalDevice),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
+  int get freeDiskSize =>
+      (super.noSuchMethod(Invocation.getter(#freeDiskSize), returnValue: 0)
+          as int);
+
+  @override
+  int get totalDiskSize =>
+      (super.noSuchMethod(Invocation.getter(#totalDiskSize), returnValue: 0)
+          as int);
+
+  @override
+  List<String> get systemFeatures =>
+      (super.noSuchMethod(
+            Invocation.getter(#systemFeatures),
+            returnValue: <String>[],
+          )
+          as List<String>);
+
+  @override
+  String get serialNumber =>
+      (super.noSuchMethod(
+            Invocation.getter(#serialNumber),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#serialNumber),
+            ),
+          )
+          as String);
+
+  @override
+  bool get isLowRamDevice =>
+      (super.noSuchMethod(
+            Invocation.getter(#isLowRamDevice),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
+  int get physicalRamSize =>
+      (super.noSuchMethod(Invocation.getter(#physicalRamSize), returnValue: 0)
+          as int);
+
+  @override
+  int get availableRamSize =>
+      (super.noSuchMethod(Invocation.getter(#availableRamSize), returnValue: 0)
+          as int);
+
+  @override
+  Map<String, dynamic> get data =>
+      (super.noSuchMethod(
+            Invocation.getter(#data),
+            returnValue: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
+
+  @override
+  Map<String, dynamic> toMap() =>
+      (super.noSuchMethod(
+            Invocation.method(#toMap, []),
+            returnValue: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
+}
+
+/// A class which mocks [DeviceInfoPlugin].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDeviceInfoPlugin extends _i1.Mock implements _i38.DeviceInfoPlugin {
+  MockDeviceInfoPlugin() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<_i15.AndroidDeviceInfo> get androidInfo =>
+      (super.noSuchMethod(
+            Invocation.getter(#androidInfo),
+            returnValue: _i11.Future<_i15.AndroidDeviceInfo>.value(
+              _FakeAndroidDeviceInfo_20(this, Invocation.getter(#androidInfo)),
+            ),
+          )
+          as _i11.Future<_i15.AndroidDeviceInfo>);
+
+  @override
+  _i11.Future<_i14.IosDeviceInfo> get iosInfo =>
+      (super.noSuchMethod(
+            Invocation.getter(#iosInfo),
+            returnValue: _i11.Future<_i14.IosDeviceInfo>.value(
+              _FakeIosDeviceInfo_21(this, Invocation.getter(#iosInfo)),
+            ),
+          )
+          as _i11.Future<_i14.IosDeviceInfo>);
+
+  @override
+  _i11.Future<_i16.LinuxDeviceInfo> get linuxInfo =>
+      (super.noSuchMethod(
+            Invocation.getter(#linuxInfo),
+            returnValue: _i11.Future<_i16.LinuxDeviceInfo>.value(
+              _FakeLinuxDeviceInfo_22(this, Invocation.getter(#linuxInfo)),
+            ),
+          )
+          as _i11.Future<_i16.LinuxDeviceInfo>);
+
+  @override
+  _i11.Future<_i17.WebBrowserInfo> get webBrowserInfo =>
+      (super.noSuchMethod(
+            Invocation.getter(#webBrowserInfo),
+            returnValue: _i11.Future<_i17.WebBrowserInfo>.value(
+              _FakeWebBrowserInfo_23(this, Invocation.getter(#webBrowserInfo)),
+            ),
+          )
+          as _i11.Future<_i17.WebBrowserInfo>);
+
+  @override
+  _i11.Future<_i18.MacOsDeviceInfo> get macOsInfo =>
+      (super.noSuchMethod(
+            Invocation.getter(#macOsInfo),
+            returnValue: _i11.Future<_i18.MacOsDeviceInfo>.value(
+              _FakeMacOsDeviceInfo_24(this, Invocation.getter(#macOsInfo)),
+            ),
+          )
+          as _i11.Future<_i18.MacOsDeviceInfo>);
+
+  @override
+  _i11.Future<_i19.WindowsDeviceInfo> get windowsInfo =>
+      (super.noSuchMethod(
+            Invocation.getter(#windowsInfo),
+            returnValue: _i11.Future<_i19.WindowsDeviceInfo>.value(
+              _FakeWindowsDeviceInfo_25(this, Invocation.getter(#windowsInfo)),
+            ),
+          )
+          as _i11.Future<_i19.WindowsDeviceInfo>);
+
+  @override
+  _i11.Future<_i20.BaseDeviceInfo> get deviceInfo =>
+      (super.noSuchMethod(
+            Invocation.getter(#deviceInfo),
+            returnValue: _i11.Future<_i20.BaseDeviceInfo>.value(
+              _FakeBaseDeviceInfo_26(this, Invocation.getter(#deviceInfo)),
+            ),
+          )
+          as _i11.Future<_i20.BaseDeviceInfo>);
+}
+
+/// A class which mocks [PlatformChecker].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPlatformChecker extends _i1.Mock implements _i39.PlatformChecker {
+  MockPlatformChecker() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  bool get isIOS =>
+      (super.noSuchMethod(Invocation.getter(#isIOS), returnValue: false)
+          as bool);
+
+  @override
+  bool get isAndroid =>
+      (super.noSuchMethod(Invocation.getter(#isAndroid), returnValue: false)
+          as bool);
+
+  @override
+  bool get isMobile =>
+      (super.noSuchMethod(Invocation.getter(#isMobile), returnValue: false)
+          as bool);
+}
+
+/// A class which mocks [DeviceServices].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDeviceServices extends _i1.Mock implements _i40.DeviceServices {
+  MockDeviceServices() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<String?> getDeviceModel() =>
+      (super.noSuchMethod(
+            Invocation.method(#getDeviceModel, []),
+            returnValue: _i11.Future<String?>.value(),
+          )
+          as _i11.Future<String?>);
+}
+
+/// A class which mocks [LoginUser].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLoginUser extends _i1.Mock implements _i22.LoginUser {
+  MockLoginUser() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i21.UserModel get user =>
+      (super.noSuchMethod(
+            Invocation.getter(#user),
+            returnValue: _FakeUserModel_27(this, Invocation.getter(#user)),
+          )
+          as _i21.UserModel);
+
+  @override
+  String get token =>
+      (super.noSuchMethod(
+            Invocation.getter(#token),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#token),
+            ),
+          )
+          as String);
+
+  @override
+  List<Object?> get props =>
+      (super.noSuchMethod(Invocation.getter(#props), returnValue: <Object?>[])
+          as List<Object?>);
+
+  @override
+  _i22.LoginUser copyWith({_i21.UserModel? user, String? token}) =>
+      (super.noSuchMethod(
+            Invocation.method(#copyWith, [], {#user: user, #token: token}),
+            returnValue: _FakeLoginUser_28(
+              this,
+              Invocation.method(#copyWith, [], {#user: user, #token: token}),
+            ),
+          )
+          as _i22.LoginUser);
+
+  @override
+  Map<String, dynamic> toJson() =>
+      (super.noSuchMethod(
+            Invocation.method(#toJson, []),
+            returnValue: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
+}
+
+/// A class which mocks [LoginCredentials].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLoginCredentials extends _i1.Mock implements _i41.LoginCredentials {
+  MockLoginCredentials() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get email =>
+      (super.noSuchMethod(
+            Invocation.getter(#email),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#email),
+            ),
+          )
+          as String);
+
+  @override
+  String get password =>
+      (super.noSuchMethod(
+            Invocation.getter(#password),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#password),
+            ),
+          )
+          as String);
+}
+
+/// A class which mocks [RegisterCredentials].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockRegisterCredentials extends _i1.Mock
+    implements _i42.RegisterCredentials {
+  MockRegisterCredentials() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get name =>
+      (super.noSuchMethod(
+            Invocation.getter(#name),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#name),
+            ),
+          )
+          as String);
+
+  @override
+  String get email =>
+      (super.noSuchMethod(
+            Invocation.getter(#email),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#email),
+            ),
+          )
+          as String);
+
+  @override
+  String get password =>
+      (super.noSuchMethod(
+            Invocation.getter(#password),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#password),
+            ),
+          )
+          as String);
+
+  @override
+  String get confirmPassword =>
+      (super.noSuchMethod(
+            Invocation.getter(#confirmPassword),
+            returnValue: _i24.dummyValue<String>(
+              this,
+              Invocation.getter(#confirmPassword),
+            ),
+          )
+          as String);
+}
+
+/// A class which mocks [AuthLocalDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthLocalDataSource extends _i1.Mock
+    implements _i43.AuthLocalDataSource {
+  MockAuthLocalDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<void> saveToken(String? token) =>
+      (super.noSuchMethod(
+            Invocation.method(#saveToken, [token]),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
+
+  @override
+  _i11.Future<String?> getToken() =>
+      (super.noSuchMethod(
+            Invocation.method(#getToken, []),
+            returnValue: _i11.Future<String?>.value(),
+          )
+          as _i11.Future<String?>);
+
+  @override
+  _i11.Future<void> deleteToken() =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteToken, []),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
+
+  @override
+  _i11.Future<void> deleteUser() =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteUser, []),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
+
+  @override
+  _i11.Future<void> saveUser(_i21.UserModel? user) =>
+      (super.noSuchMethod(
+            Invocation.method(#saveUser, [user]),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
+}
+
+/// A class which mocks [AuthRemoteDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthRemoteDataSource extends _i1.Mock
+    implements _i44.AuthRemoteDataSource {
+  MockAuthRemoteDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<void> logout() =>
+      (super.noSuchMethod(
+            Invocation.method(#logout, []),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
+
+  @override
+  _i11.Future<void> deleteAccount() =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteAccount, []),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
+
+  @override
+  _i11.Future<_i22.LoginUser> login(_i45.LoginRequest? request) =>
+      (super.noSuchMethod(
+            Invocation.method(#login, [request]),
+            returnValue: _i11.Future<_i22.LoginUser>.value(
+              _FakeLoginUser_28(this, Invocation.method(#login, [request])),
+            ),
+          )
+          as _i11.Future<_i22.LoginUser>);
+
+  @override
+  _i11.Future<_i22.LoginUser> register(_i46.RegisterRequest? request) =>
+      (super.noSuchMethod(
+            Invocation.method(#register, [request]),
+            returnValue: _i11.Future<_i22.LoginUser>.value(
+              _FakeLoginUser_28(this, Invocation.method(#register, [request])),
+            ),
+          )
+          as _i11.Future<_i22.LoginUser>);
 }

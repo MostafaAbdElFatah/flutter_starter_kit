@@ -1,6 +1,7 @@
-import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:injectable/injectable.dart';
+
+import 'platform_checker.dart';
 
 /// A service that provides information about the user's device.
 ///
@@ -9,13 +10,19 @@ import 'package:injectable/injectable.dart';
 /// injected as a dependency wherever device information is needed.
 @LazySingleton()
 class DeviceServices {
+  final PlatformChecker _platformChecker;
   final DeviceInfoPlugin _deviceInfoPlugin;
 
   /// Creates an instance of [DeviceServices].
   ///
+  /// Requires a [PlatformChecker] instance to be injected, which is typically
   /// Requires a [DeviceInfoPlugin] instance to be injected, which is typically
   /// provided by a dependency injection framework.
-  DeviceServices(this._deviceInfoPlugin);
+  DeviceServices({
+    required PlatformChecker platformChecker,
+    required DeviceInfoPlugin deviceInfoPlugin,
+  }) : _platformChecker = platformChecker,
+       _deviceInfoPlugin = deviceInfoPlugin;
 
   /// Returns the device model identifier.
   ///
@@ -23,10 +30,10 @@ class DeviceServices {
   /// For Android, this returns the `device` value (e.g., "Pixel 5").
   /// Returns `null` for unsupported platforms.
   Future<String?> getDeviceModel() async {
-    if (Platform.isIOS) {
+    if (_platformChecker.isIOS) {
       final IosDeviceInfo iosInfo = await _deviceInfoPlugin.iosInfo;
       return iosInfo.utsname.machine;
-    } else if (Platform.isAndroid) {
+    } else if (_platformChecker.isAndroid) {
       final AndroidDeviceInfo androidInfo = await _deviceInfoPlugin.androidInfo;
       return androidInfo.device;
     }

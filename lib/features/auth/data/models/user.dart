@@ -5,7 +5,7 @@ import '../../domain/entities/user.dart';
 /// This class extends the domain [User] entity and adds serialization logic
 /// to convert the object to and from JSON for communication with the API.
 /// It is designed to be immutable.
-final class UserModel extends User {
+class UserModel extends User {
   /// Creates an instance of [UserModel].
   const UserModel({
     required super.id,

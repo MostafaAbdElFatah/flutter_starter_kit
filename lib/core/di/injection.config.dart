@@ -74,6 +74,7 @@ import '../infrastructure/data/storage/hive_storage_service.dart' as _i581;
 import '../infrastructure/data/storage/secure_storage_service.dart' as _i224;
 import '../infrastructure/data/storage/storage_service.dart' as _i419;
 import '../utils/device_services.dart' as _i440;
+import '../utils/platform_checker.dart' as _i48;
 import 'di.dart' as _i913;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -89,12 +90,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i833.DeviceInfoPlugin>(
       () => injectionModule.deviceInfoPlugin,
     );
+    gh.lazySingleton<_i48.PlatformChecker>(
+      () => injectionModule.platformChecker,
+    );
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => injectionModule.flutterSecureStorage,
     );
     gh.lazySingleton<_i802.AuthEndpoints>(() => _i802.AuthEndpoints());
     gh.lazySingleton<_i440.DeviceServices>(
-      () => _i440.DeviceServices(gh<_i833.DeviceInfoPlugin>()),
+      () => _i440.DeviceServices(
+        platformChecker: gh<_i48.PlatformChecker>(),
+        deviceInfoPlugin: gh<_i833.DeviceInfoPlugin>(),
+      ),
     );
     gh.lazySingleton<_i498.NetworkConnectivity>(
       () => _i498.NetworkConnectivityImpl(gh<_i895.Connectivity>()),

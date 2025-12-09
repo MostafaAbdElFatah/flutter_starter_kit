@@ -62,7 +62,7 @@ final class LoginResponse extends APIResponse {
 /// Represents the user and token data returned upon successful authentication.
 ///
 /// This class is designed to be immutable and supports value-based equality.
-final class LoginUser extends Equatable {
+class LoginUser extends Equatable {
   const LoginUser({required this.user, required this.token});
 
   /// The authenticated user's profile information.

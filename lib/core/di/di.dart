@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/environments_dev/data/storage/environment_config_service.dart';
+import '../utils/platform_checker.dart';
 import 'injection.dart' show configureDependencies;
 
 /// A global service locator instance for dependency injection.
@@ -52,6 +53,11 @@ abstract class InjectionModule {
   /// Provides a lazy singleton instance of [DeviceInfoPlugin].
   @lazySingleton
   DeviceInfoPlugin get deviceInfoPlugin => DeviceInfoPlugin();
+
+  /// Provides a lazy singleton instance of [DeviceInfoPlugin].
+  @lazySingleton
+  PlatformChecker get platformChecker => PlatformChecker();
+
 
   /// Provides a lazy singleton instance of [FlutterSecureStorage].
   @lazySingleton
