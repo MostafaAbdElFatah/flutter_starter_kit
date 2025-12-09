@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+
 import 'package:mockito/annotations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -8,6 +9,8 @@ import 'package:flutter_starter_kit/core/infrastructure/data/storage/secure_stor
 import 'package:flutter_starter_kit/features/environments_dev/data/storage/environment_config_service.dart';
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/api_config.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/network/api_endpoint.dart';
+import 'package:flutter_starter_kit/core/infrastructure/data/network/api_client.dart';
+import 'package:flutter_starter_kit/core/infrastructure/data/network/network_connectivity.dart';
 
 @GenerateMocks([
 
@@ -17,6 +20,8 @@ import 'package:flutter_starter_kit/core/infrastructure/data/network/api_endpoin
   APIEndpoint,
   Connectivity,
   RequestInterceptorHandler,
+  APIClient,
+  NetworkConnectivity,
 
 
   // Storage
@@ -26,3 +31,4 @@ import 'package:flutter_starter_kit/core/infrastructure/data/network/api_endpoin
   EnvironmentConfigService,
 ])
 void main() {}
+

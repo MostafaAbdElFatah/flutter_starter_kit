@@ -9,7 +9,7 @@ import 'package:flutter_starter_kit/core/utils/log.dart';
 import 'package:flutter_starter_kit/core/errors/failure.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/network/api_endpoint.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/network/dio_api_client.dart';
-import '../../helper/helper_test.mocks.dart';
+import '../../../../helper/helper_test.mocks.dart';
 
 
 void main() {
