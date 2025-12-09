@@ -146,10 +146,45 @@ void main() {
     });
   });
 
+
   group('fetch()', () {
-    test('merges dio headers + removes nulls + calls request()', () async {
+    test('APIEndpoint', () async {
       // Arrange
       APIEndpoint endpoint = APIEndpoint(
+        endpoint: "/fetch",
+        //apiVersion: 'v2',
+        method: HttpMethod.get,
+        headers: {"h1": "v1", "nullHeader": null}.removeNulls,
+        body: {"b1": "v1", "nullField": null}.removeNulls,
+        queryParameters: {"q1": "v1", "nullQuery": null}.removeNulls,
+      );
+
+      final response = Response(
+        requestOptions: RequestOptions(path: endpoint.path),
+        data: {"data": true},
+        statusCode: 200,
+      );
+
+      // final expectedResult = APIResponse(statusCode: 200, data: true);
+      when(mockDio.fetch(any)).thenAnswer((_) async => response);
+
+      // Act
+      final _ = await client.fetch(
+        target: endpoint,
+        fromJson: APIResponse.fromJson,
+      );
+
+      // Assert
+      final captured =
+      verify(mockDio.fetch(captureAny)).captured.single as RequestOptions;
+
+      expect(captured.path, "/api/v1/fetch");
+      //expect(captured.path, "/api/v2/fetch");
+    });
+
+    test('APIEndpoint.custom', () async {
+      // Arrange
+      APIEndpoint endpoint = APIEndpoint.custom(
         endpoint: "/fetch",
         method: HttpMethod.get,
         headers: {"h1": "v1", "nullHeader": null}.removeNulls,
@@ -158,7 +193,72 @@ void main() {
       );
 
       final response = Response(
-        requestOptions: RequestOptions(path: "/fetch"),
+        requestOptions: RequestOptions(path: endpoint.path),
+        data: {"data": true},
+        statusCode: 200,
+      );
+
+      // final expectedResult = APIResponse(statusCode: 200, data: true);
+      when(mockDio.fetch(any)).thenAnswer((_) async => response);
+
+      // Act
+      final _ = await client.fetch(
+        target: endpoint,
+        fromJson: APIResponse.fromJson,
+      );
+
+      // Assert
+      final captured =
+      verify(mockDio.fetch(captureAny)).captured.single as RequestOptions;
+
+      expect(captured.path, "/fetch");
+    });
+
+    test('APIEndpoint.fullUrl', () async {
+      // Arrange
+      const defaultBaseUrl = 'https://api.example.com';
+      APIEndpoint endpoint = APIEndpoint.fullUrl(
+        fullUrl: "$defaultBaseUrl/fetch",
+        method: HttpMethod.get,
+        headers: {"h1": "v1", "nullHeader": null}.removeNulls,
+        body: {"b1": "v1", "nullField": null}.removeNulls,
+        queryParameters: {"q1": "v1", "nullQuery": null}.removeNulls,
+      );
+
+      final response = Response(
+        requestOptions: RequestOptions(path: endpoint.path),
+        data: {"data": true},
+        statusCode: 200,
+      );
+
+      // final expectedResult = APIResponse(statusCode: 200, data: true);
+      when(mockDio.fetch(any)).thenAnswer((_) async => response);
+
+      // Act
+      final _ = await client.fetch(
+        target: endpoint,
+        fromJson: APIResponse.fromJson,
+      );
+
+      // Assert
+      final captured =
+      verify(mockDio.fetch(captureAny)).captured.single as RequestOptions;
+
+      expect(captured.path, "$defaultBaseUrl/fetch");
+    });
+
+    test('merges dio headers + removes nulls + calls request()', () async {
+      // Arrange
+      APIEndpoint endpoint = APIEndpoint.custom(
+        endpoint: "/fetch",
+        method: HttpMethod.get,
+        headers: {"h1": "v1", "nullHeader": null}.removeNulls,
+        body: {"b1": "v1", "nullField": null}.removeNulls,
+        queryParameters: {"q1": "v1", "nullQuery": null}.removeNulls,
+      );
+
+      final response = Response(
+        requestOptions: RequestOptions(path: endpoint.path),
         data: {"data": true},
         statusCode: 200,
       );

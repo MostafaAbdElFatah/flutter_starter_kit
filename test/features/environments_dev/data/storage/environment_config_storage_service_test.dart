@@ -1,11 +1,11 @@
-import 'package:flutter_starter_kit/features/environments_dev/data/models/base_url_config.dart';
-import 'package:flutter_starter_kit/features/environments_dev/data/models/env_data.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../helper/helper_test.mocks.dart';
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/environment.dart';
 import 'package:flutter_starter_kit/features/environments_dev/data/storage/environment_config_service.dart';
+import 'package:flutter_starter_kit/features/environments_dev/data/models/base_url_config.dart';
+import 'package:flutter_starter_kit/features/environments_dev/data/models/env_data.dart';
 
 void main() {
   late MockStorageService mockStorage;
@@ -66,7 +66,6 @@ void main() {
       () {
         // Arrange
         final env = Environment.prod;
-
         const savedConfig = BaseUrlConfigModel.defaultUrl();
 
         when(

@@ -35,7 +35,7 @@ class APIEndpoint {
   final String? fullUrl;
 
   /// The relative endpoint path. Is `null` for full URL endpoints.
-  final String? endpoint;
+  final String? _endpoint;
 
   /// The HTTP method for the request (e.g., GET, POST).
   final HttpMethod method;
@@ -52,13 +52,26 @@ class APIEndpoint {
   /// Creates a composite endpoint with a relative [endpoint] path.
   ///
   /// The [endpoint] will be combined with a base URL by the HTTP client.
+  /// Creates a standard API endpoint with automatic versioning
   const APIEndpoint({
-    required this.endpoint,
+    required String endpoint,
+    required this.method,
+    String apiVersion = 'v1',
+    this.queryParameters,
+    this.headers,
+    this.body,
+  }) : fullUrl = null,
+       _endpoint = '/api/$apiVersion$endpoint';
+
+  /// Creates a custom API endpoint without automatic versioning
+  const APIEndpoint.custom({
+    required String endpoint,
     required this.method,
     this.queryParameters,
     this.headers,
     this.body,
-  }) : fullUrl = null;
+  }) : fullUrl = null,
+       _endpoint = endpoint;
 
   /// Creates an endpoint with a full, absolute URL.
   ///
@@ -69,17 +82,17 @@ class APIEndpoint {
     this.queryParameters,
     this.headers,
     this.body,
-  }) : endpoint = null;
+  }) : _endpoint = null;
 
   /// Returns `true` if this endpoint uses a full, absolute URL.
   bool get isFullUrl => fullUrl != null;
 
   /// Returns `true` if this endpoint uses a relative path to be combined with a base URL.
-  bool get isCompositeUrl => endpoint != null;
+  bool get isCompositeUrl => _endpoint != null;
 
   /// Returns the configured URL part, either the full URL or the relative endpoint path.
   ///
   /// The constructors guarantee that this will not throw an error, as either
   /// [fullUrl] or [endpoint] will be non-null.
-  String get path => isFullUrl ? fullUrl! : endpoint!;
+  String get path => isFullUrl ? fullUrl! : _endpoint!;
 }
