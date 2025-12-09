@@ -10,10 +10,7 @@ enum Environment {
   stage,
 
   /// Production environment, for the live app released to users.
-  prod,
-
-  /// Testing environment, used for automated tests.
-  test;
+  prod;
 
   /// Returns `true` if the current environment is [Environment.dev].
   bool get isDev => this == Environment.dev;
@@ -24,9 +21,6 @@ enum Environment {
   /// Returns `true` if the current environment is [Environment.prod].
   bool get isProd => this == Environment.prod;
 
-  /// Returns `true` if the current environment is [Environment.test].
-  bool get isTest => this == Environment.test;
-
   /// Returns a display-friendly name for the app based on the environment.
   String get appName {
     switch (this) {
@@ -36,8 +30,6 @@ enum Environment {
         return 'Flutter Starter Kit (Dev)';
       case Environment.stage:
         return 'Flutter Starter Kit (Stage)';
-      case Environment.test:
-        return 'Flutter Starter Kit (Test)';
     }
   }
 }

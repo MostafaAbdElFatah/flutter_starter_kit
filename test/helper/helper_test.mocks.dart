@@ -972,11 +972,6 @@ class MockAPIConfig extends _i1.Mock implements _i9.APIConfig {
           as bool);
 
   @override
-  bool get isTest =>
-      (super.noSuchMethod(Invocation.getter(#isTest), returnValue: false)
-          as bool);
-
-  @override
   List<Object?> get props =>
       (super.noSuchMethod(Invocation.getter(#props), returnValue: <Object?>[])
           as List<Object?>);

@@ -50,9 +50,6 @@ class APIConfig extends Equatable {
   /// Returns `true` if the current environment is [Environment.prod].
   bool get isProd => environment.isProd;
 
-  /// Returns `true` if the current environment is [Environment.test].
-  bool get isTest => environment.isTest;
-
   /// Creates a copy of this config with optional new values.
   APIConfig copyWith({
     String? baseUrl,

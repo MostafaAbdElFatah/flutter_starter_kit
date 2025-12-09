@@ -23,7 +23,6 @@ final class EnvData {
     Environment.dev: _devEnvData,
     Environment.stage: _stageEnvData,
     Environment.prod: _prodEnvData,
-    Environment.test: _testEnvData,
   };
 
   /// Retrieves the configuration data for a specific [Environment].
@@ -53,11 +52,4 @@ final class EnvData {
     devPass: EnvDev.envPass,
   );
 
-  /// Configuration for the Testing environment, loaded from `.env.test`.
-  static final EnvData _testEnvData = EnvData._(
-    apiKey: EnvTest.apiKey,
-    defaultBaseUrl: EnvTest.baseUrl,
-    devUser: EnvDev.envUser, // Assuming dev user is same for test
-    devPass: EnvDev.envPass,
-  );
 }

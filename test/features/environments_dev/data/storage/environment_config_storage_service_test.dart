@@ -99,7 +99,7 @@ void main() {
 
     test("loads custom BaseUrlConfigModel from storage and static EnvData", () {
       // Arrange
-      final env = Environment.test;
+      final env = Environment.stage;
 
       const customUrl = "https://override.example.com";
       const savedConfig = BaseUrlConfigModel.custom(customUrl);
@@ -132,7 +132,7 @@ void main() {
   group("currentApiConfig", () {
     test("returns config for current environment", () {
       // Arrange
-      const environment = Environment.test;
+      const environment = Environment.stage;
       when(
         mockStorage.get('app_env', defaultValue: 0),
       ).thenReturn(environment.index);
