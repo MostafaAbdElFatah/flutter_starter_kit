@@ -34,8 +34,6 @@ import '../../features/auth/domain/usecases/register_usecase.dart' as _i941;
 import '../../features/auth/presentation/cubit/auth_cubit.dart' as _i117;
 import '../../features/environments_dev/data/datasources/environment_local_data_source.dart'
     as _i766;
-import '../../features/environments_dev/data/datasources/storage/env_config_service.dart'
-    as _i629;
 import '../../features/environments_dev/data/repositories/environment_repository_impl.dart'
     as _i305;
 import '../../features/environments_dev/domain/repositories/environment_repository.dart'
@@ -52,6 +50,8 @@ import '../../features/environments_dev/domain/usecases/update_environment_confi
     as _i4;
 import '../../features/environments_dev/presentation/cubit/environment_cubit.dart'
     as _i266;
+import '../../features/environments_dev/storage/environment_config_service.dart'
+    as _i1020;
 import '../../features/onboarding/data/datasources/onboarding_local_datasource.dart'
     as _i804;
 import '../../features/onboarding/data/repositories/onboarding_repository_impl.dart'
@@ -106,8 +106,8 @@ extension GetItInjectableX on _i174.GetIt {
       final i = _i581.HiveStorageService(gh<_i224.SecureStorageService>());
       return i.init().then((_) => i);
     }, preResolve: true);
-    gh.factory<_i766.EnvLocalDataSource>(
-      () => _i629.EnvConfigStorageService(
+    gh.factory<_i1020.EnvironmentConfigService>(
+      () => _i1020.EnvironmentConfigStorageService(
         storageService: gh<_i419.StorageService>(),
       ),
     );
@@ -116,8 +116,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i50.APIInterceptor>(
       () => _i50.APIInterceptor(
-        configService: gh<_i629.EnvConfigService>(),
         secureStorage: gh<_i224.SecureStorageService>(),
+        environmentConfigService: gh<_i1020.EnvironmentConfigService>(),
+      ),
+    );
+    gh.lazySingleton<_i766.EnvironmentLocalDataSource>(
+      () => _i766.EnvironmentLocalDataSourceImpl(
+        environmentConfigService: gh<_i1020.EnvironmentConfigService>(),
       ),
     );
     gh.lazySingleton<_i430.OnboardingRepository>(
@@ -133,8 +138,30 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(gh<_i50.APIInterceptor>()),
     );
+    gh.lazySingleton<_i456.APIClient>(
+      () => _i1035.DioAPIClient(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i462.CheckOnboardingStatusUseCase>(
+      () =>
+          _i462.CheckOnboardingStatusUseCase(gh<_i430.OnboardingRepository>()),
+    );
+    gh.lazySingleton<_i360.CompleteOnboardingUseCase>(
+      () => _i360.CompleteOnboardingUseCase(gh<_i430.OnboardingRepository>()),
+    );
     gh.lazySingleton<_i365.EnvironmentRepository>(
-      () => _i305.EnvironmentRepositoryImpl(gh<_i766.EnvLocalDataSource>()),
+      () => _i305.EnvironmentRepositoryImpl(
+        gh<_i766.EnvironmentLocalDataSource>(),
+      ),
+    );
+    gh.lazySingleton<_i161.AuthRemoteDataSource>(
+      () => _i161.AuthRemoteDataSourceImpl(
+        apiClient: gh<_i456.APIClient>(),
+        connectivity: gh<_i498.NetworkConnectivity>(),
+        authEndpoints: gh<_i802.AuthEndpoints>(),
+      ),
+    );
+    gh.factory<_i153.OnboardingCubit>(
+      () => _i153.OnboardingCubit(gh<_i360.CompleteOnboardingUseCase>()),
     );
     gh.lazySingleton<_i668.DeveloperLoginUseCase>(
       () => _i668.DeveloperLoginUseCase(gh<_i365.EnvironmentRepository>()),
@@ -154,16 +181,6 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i4.UpdateEnvironmentConfigUseCase(gh<_i365.EnvironmentRepository>()),
     );
-    gh.lazySingleton<_i456.APIClient>(
-      () => _i1035.DioAPIClient(gh<_i361.Dio>()),
-    );
-    gh.lazySingleton<_i462.CheckOnboardingStatusUseCase>(
-      () =>
-          _i462.CheckOnboardingStatusUseCase(gh<_i430.OnboardingRepository>()),
-    );
-    gh.lazySingleton<_i360.CompleteOnboardingUseCase>(
-      () => _i360.CompleteOnboardingUseCase(gh<_i430.OnboardingRepository>()),
-    );
     gh.factory<_i266.EnvironmentCubit>(
       () => _i266.EnvironmentCubitImpl(
         developerLoginUseCase: gh<_i668.DeveloperLoginUseCase>(),
@@ -173,16 +190,6 @@ extension GetItInjectableX on _i174.GetIt {
         updateEnvironmentConfigUseCase:
             gh<_i4.UpdateEnvironmentConfigUseCase>(),
       ),
-    );
-    gh.lazySingleton<_i161.AuthRemoteDataSource>(
-      () => _i161.AuthRemoteDataSourceImpl(
-        apiClient: gh<_i456.APIClient>(),
-        connectivity: gh<_i498.NetworkConnectivity>(),
-        authEndpoints: gh<_i802.AuthEndpoints>(),
-      ),
-    );
-    gh.factory<_i153.OnboardingCubit>(
-      () => _i153.OnboardingCubit(gh<_i360.CompleteOnboardingUseCase>()),
     );
     gh.lazySingleton<_i787.AuthRepository>(
       () => _i573.AuthRepositoryImpl(

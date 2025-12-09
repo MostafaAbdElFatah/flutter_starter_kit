@@ -25,7 +25,7 @@ class DioAPIClient implements APIClient {
   /// [queryParameters] contains optional query parameters appended to the URL.
   /// Returns a [Response] from the server.
   @override
-  Future<Response> get(
+  Future<Model> get<Model>(
     String path, {
     dynamic data,
     Map<String, dynamic>? headers,
@@ -49,7 +49,7 @@ class DioAPIClient implements APIClient {
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
   @override
-  Future<Response> post(
+  Future<Model> post<Model>(
     String path, {
     dynamic data,
     Map<String, dynamic>? headers,
@@ -73,7 +73,7 @@ class DioAPIClient implements APIClient {
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
   @override
-  Future<Response> put(
+  Future<Model> put<Model>(
     String path, {
     dynamic data,
     Map<String, dynamic>? headers,
@@ -97,7 +97,7 @@ class DioAPIClient implements APIClient {
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
   @override
-  Future<Response> delete(
+  Future<Model> delete<Model>(
     String path, {
     dynamic data,
     Map<String, dynamic>? headers,
@@ -121,7 +121,7 @@ class DioAPIClient implements APIClient {
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
   @override
-  Future<Response> patch(
+  Future<Model> patch<Model>(
     String path, {
     dynamic data,
     Map<String, dynamic>? headers,
@@ -190,8 +190,10 @@ class DioAPIClient implements APIClient {
       final response = await _dio.fetch(options);
 
       // Parse the response data.
-      if (response.data is Map<String, dynamic>) {
-        final data = response.data as Map<String, dynamic>;
+      //if (response.data is Map<String, dynamic>) {
+      if (response.data is Map) {
+        final data = Map<String, dynamic>.from(response.data as Map);
+        //final data = response.data as Map<String, dynamic>;
         final statusCode = response.statusCode;
         final message = response.statusMessage;
 

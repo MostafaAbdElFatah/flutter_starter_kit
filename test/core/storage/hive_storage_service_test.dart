@@ -1,43 +1,15 @@
 import 'dart:convert';
-import 'package:flutter_starter_kit/core/utils/log.dart';
 import 'package:hive/hive.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:hive_test/hive_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 import 'package:flutter_starter_kit/core/infrastructure/data/storage/hive_storage_service.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/storage/secure_storage_service.dart';
+import 'package:flutter_starter_kit/core/utils/log.dart';
+import '../core_mocks_test.mocks.dart';
 
-import 'hive_storage_service_test.mocks.dart';
-// Test model for JSON serialization tests
-class TestUser {
-  final String name;
-  final int age;
 
-  TestUser({required this.name, required this.age});
 
-  factory TestUser.fromJson(Map<String, dynamic> json) {
-    return TestUser(
-      name: json['name'] as String,
-      age: json['age'] as int,
-    );
-  }
-
-  Map<String, dynamic> toJson() => {'name': name, 'age': age};
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is TestUser &&
-              runtimeType == other.runtimeType &&
-              name == other.name &&
-              age == other.age;
-
-  @override
-  int get hashCode => name.hashCode ^ age.hashCode;
-}
-
-@GenerateMocks([SecureStorageService])
 void main() {
   late HiveStorageService hiveStorageService;
   late MockSecureStorageService mockSecureStorage;
@@ -346,4 +318,32 @@ void main() {
       expect(result.length, 0);
     });
   });
+}
+
+// Test model for JSON serialization tests
+class TestUser {
+  final String name;
+  final int age;
+
+  TestUser({required this.name, required this.age});
+
+  factory TestUser.fromJson(Map<String, dynamic> json) {
+    return TestUser(
+      name: json['name'] as String,
+      age: json['age'] as int,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {'name': name, 'age': age};
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is TestUser &&
+              runtimeType == other.runtimeType &&
+              name == other.name &&
+              age == other.age;
+
+  @override
+  int get hashCode => name.hashCode ^ age.hashCode;
 }

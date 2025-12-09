@@ -1,22 +1,12 @@
-import 'package:injectable/injectable.dart' hide Environment;
-import '../../../../../core/infrastructure/data/storage/storage_service.dart';
-import '../../../domain/entities/api_config.dart';
-import '../../../domain/entities/environment.dart';
-import '../../models/auth_config.dart';
-import '../../models/base_url_config.dart';
-import '../../models/env_data.dart';
-import '../environment_local_data_source.dart';
-
-typedef EnvConfigService = EnvLocalDataSource;
+part of 'environment_config_service.dart';
 
 /// A service that manages the application's runtime configuration.
 ///
 /// This service is responsible for retrieving and persisting environment-specific
 /// settings. It interacts with a [StorageService] to read and write the
 /// application's environment and base URL configuration.
-@Injectable(as: EnvConfigService)
-@Injectable(as: EnvLocalDataSource)
-class EnvConfigStorageService implements EnvLocalDataSource {
+@Injectable(as: EnvironmentConfigService)
+class EnvironmentConfigStorageService implements EnvironmentConfigService {
   /// The key used to store the selected environment in persistent storage.
   static const String _envKey = 'app_env';
 
@@ -28,7 +18,7 @@ class EnvConfigStorageService implements EnvLocalDataSource {
   /// Creates a new [ConfigService] instance.
   ///
   /// Requires a [StorageService] to be injected for handling data persistence.
-  EnvConfigStorageService({required StorageService storageService})
+  EnvironmentConfigStorageService({required StorageService storageService})
     : _storageService = storageService;
 
   /// Retrieves the currently selected [Environment] from persistent storage.

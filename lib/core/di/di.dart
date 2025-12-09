@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../features/environments_dev/data/datasources/storage/env_config_service.dart';
+import '../../features/environments_dev/storage/environment_config_service.dart';
 import 'injection.dart' show configureDependencies;
 
 /// A global service locator instance for dependency injection.
@@ -15,7 +15,7 @@ final _sl = GetIt.instance;
 ///
 /// This provides easy access to configuration settings without needing to
 /// repeatedly look up the service from the service locator.
-final EnvConfigService envConfigService = _sl<EnvConfigService>();
+final EnvironmentConfigService environmentConfigService = _sl<EnvironmentConfigService>();
 
 /// A top-level convenience function for resolving dependencies from the service locator.
 ///

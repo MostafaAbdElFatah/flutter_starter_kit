@@ -15,7 +15,7 @@ import '../models/base_url_config.dart';
 /// environment-specific configurations.
 @LazySingleton(as: EnvironmentRepository)
 class EnvironmentRepositoryImpl implements EnvironmentRepository {
-  final EnvLocalDataSource _localDataSource;
+  final EnvironmentLocalDataSource _localDataSource;
 
   /// Creates an instance of [EnvironmentRepositoryImpl].
   EnvironmentRepositoryImpl(this._localDataSource);

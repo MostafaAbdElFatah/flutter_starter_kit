@@ -1,15 +1,12 @@
-// secure_storage_service_impl_test.dart
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/storage/secure_storage_service.dart';
 
-import 'secure_storage_service_test.mocks.dart';
+import '../core_mocks_test.mocks.dart';
 
 
-@GenerateMocks([FlutterSecureStorage])
+
 void main() {
   late MockFlutterSecureStorage mockStorage;
   late SecureStorageServiceImpl service;

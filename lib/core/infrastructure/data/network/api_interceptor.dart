@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../features/environments_dev/data/datasources/storage/env_config_service.dart';
+import '../../../../features/environments_dev/storage/environment_config_service.dart';
 import '../storage/secure_storage_service.dart';
 import 'api_endpoint.dart';
 
@@ -13,22 +13,22 @@ import 'api_endpoint.dart';
 
 @lazySingleton
 class APIInterceptor extends Interceptor {
-  final EnvConfigService _configService;
   final SecureStorageService _secureStorage;
+  final EnvironmentConfigService _environmentConfigService;
 
   /// Creates a new [APIInterceptor] instance.
   APIInterceptor({
-    required EnvConfigService configService,
     required SecureStorageService secureStorage,
-  }) : _configService = configService,
-       _secureStorage = secureStorage;
+    required EnvironmentConfigService environmentConfigService,
+  }) : _secureStorage = secureStorage,
+       _environmentConfigService = environmentConfigService;
 
   @override
   Future<void> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final appConfig = _configService.currentApiConfig;
+    final appConfig = _environmentConfigService.currentApiConfig;
 
     // Add the API key to the request headers.
     options.headers['X-Api-Key'] = appConfig.apiKey;
@@ -43,7 +43,7 @@ class APIInterceptor extends Interceptor {
 
     if (endpoint != null && endpoint.isCompositeUrl) {
       // BASE + ENDPOINT -> inject the current base URL from ConfigService
-      options.baseUrl = _configService.currentApiConfig.baseUrl;
+      options.baseUrl = _environmentConfigService.currentApiConfig.baseUrl;
       options.extra.remove('endpoint');
     }
 

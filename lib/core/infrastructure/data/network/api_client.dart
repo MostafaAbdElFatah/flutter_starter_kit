@@ -17,7 +17,7 @@ abstract class APIClient {
   /// [headers] contains optional HTTP headers.
   /// [queryParameters] contains optional query parameters appended to the URL.
   /// Returns a [Response] from the server.
-  Future<Response> get(
+  Future<Model> get<Model>(
     String path, {
     dynamic data,
     Map<String, dynamic>? headers,
@@ -31,7 +31,7 @@ abstract class APIClient {
   /// [headers] contains optional HTTP headers.
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
-  Future<Response> post(
+  Future<Model> post<Model>(
     String path, {
     dynamic data,
     Map<String, dynamic>? headers,
@@ -45,7 +45,7 @@ abstract class APIClient {
   /// [headers] contains optional HTTP headers.
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
-  Future<Response> put(
+  Future<Model> put<Model>(
     String path, {
     dynamic data,
     Map<String, dynamic>? headers,
@@ -59,7 +59,7 @@ abstract class APIClient {
   /// [headers] contains optional HTTP headers.
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
-  Future<Response> delete(
+  Future<Model> delete<Model>(
     String path, {
     dynamic data,
     Map<String, dynamic>? headers,
@@ -73,7 +73,7 @@ abstract class APIClient {
   /// [headers] contains optional HTTP headers.
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
-  Future<Response> patch(
+  Future<Model> patch<Model>(
     String path, {
     dynamic data,
     Map<String, dynamic>? headers,
