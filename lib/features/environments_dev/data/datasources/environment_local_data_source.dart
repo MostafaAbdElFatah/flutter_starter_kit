@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart' hide Environment;
 
 import '../../domain/entities/api_config.dart';
 import '../../domain/entities/environment.dart';
-import '../../storage/environment_config_service.dart';
+import '../storage/environment_config_service.dart';
 import '../models/auth_config.dart';
 import '../models/base_url_config.dart';
 
@@ -18,7 +18,7 @@ abstract class EnvironmentLocalDataSource {
   /// This is a convenience getter that combines `currentEnvironment` and
   /// `getConfigForEnvironment`. It provides the API key and base URL for the
   /// active environment.
-  ApiConfig get currentApiConfig;
+  APIConfig get currentApiConfig;
 
   /// Retrieves the currently selected [Environment] from persistent storage.
   ///
@@ -40,7 +40,7 @@ abstract class EnvironmentLocalDataSource {
   ///
   /// ### Parameters:
   /// - [env]: The environment for which to get the API config.
-  ApiConfig getConfigForEnvironment(Environment env);
+  APIConfig getConfigForEnvironment(Environment env);
 
   /// Updates and persists the application's configuration.
   ///
@@ -75,7 +75,7 @@ class EnvironmentLocalDataSourceImpl implements EnvironmentLocalDataSource {
   /// `getConfigForEnvironment`. It provides the API key and base URL for the
   /// active environment.
   @override
-  ApiConfig get currentApiConfig => _environmentConfigService.currentApiConfig;
+  APIConfig get currentApiConfig => _environmentConfigService.currentApiConfig;
 
   /// Retrieves the currently selected [Environment] from persistent storage.
   ///
@@ -101,7 +101,7 @@ class EnvironmentLocalDataSourceImpl implements EnvironmentLocalDataSource {
   /// ### Parameters:
   /// - [env]: The environment for which to get the API config.
   @override
-  ApiConfig getConfigForEnvironment(env) => _environmentConfigService.getConfigForEnvironment(env);
+  APIConfig getConfigForEnvironment(env) => _environmentConfigService.getConfigForEnvironment(env);
 
   /// Updates and persists the application's configuration.
   ///

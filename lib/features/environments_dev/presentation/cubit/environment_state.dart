@@ -25,7 +25,7 @@ final class EnvironmentLoading extends EnvironmentState {
 ///
 /// This state holds the current [AppConfig] so the UI can display it.
 final class EnvironmentLoaded extends EnvironmentState {
-  final ApiConfig config;
+  final APIConfig config;
 
   const EnvironmentLoaded(this.config);
 

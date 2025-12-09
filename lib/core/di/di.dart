@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../features/environments_dev/storage/environment_config_service.dart';
+import '../../features/environments_dev/data/storage/environment_config_service.dart';
 import 'injection.dart' show configureDependencies;
 
 /// A global service locator instance for dependency injection.

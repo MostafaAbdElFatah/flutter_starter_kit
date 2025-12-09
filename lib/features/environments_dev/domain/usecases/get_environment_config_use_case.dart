@@ -11,7 +11,7 @@ import '../repositories/environment_repository.dart';
 /// This class encapsulates the business logic for fetching the configuration
 /// details (like API keys and default URLs) for a given [Environment].
 @lazySingleton
-final class GetEnvironmentConfigUseCase extends UseCase<EnvironmentRepository, ApiConfig, EnvironmentConfigGetParams>{
+final class GetEnvironmentConfigUseCase extends UseCase<EnvironmentRepository, APIConfig, EnvironmentConfigGetParams>{
 
   /// Creates an instance of [GetEnvironmentConfigUseCase].
   ///
@@ -22,7 +22,7 @@ final class GetEnvironmentConfigUseCase extends UseCase<EnvironmentRepository, A
   ///
   /// Returns the [AppEnvConfig] for the specified [env].
   @override
-  ApiConfig call(EnvironmentConfigGetParams params) => repository.getConfigForEnvironment(params);
+  APIConfig call(EnvironmentConfigGetParams params) => repository.getConfigForEnvironment(params);
 }
 
 class EnvironmentConfigGetParams extends Equatable{

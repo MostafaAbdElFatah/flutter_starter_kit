@@ -8,7 +8,7 @@ import 'environment.dart';
 ///
 /// This class is the single source of truth for all environment-specific settings.
 /// It is immutable and uses [Equatable] for value-based comparison.
-final class ApiConfig extends Equatable {
+class APIConfig extends Equatable {
   /// The base URL for the API, derived from the environment's default.
   final String _baseUrl;
 
@@ -22,7 +22,7 @@ final class ApiConfig extends Equatable {
   final BaseUrlConfig baseUrlConfig;
 
   /// Creates a new [AppConfig] instance.
-  const ApiConfig({
+  const APIConfig({
     required String baseUrl,
     required this.apiKey,
     required this.environment,
@@ -54,13 +54,13 @@ final class ApiConfig extends Equatable {
   bool get isTest => environment.isTest;
 
   /// Creates a copy of this config with optional new values.
-  ApiConfig copyWith({
+  APIConfig copyWith({
     String? baseUrl,
     String? apiKey,
     Environment? environment,
     BaseUrlConfig? baseUrlConfig,
   }) {
-    return ApiConfig(
+    return APIConfig(
       baseUrl: baseUrl ?? _baseUrl,
       apiKey: apiKey ?? this.apiKey,
       environment: environment ?? this.environment,

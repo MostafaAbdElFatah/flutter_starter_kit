@@ -36,6 +36,8 @@ import '../../features/environments_dev/data/datasources/environment_local_data_
     as _i766;
 import '../../features/environments_dev/data/repositories/environment_repository_impl.dart'
     as _i305;
+import '../../features/environments_dev/data/storage/environment_config_service.dart'
+    as _i109;
 import '../../features/environments_dev/domain/repositories/environment_repository.dart'
     as _i365;
 import '../../features/environments_dev/domain/usecases/developer_login_usecase.dart'
@@ -50,8 +52,6 @@ import '../../features/environments_dev/domain/usecases/update_environment_confi
     as _i4;
 import '../../features/environments_dev/presentation/cubit/environment_cubit.dart'
     as _i266;
-import '../../features/environments_dev/storage/environment_config_service.dart'
-    as _i1020;
 import '../../features/onboarding/data/datasources/onboarding_local_datasource.dart'
     as _i804;
 import '../../features/onboarding/data/repositories/onboarding_repository_impl.dart'
@@ -106,23 +106,17 @@ extension GetItInjectableX on _i174.GetIt {
       final i = _i581.HiveStorageService(gh<_i224.SecureStorageService>());
       return i.init().then((_) => i);
     }, preResolve: true);
-    gh.factory<_i1020.EnvironmentConfigService>(
-      () => _i1020.EnvironmentConfigStorageService(
-        storageService: gh<_i419.StorageService>(),
-      ),
-    );
     gh.lazySingleton<_i804.OnboardingLocalDataSource>(
       () => _i804.OnboardingLocalDataSourceImpl(gh<_i419.StorageService>()),
     );
-    gh.lazySingleton<_i50.APIInterceptor>(
-      () => _i50.APIInterceptor(
-        secureStorage: gh<_i224.SecureStorageService>(),
-        environmentConfigService: gh<_i1020.EnvironmentConfigService>(),
+    gh.factory<_i109.EnvironmentConfigService>(
+      () => _i109.EnvironmentConfigStorageService(
+        storageService: gh<_i419.StorageService>(),
       ),
     );
     gh.lazySingleton<_i766.EnvironmentLocalDataSource>(
       () => _i766.EnvironmentLocalDataSourceImpl(
-        environmentConfigService: gh<_i1020.EnvironmentConfigService>(),
+        environmentConfigService: gh<_i109.EnvironmentConfigService>(),
       ),
     );
     gh.lazySingleton<_i430.OnboardingRepository>(
@@ -135,11 +129,11 @@ extension GetItInjectableX on _i174.GetIt {
         secureStorageService: gh<_i224.SecureStorageService>(),
       ),
     );
-    gh.lazySingleton<_i361.Dio>(
-      () => networkModule.dio(gh<_i50.APIInterceptor>()),
-    );
-    gh.lazySingleton<_i456.APIClient>(
-      () => _i1035.DioAPIClient(gh<_i361.Dio>()),
+    gh.lazySingleton<_i50.APIInterceptor>(
+      () => _i50.APIInterceptor(
+        secureStorage: gh<_i224.SecureStorageService>(),
+        environmentConfigService: gh<_i109.EnvironmentConfigService>(),
+      ),
     );
     gh.lazySingleton<_i462.CheckOnboardingStatusUseCase>(
       () =>
@@ -153,12 +147,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i766.EnvironmentLocalDataSource>(),
       ),
     );
-    gh.lazySingleton<_i161.AuthRemoteDataSource>(
-      () => _i161.AuthRemoteDataSourceImpl(
-        apiClient: gh<_i456.APIClient>(),
-        connectivity: gh<_i498.NetworkConnectivity>(),
-        authEndpoints: gh<_i802.AuthEndpoints>(),
-      ),
+    gh.lazySingleton<_i361.Dio>(
+      () => networkModule.dio(gh<_i50.APIInterceptor>()),
     );
     gh.factory<_i153.OnboardingCubit>(
       () => _i153.OnboardingCubit(gh<_i360.CompleteOnboardingUseCase>()),
@@ -181,6 +171,9 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i4.UpdateEnvironmentConfigUseCase(gh<_i365.EnvironmentRepository>()),
     );
+    gh.lazySingleton<_i456.APIClient>(
+      () => _i1035.DioAPIClient(gh<_i361.Dio>()),
+    );
     gh.factory<_i266.EnvironmentCubit>(
       () => _i266.EnvironmentCubitImpl(
         developerLoginUseCase: gh<_i668.DeveloperLoginUseCase>(),
@@ -189,6 +182,13 @@ extension GetItInjectableX on _i174.GetIt {
         getCurrentEnvironmentUseCase: gh<_i272.GetCurrentEnvironmentUseCase>(),
         updateEnvironmentConfigUseCase:
             gh<_i4.UpdateEnvironmentConfigUseCase>(),
+      ),
+    );
+    gh.lazySingleton<_i161.AuthRemoteDataSource>(
+      () => _i161.AuthRemoteDataSourceImpl(
+        apiClient: gh<_i456.APIClient>(),
+        connectivity: gh<_i498.NetworkConnectivity>(),
+        authEndpoints: gh<_i802.AuthEndpoints>(),
       ),
     );
     gh.lazySingleton<_i787.AuthRepository>(

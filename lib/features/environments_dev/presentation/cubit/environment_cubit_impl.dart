@@ -7,7 +7,7 @@ part of 'environment_cubit.dart';
 /// with the appropriate use cases.
 @Injectable(as: EnvironmentCubit)
 final class EnvironmentCubitImpl extends EnvironmentCubit {
-  late ApiConfig _config;
+  late APIConfig _config;
 
   final DeveloperLoginUseCase _developerLoginUseCase;
   final GetCurrentApiConfigUseCase _getCurrentApiConfigUseCase;
@@ -29,7 +29,7 @@ final class EnvironmentCubitImpl extends EnvironmentCubit {
        _updateEnvironmentConfigUseCase = updateEnvironmentConfigUseCase,
        super(const EnvironmentInitial());
 
-  ApiConfig get currentConfig => _getCurrentApiConfigUseCase(NoParams());
+  APIConfig get currentConfig => _getCurrentApiConfigUseCase(NoParams());
 
   @override
   void init() {

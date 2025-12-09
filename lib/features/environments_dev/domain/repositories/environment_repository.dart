@@ -14,7 +14,7 @@ abstract class EnvironmentRepository {
   /// This is a convenience getter that combines `currentEnvironment` and
   /// `getConfigForEnvironment`. It provides the API key and base URL for the
   /// active environment.
-  ApiConfig get currentApiConfig;
+  APIConfig get currentApiConfig;
 
   /// Retrieves the currently selected [Environment] from persistent storage.
   ///
@@ -27,7 +27,7 @@ abstract class EnvironmentRepository {
   ///
   /// ### Parameters:
   /// - [env]: The environment for which to get the API config.
-  ApiConfig getConfigForEnvironment(EnvironmentConfigGetParams params);
+  APIConfig getConfigForEnvironment(EnvironmentConfigGetParams params);
 
   /// Updates the application's configuration.
   ///

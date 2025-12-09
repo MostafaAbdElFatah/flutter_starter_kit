@@ -1,10 +1,10 @@
 import 'package:injectable/injectable.dart' hide Environment;
-import '../../../core/infrastructure/data/storage/storage_service.dart';
-import '../domain/entities/api_config.dart';
-import '../domain/entities/environment.dart';
-import '../data/models/auth_config.dart';
-import '../data/models/base_url_config.dart';
-import '../data/models/env_data.dart';
+import '../../../../core/infrastructure/data/storage/storage_service.dart';
+import '../../domain/entities/api_config.dart';
+import '../../domain/entities/environment.dart';
+import '../models/auth_config.dart';
+import '../models/base_url_config.dart';
+import '../models/env_data.dart';
 
 part 'environment_config_storage_service.dart';
 
@@ -21,7 +21,7 @@ abstract class EnvironmentConfigService {
   /// This is a convenience getter that combines `currentEnvironment` and
   /// `getConfigForEnvironment`. It provides the API key and base URL for the
   /// active environment.
-  ApiConfig get currentApiConfig;
+  APIConfig get currentApiConfig;
 
   /// Retrieves the currently selected [Environment] from persistent storage.
   ///
@@ -43,7 +43,7 @@ abstract class EnvironmentConfigService {
   ///
   /// ### Parameters:
   /// - [env]: The environment for which to get the API config.
-  ApiConfig getConfigForEnvironment(Environment env);
+  APIConfig getConfigForEnvironment(Environment env);
 
   /// Updates and persists the application's configuration.
   ///

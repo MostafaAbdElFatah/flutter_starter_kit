@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../features/environments_dev/storage/environment_config_service.dart';
+import '../../../../features/environments_dev/data/storage/environment_config_service.dart';
 import '../storage/secure_storage_service.dart';
 import 'api_endpoint.dart';
 
@@ -44,9 +44,8 @@ class APIInterceptor extends Interceptor {
     if (endpoint != null && endpoint.isCompositeUrl) {
       // BASE + ENDPOINT -> inject the current base URL from ConfigService
       options.baseUrl = _environmentConfigService.currentApiConfig.baseUrl;
-      options.extra.remove('endpoint');
     }
-
+    options.extra.remove('endpoint');
     super.onRequest(options, handler);
   }
 }

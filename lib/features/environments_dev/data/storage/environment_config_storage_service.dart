@@ -37,7 +37,7 @@ class EnvironmentConfigStorageService implements EnvironmentConfigService {
   /// `getConfigForEnvironment`. It provides the API key and base URL for the
   /// active environment.
   @override
-  ApiConfig get currentApiConfig => getConfigForEnvironment(currentEnvironment);
+  APIConfig get currentApiConfig => getConfigForEnvironment(currentEnvironment);
 
 
   /// Retrieves the developer authentication credentials for a given [Environment].
@@ -61,7 +61,7 @@ class EnvironmentConfigStorageService implements EnvironmentConfigService {
   /// ### Parameters:
   /// - [env]: The environment for which to get the API config.
   @override
-  ApiConfig getConfigForEnvironment(Environment env) {
+  APIConfig getConfigForEnvironment(Environment env) {
     // Load the saved base URL config, defaulting to 'defaultUrl' if not found.
     final baseUrlConfig = _storageService.getJson<BaseUrlConfigModel>(
       key: env.name + _envBaseUrlConfigKey,
@@ -73,7 +73,7 @@ class EnvironmentConfigStorageService implements EnvironmentConfigService {
     final data = EnvData.get(env);
 
     // Construct and return the AppConfig object.
-    return ApiConfig(
+    return APIConfig(
       environment: env,
       apiKey: data.apiKey,
       baseUrl: data.defaultBaseUrl,

@@ -10,7 +10,7 @@ import '../repositories/environment_repository.dart';
 /// This class encapsulates the business logic for fetching the current [AppConfig],
 /// providing a clean and testable interface for the presentation layer.
 @lazySingleton
-final class GetCurrentApiConfigUseCase extends UseCase<EnvironmentRepository, ApiConfig, NoParams>{
+final class GetCurrentApiConfigUseCase extends UseCase<EnvironmentRepository, APIConfig, NoParams>{
 
   /// Creates an instance of [GetCurrentApiConfigUseCase].
   ///
@@ -21,5 +21,5 @@ final class GetCurrentApiConfigUseCase extends UseCase<EnvironmentRepository, Ap
   ///
   /// Returns the current [AppConfig] synchronously.
   @override
-  ApiConfig call(NoParams params) => repository.currentApiConfig;
+  APIConfig call(NoParams params) => repository.currentApiConfig;
 }

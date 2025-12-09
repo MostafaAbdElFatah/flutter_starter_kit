@@ -26,7 +26,7 @@ class EnvironmentRepositoryImpl implements EnvironmentRepository {
   /// `getConfigForEnvironment`. It provides the API key and base URL for the
   /// active environment.
   @override
-  ApiConfig get currentApiConfig => _localDataSource.currentApiConfig;
+  APIConfig get currentApiConfig => _localDataSource.currentApiConfig;
 
   /// Retrieves the currently selected [Environment] from persistent storage.
   ///
@@ -41,7 +41,7 @@ class EnvironmentRepositoryImpl implements EnvironmentRepository {
   /// ### Parameters:
   /// - [env]: The environment for which to get the API config.
   @override
-  ApiConfig getConfigForEnvironment(EnvironmentConfigGetParams params) =>
+  APIConfig getConfigForEnvironment(EnvironmentConfigGetParams params) =>
       _localDataSource.getConfigForEnvironment(params.env);
 
   @override

@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_starter_kit/core/infrastructure/data/storage/hive_storage_service.dart';
 import 'package:flutter_starter_kit/core/utils/log.dart';
-import '../core_mocks_test.mocks.dart';
+import '../../helper/helper_test.mocks.dart';
 
 
 
@@ -93,34 +93,39 @@ void main() {
     });
 
     test('put and get', () async {
-      await hiveStorageService.put(key: 'name', value: 'Mostafa');
+      const key = 'name';
+      const value = "Ahmed";
+      await hiveStorageService.put(key: key, value:value);
 
       // Act
-      final result = hiveStorageService.get('name');
+      final result = hiveStorageService.get(key);
 
       // Assert
-      expect(result, 'Mostafa');
+      expect(result, value);
     });
 
     test('delete', () async {
 
       // Arrange
-      await hiveStorageService.put(key: 'age', value: 30);
+      const key = 'age';
+      const value = 30;
+      await hiveStorageService.put(key: key, value: value);
 
       // Act
-      await hiveStorageService.delete('age');
+      await hiveStorageService.delete(key);
 
       // Assert
-      expect(hiveStorageService.get('age'), null);
+      expect(hiveStorageService.get(key), null);
     });
 
     test('get with default', () {
 
       // Act
-      final result = hiveStorageService.get('unknown', defaultValue: 'default');
+      const defaultValue = 'default';
+      final result = hiveStorageService.get('unknown', defaultValue: defaultValue);
 
       // Assert
-      expect(result, 'default');
+      expect(result, defaultValue);
     });
   });
 
@@ -296,10 +301,10 @@ void main() {
 
       // Assert
       expect(result.length, 3);
-      expect(result[0].name, 'Ahmed');
-      expect(result[0].age, 20);
-      expect(result[2].name, 'Ali');
-      expect(result[2].age, 50);
+      expect(result.first.name, list.first.name);
+      expect(result.first.age,  list.first.age);
+      expect(result.last.name, list.last.name);
+      expect(result.last.age, list.last.age);
     });
 
     test('returns default list on invalid json', () async {

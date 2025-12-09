@@ -30,7 +30,7 @@ extension HttpMethodExtension on HttpMethod {
 /// It supports two types of endpoints:
 /// 1.  **Composite**: A relative path that is combined with a base URL.
 /// 2.  **Full URL**: A complete, absolute URL that is used as-is.
-final class APIEndpoint {
+class APIEndpoint {
   /// The full, absolute URL for the request. Is `null` for composite endpoints.
   final String? fullUrl;
 
