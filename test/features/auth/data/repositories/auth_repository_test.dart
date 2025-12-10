@@ -1,4 +1,3 @@
-import 'package:flutter_starter_kit/core/errors/exceptions.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -8,12 +7,15 @@ import 'package:flutter_starter_kit/features/auth/data/models/user.dart';
 import 'package:flutter_starter_kit/features/auth/data/repositories/auth_repository.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/login_credentials.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/register_credentials.dart';
-
+import 'package:flutter_starter_kit/core/errors/exceptions.dart';
+import 'package:flutter_starter_kit/core/utils/log.dart';
 import '../../../../helper/helper_test.mocks.dart';
 
 // Generate mocks for all dependencies.
 
 void main() {
+  Log.overrideShouldDebugForTests = true;
+
   late AuthRepositoryImpl repository;
   late MockDeviceServices mockDeviceServices;
   late MockAuthLocalDataSource mockLocalDataSource;
@@ -123,6 +125,18 @@ void main() {
       // Assert
       expect(result, false);
     });
+
+    test('should return false if exception occurs', () async {
+      when(mockLocalDataSource.getToken())
+          .thenThrow(Exception('Error'));
+      when(mockLocalDataSource.getUser())
+          .thenThrow(Exception('Error'));
+
+      final result = await repository.isLoggedIn();
+
+      expect(result, false);
+    });
+
   });
 
   group('getAuthenticatedUser', () {

@@ -1,3 +1,4 @@
+import 'package:flutter_starter_kit/core/utils/log.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/exceptions.dart';
@@ -37,13 +38,18 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<bool> isLoggedIn() async {
-    final user = _localDataSource.getUser();
-    final token = await _localDataSource.getToken();
+    try {
+      final user = _localDataSource.getUser();
+      final token = await _localDataSource.getToken();
 
-    final hasToken = token != null && token.isNotEmpty;
-    final hasUser = user != null && user.isVerified;
+      final hasToken = token != null && token.isNotEmpty;
+      final hasUser = user != null && user.isVerified;
 
-    return hasToken && hasUser;
+      return hasToken && hasUser;
+    } catch (e) {
+      Log.error(e.toString());
+      return false;
+    }
   }
 
   @override
@@ -117,7 +123,8 @@ class AuthRepositoryImpl implements AuthRepository {
       failure = Failure.handle(e);
     } finally {
       // Always run, even on network/server failure
-      await _localDataSource.deleteUser(); // only after successful server delete
+      await _localDataSource
+          .deleteUser(); // only after successful server delete
     }
     if (failure != null) throw failure;
   }
@@ -126,10 +133,10 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> deleteAccount() async {
     try {
       await _remoteDataSource.deleteAccount();
-      await _localDataSource.deleteUser(); // only after successful server delete
+      await _localDataSource
+          .deleteUser(); // only after successful server delete
     } catch (e) {
       throw Failure.handle(e); // don't clear local session on failure
     }
   }
-
 }

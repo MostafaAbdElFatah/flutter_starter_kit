@@ -51,8 +51,14 @@ import 'package:flutter_starter_kit/features/auth/data/models/responses/login_re
     as _i21;
 import 'package:flutter_starter_kit/features/auth/data/models/user.dart'
     as _i30;
+import 'package:flutter_starter_kit/features/auth/domain/entities/login_credentials.dart'
+    as _i46;
+import 'package:flutter_starter_kit/features/auth/domain/entities/register_credentials.dart'
+    as _i47;
 import 'package:flutter_starter_kit/features/auth/domain/entities/user.dart'
     as _i10;
+import 'package:flutter_starter_kit/features/auth/domain/repositories/auth_repository.dart'
+    as _i45;
 import 'package:flutter_starter_kit/features/environments_dev/data/models/auth_config.dart'
     as _i13;
 import 'package:flutter_starter_kit/features/environments_dev/data/models/base_url_config.dart'
@@ -2811,4 +2817,67 @@ class MockAuthRemoteDataSource extends _i1.Mock
             ),
           )
           as _i11.Future<_i21.LoginUser>);
+}
+
+/// A class which mocks [AuthRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthRepository extends _i1.Mock implements _i45.AuthRepository {
+  MockAuthRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<_i10.User> login(_i46.LoginCredentials? params) =>
+      (super.noSuchMethod(
+            Invocation.method(#login, [params]),
+            returnValue: _i11.Future<_i10.User>.value(
+              _FakeUser_9(this, Invocation.method(#login, [params])),
+            ),
+          )
+          as _i11.Future<_i10.User>);
+
+  @override
+  _i11.Future<_i10.User> register(_i47.RegisterCredentials? params) =>
+      (super.noSuchMethod(
+            Invocation.method(#register, [params]),
+            returnValue: _i11.Future<_i10.User>.value(
+              _FakeUser_9(this, Invocation.method(#register, [params])),
+            ),
+          )
+          as _i11.Future<_i10.User>);
+
+  @override
+  _i11.Future<bool> isLoggedIn() =>
+      (super.noSuchMethod(
+            Invocation.method(#isLoggedIn, []),
+            returnValue: _i11.Future<bool>.value(false),
+          )
+          as _i11.Future<bool>);
+
+  @override
+  _i11.Future<_i10.User?> getAuthenticatedUser() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAuthenticatedUser, []),
+            returnValue: _i11.Future<_i10.User?>.value(),
+          )
+          as _i11.Future<_i10.User?>);
+
+  @override
+  _i11.Future<void> logout() =>
+      (super.noSuchMethod(
+            Invocation.method(#logout, []),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
+
+  @override
+  _i11.Future<void> deleteAccount() =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteAccount, []),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
 }

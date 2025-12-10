@@ -19,5 +19,6 @@ class LogoutUseCase extends AsyncUseCase<AuthRepository, void, NoParams>{
   /// Executes the logout use case.
   ///
   /// This will clear any cached user data and delete the authentication token.
+  @override
   Future<void> call(NoParams params) => repository.logout();
 }

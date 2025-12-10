@@ -5,7 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
-
+import 'package:flutter_starter_kit/features/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter_starter_kit/features/auth/data/models/user.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/storage/storage_service.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/storage/secure_storage_service.dart';
@@ -49,6 +49,7 @@ import 'package:flutter_starter_kit/features/auth/data/datasources/auth_remote_d
   // Auth
   AuthLocalDataSource,
   AuthRemoteDataSource,
+  AuthRepository,
 ])
 void main() {}
 
