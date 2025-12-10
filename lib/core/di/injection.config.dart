@@ -230,7 +230,7 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.factory<_i117.AuthCubit>(
-      () => _i117.AuthCubitImpl(
+      () => _i117.AuthCubit(
         loginUseCase: gh<_i188.LoginUseCase>(),
         registerUseCase: gh<_i941.RegisterUseCase>(),
         logoutUseCase: gh<_i48.LogoutUseCase>(),

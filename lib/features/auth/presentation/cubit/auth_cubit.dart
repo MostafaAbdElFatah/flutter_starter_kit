@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/infrastructure/domain/entities/no_params.dart';
+import '../../../../core/infrastructure/presentation/cubits/base_cubit.dart';
 import '../../domain/entities/login_credentials.dart';
 import '../../domain/entities/register_credentials.dart';
 import '../../domain/entities/user.dart';
@@ -14,17 +15,39 @@ import '../../domain/usecases/logout_usecase.dart';
 import '../../domain/usecases/register_usecase.dart';
 
 part 'auth_state.dart';
-part 'auth_cubit_impl.dart';
 
-/// An abstract class defining the contract for the [AuthCubit].
+/// The concrete implementation of the [AuthCubit].
 ///
-/// This contract ensures that any implementation of the [AuthCubit] provides a
-/// standardized interface for managing user authentication. It covers essential
-/// functionalities such as checking the current auth status, logging in, registering,
-/// logging out, and deleting an account.
-abstract class AuthCubit extends Cubit<AuthState> {
-  /// Creates an [AuthCubit] instance with an initial state.
-  AuthCubit(super.initialState);
+/// This class manages the authentication state by interacting with various use cases.
+/// It handles the logic for checking auth status, logging in, registering, and logging out.
+// class AuthCubit extends BaseCubit<AuthState> {
+//   AuthCubit() : super(const AuthInitial());
+@injectable
+class AuthCubit extends BaseCubit<AuthState> {
+  final LoginUseCase _loginUseCase;
+  final RegisterUseCase _registerUseCase;
+  final LogoutUseCase _logoutUseCase;
+  //final IsLoggedInUseCase _isLoggedInUseCase;
+  final DeleteAccountUsecase _deleteAccountUsecase;
+  final GetAuthenticatedUserUseCase _getAuthenticatedUserUseCase;
+
+  /// Creates an instance of [AuthCubitImpl].
+  ///
+  /// Requires all authentication-related use cases to be injected.
+  AuthCubit({
+    required LoginUseCase loginUseCase,
+    required RegisterUseCase registerUseCase,
+    required LogoutUseCase logoutUseCase,
+    required IsLoggedInUseCase isLoggedInUseCase,
+    required DeleteAccountUsecase deleteAccountUsecase,
+    required GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
+  }) : _loginUseCase = loginUseCase,
+       _registerUseCase = registerUseCase,
+       _logoutUseCase = logoutUseCase,
+       //_isLoggedInUseCase = isLoggedInUseCase,
+       _deleteAccountUsecase = deleteAccountUsecase,
+       _getAuthenticatedUserUseCase = getAuthenticatedUserUseCase,
+       super(const AuthInitial());
 
   /// A static helper method to retrieve the [AuthCubit] instance from the widget tree.
   ///
@@ -34,50 +57,86 @@ abstract class AuthCubit extends Cubit<AuthState> {
   /// ```dart
   /// AuthCubit.of(context).login(email: 'test@test.com', password: '123');
   /// ```
-  static AuthCubit of(context) => BlocProvider.of(context);
+  static AuthCubit of(BuildContext context, {bool listen = false}) =>
+      BaseCubit.of(context, listen: listen);
 
-  /// Checks the user's current authentication status.
+  /// Checks the user's current authentication status when the app starts.
   ///
-  /// This should be called when the application starts to determine if the user
-  /// is already logged in, emitting [AuthAuthenticated] or [AuthInitial] accordingly.
-  Future<void> checkAuthStatus();
+  /// It attempts to retrieve the cached user. If successful, it emits
+  /// [AuthAuthenticated]; otherwise, it emits [AuthUnauthenticated].
+  Future<void> checkAuthStatus() async {
+    try {
+      final loggedUser = await _getAuthenticatedUserUseCase(NoParams());
+      loggedUser != null
+          ? emit(AuthAuthenticated(loggedUser))
+          : emit(const AuthUnauthenticated());
+    } catch (e) {
+      // If checking auth status fails, assume the user is not logged in.
+      emit(AuthError(e.toString()));
+    }
+  }
 
-  /// Initiates the login process with the provided credentials.
+  /// Logs in the user with the provided [email] and [password].
   ///
-  /// This method should handle the logic for authenticating the user
-  /// with their email and password, emitting appropriate states like
-  /// [AuthLoading], [AuthAuthenticated], or [AuthError].
-  ///
-  /// ### Parameters:
-  /// - `email`: The email address provided by the user.
-  /// - `password`: The password provided by the user.
-  void login({required String email, required String password});
+  /// Emits [AuthLoading], then either [AuthAuthenticated] on success or
+  /// [AuthError] on failure.
+  void login({required String email, required String password}) async {
+    emit(const AuthLoading());
+    try {
+      final user = await _loginUseCase(
+        LoginCredentials(email: email, password: password),
+      );
+      emit(AuthAuthenticated(user));
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
 
-  /// Initiates the registration process for a new user.
+  /// Registers a new user with the given details.
   ///
-  /// This method should handle the logic for creating a new user account,
-  /// emitting appropriate states like [AuthLoading], [AuthAuthenticated], or [AuthError].
-  ///
-  /// ### Parameters:
-  /// - `name`: The user's full name.
-  /// - `email`: The user's email address.
-  /// - `password`: The desired password for the new account.
+  /// Emits [AuthLoading], then either [AuthAuthenticated] on success or
+  /// [AuthError] on failure.
   void register({
     required String name,
     required String email,
     required String password,
-  });
+  }) async {
+    emit(const AuthLoading());
+    try {
+      final user = await _registerUseCase(
+        RegisterCredentials(name: name, email: email, password: password),
+      );
+      emit(AuthAuthenticated(user));
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
 
-  /// Logs out the currently authenticated user.
+  /// Logs out the current user.
   ///
-  /// This method should clear any local session data and reset the
-  /// authentication state to [AuthInitial].
-  Future<void> logout();
+  /// Emits [AuthLoading], then clears the local session and emits [AuthUnauthenticated].
+  /// If an error occurs, it emits [AuthError].
+  Future<void> logout() async {
+    emit(const AuthLoading());
+    try {
+      await _logoutUseCase(NoParams());
+      emit(const AuthUnauthenticated());
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
 
-  /// Deletes the currently authenticated user's account.
+  /// delete the current account.
   ///
-  /// This method should handle the logic for permanently deleting the user's
-  /// account from the server and clearing all local data. After deletion,
-  /// the state should be reset to [AuthInitial].
-  Future<void> deleteAccount();
+  /// Emits [AuthLoading], then clears the local session and emits [AuthUnauthenticated].
+  /// If an error occurs, it emits [AuthError].
+  Future<void> deleteAccount() async {
+    emit(const AuthLoading());
+    try {
+      await _deleteAccountUsecase(NoParams());
+      emit(const AuthUnauthenticated());
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
 }

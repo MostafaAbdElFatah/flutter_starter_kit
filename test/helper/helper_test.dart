@@ -18,9 +18,13 @@ import 'package:flutter_starter_kit/core/utils/device_services.dart';
 import 'package:flutter_starter_kit/core/utils/platform_checker.dart';
 import 'package:flutter_starter_kit/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_starter_kit/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:flutter_starter_kit/features/auth/domain/usecases/delete_account_usecase.dart';
+import 'package:flutter_starter_kit/features/auth/domain/usecases/get_authenticated_user_usecase.dart';
+import 'package:flutter_starter_kit/features/auth/domain/usecases/login_usecase.dart';
+import 'package:flutter_starter_kit/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:flutter_starter_kit/features/auth/domain/usecases/register_usecase.dart';
 
 @GenerateMocks([
-
   // Network
   Dio,
   APIConfig,
@@ -50,6 +54,10 @@ import 'package:flutter_starter_kit/features/auth/data/datasources/auth_remote_d
   AuthLocalDataSource,
   AuthRemoteDataSource,
   AuthRepository,
+  LoginUseCase,
+  RegisterUseCase,
+  LogoutUseCase,
+  DeleteAccountUsecase,
+  GetAuthenticatedUserUseCase,
 ])
 void main() {}
-
