@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/errors/exceptions.dart';
+import '../../../../core/errors/failure.dart';
 import '../../../../core/infrastructure/data/datasources/remote_datasource.dart';
 import '../../../../core/infrastructure/data/models/api_response.dart';
 import '../models/requests/login_request.dart';

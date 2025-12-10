@@ -1,7 +1,7 @@
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_starter_kit/core/errors/exceptions.dart';
+import 'package:flutter_starter_kit/core/errors/failure.dart';
 import 'package:flutter_starter_kit/core/infrastructure/domain/entities/no_params.dart';
 import 'package:flutter_starter_kit/features/auth/domain/usecases/delete_account_usecase.dart';
 import '../../../../helper/helper_test.mocks.dart';
@@ -40,7 +40,7 @@ void main() {
       // Act & Assert
       expect(usecase(NoParams()), throwsA(exception));
       verify(mockRepository.deleteAccount()).called(1);
-      expect(usecase(NoParams()), throwsA(isA<ServerException>()));
+      expect(usecase(NoParams()), throwsA(isA<Failure>()));
     });
   });
 }

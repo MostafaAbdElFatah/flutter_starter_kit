@@ -1,4 +1,72 @@
-part of 'exceptions.dart';
+import 'package:dio/dio.dart';
+import 'package:equatable/equatable.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+import '../assets/localization_keys.dart';
+part 'exceptions.dart';
+
+abstract class Failure extends Equatable implements Exception {
+  final String message;
+  const Failure([this.message = '']);
+
+  // Returning true so that Equatable prints a string representation if needed.
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props => [this];
+
+  /// Returns a localized string representation of the failure for display.
+  @override
+  String toString() => "Exception: ${message.tr()}";
+
+  /// Handles a dynamic error and converts it into a standardized [Exception].
+  ///
+  /// If the error is a [DioException], it is processed by [_handleDioError].
+  /// If it's another type of [Exception], it's returned as is.
+  /// Non-exception throwables are wrapped in an [UnexpectedException].
+  static Exception handle(dynamic error) {
+    switch (error) {
+      case Failure failure:
+        return failure;
+      case DioException dioException:
+        return _handleDioError(dioException);
+      default:
+        return UnexpectedException(error.toString());
+    }
+  }
+
+  /// Maps a [DioException] to a specific [FailureType] type or a [ServerException].
+  static Exception _handleDioError(DioException error) {
+    switch (error.type) {
+      case DioExceptionType.connectionTimeout:
+        return FailureType.connectTimeout;
+      case DioExceptionType.sendTimeout:
+        return FailureType.sendTimeout;
+      case DioExceptionType.receiveTimeout:
+        return FailureType.receiveTimeout;
+      case DioExceptionType.connectionError:
+        return FailureType.noConnectionError;
+      case DioExceptionType.cancel:
+        return FailureType.cancel;
+      case DioExceptionType.badCertificate:
+        return FailureType.badRequest;
+      case DioExceptionType.unknown:
+        return FailureType.errorOccurred;
+      case DioExceptionType.badResponse:
+        // For bad responses (e.g., 4xx, 5xx), we create a ServerException.
+        // We attempt to extract a meaningful message from the server's response body.
+        // If not available, we fall back to Dio's error message, the status message,
+        // or a generic "unknown error" key.
+        final messageError =
+            error.response?.data?["message"] ??
+            error.message ??
+            error.response?.statusMessage ??
+            LocalizationKeys.unknownError;
+        return ServerException(messageError);
+    }
+  }
+}
 
 /// An enum representing the different types of failures that can occur within the application.
 ///
@@ -6,9 +74,9 @@ part of 'exceptions.dart';
 /// [DioException], to a set of predefined failure types. Each failure type holds
 /// a localization key for its corresponding error message.
 ///
-/// By implementing [Exception], instances of [Failure] can be thrown and caught like
+/// By implementing [Exception], instances of [FailureType] can be thrown and caught like
 /// standard exceptions. The implementation of [Equatable] allows for value-based comparison.
-enum Failure implements Equatable, AppException {
+enum FailureType implements Equatable, Failure {
   /// Represents a 422 Unprocessable Content error from the server.
   unprocessableContent(ErrorKeys.invalidDataError),
 
@@ -66,7 +134,7 @@ enum Failure implements Equatable, AppException {
   final String message;
 
   /// Associates a failure type with its corresponding message key.
-  const Failure(this.message);
+  const FailureType(this.message);
 
   // Returning true so that Equatable prints a string representation if needed.
   @override
@@ -78,51 +146,4 @@ enum Failure implements Equatable, AppException {
   /// Returns a localized string representation of the failure for display.
   @override
   String toString() => "Failure: ${message.tr()}";
-
-  /// Handles a dynamic error and converts it into a standardized [Exception].
-  ///
-  /// If the error is a [DioException], it is processed by [_handleDioError].
-  /// If it's another type of [Exception], it's returned as is.
-  /// Non-exception throwables are wrapped in an [UnexpectedException].
-  static Exception handle(dynamic error) {
-    switch (error) {
-      case AppException appException:
-        return appException;
-      case DioException dioException:
-        return _handleDioError(dioException);
-      default:
-        return UnexpectedException(error.toString());
-    }
-  }
-
-  /// Maps a [DioException] to a specific [Failure] type or a [ServerException].
-  static Exception _handleDioError(DioException error) {
-    switch (error.type) {
-      case DioExceptionType.connectionTimeout:
-        return Failure.connectTimeout;
-      case DioExceptionType.sendTimeout:
-        return Failure.sendTimeout;
-      case DioExceptionType.receiveTimeout:
-        return Failure.receiveTimeout;
-      case DioExceptionType.connectionError:
-        return Failure.noConnectionError;
-      case DioExceptionType.cancel:
-        return Failure.cancel;
-      case DioExceptionType.badCertificate:
-        return Failure.badRequest;
-      case DioExceptionType.unknown:
-        return Failure.errorOccurred;
-      case DioExceptionType.badResponse:
-        // For bad responses (e.g., 4xx, 5xx), we create a ServerException.
-        // We attempt to extract a meaningful message from the server's response body.
-        // If not available, we fall back to Dio's error message, the status message,
-        // or a generic "unknown error" key.
-        final messageError =
-            error.response?.data?["message"] ??
-            error.message ??
-            error.response?.statusMessage ??
-            LocalizationKeys.unknownError;
-        return ServerException(messageError);
-    }
-  }
 }

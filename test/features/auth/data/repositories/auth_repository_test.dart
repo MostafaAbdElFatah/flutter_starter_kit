@@ -7,7 +7,7 @@ import 'package:flutter_starter_kit/features/auth/data/models/user.dart';
 import 'package:flutter_starter_kit/features/auth/data/repositories/auth_repository.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/login_credentials.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/register_credentials.dart';
-import 'package:flutter_starter_kit/core/errors/exceptions.dart';
+import 'package:flutter_starter_kit/core/errors/failure.dart';
 import 'package:flutter_starter_kit/core/utils/log.dart';
 import '../../../../helper/helper_test.mocks.dart';
 
@@ -240,7 +240,7 @@ void main() {
       ).thenThrow(ServerException('Invalid credentials'));
 
       // Act & Assert
-      expect(repository.login(credentials), throwsA(isA<ServerException>()));
+      expect(repository.login(credentials), throwsA(isA<Failure>()));
     });
   });
 
@@ -298,7 +298,7 @@ void main() {
       ).thenThrow(ServerException('Email already exists'));
 
       // Act & Assert
-      expect(repository.register(credentials), throwsA(isA<ServerException>()));
+      expect(repository.register(credentials), throwsA(isA<Failure>()));
     });
   });
 
@@ -324,7 +324,7 @@ void main() {
       when(mockLocalDataSource.deleteUser()).thenAnswer((_) async => {});
 
       // Act & Assert
-      expect(repository.logout(), throwsA(isA<ServerException>()));
+      expect(repository.logout(), throwsA(isA<Failure>()));
       verify(mockRemoteDataSource.logout()).called(1);
       verify(mockLocalDataSource.deleteUser()).called(1);
     });
@@ -353,7 +353,7 @@ void main() {
       when(mockLocalDataSource.deleteUser()).thenAnswer((_) async => {});
 
       // Act & Assert
-      expect(repository.deleteAccount(), throwsA(isA<ServerException>()));
+      expect(repository.deleteAccount(), throwsA(isA<Failure>()));
       verify(mockRemoteDataSource.deleteAccount()).called(1);
       verifyNever(mockLocalDataSource.deleteUser());
     });

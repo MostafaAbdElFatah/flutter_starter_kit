@@ -1,7 +1,7 @@
 import 'package:flutter_starter_kit/core/utils/log.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/errors/exceptions.dart';
+import '../../../../core/errors/failure.dart';
 import '../../../../core/utils/device_services.dart';
 import '../../domain/entities/login_credentials.dart';
 import '../../domain/entities/register_credentials.dart';

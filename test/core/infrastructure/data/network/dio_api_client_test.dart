@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_starter_kit/core/errors/exceptions.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_starter_kit/core/extensions/iterable_extension.dart';
 import 'package:flutter_starter_kit/core/utils/log.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/network/api_endpoint.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/network/dio_api_client.dart';
+import 'package:flutter_starter_kit/core/errors/failure.dart';
 import '../../../../helper/helper_test.mocks.dart';
 
 
@@ -71,7 +71,7 @@ void main() {
           RequestOptions(path: "/test"),
           fromJson: APIResponse.fromJson,
         ),
-        throwsA(Failure.invalidData),
+        throwsA(FailureType.invalidData),
       );
     });
 
@@ -126,14 +126,14 @@ void main() {
             RequestOptions(path: "/test"),
             fromJson: APIResponse.fromJson,
           ),
-          throwsA(isA<Failure>()),
+          throwsA(isA<FailureType>()),
         );
       },
     );
 
     test('wraps any unknown exception using Failure.handle()', () async {
       // Arrange
-      when(mockDio.fetch(any)).thenThrow(Failure.errorOccurred);
+      when(mockDio.fetch(any)).thenThrow(FailureType.errorOccurred);
 
       // Assert
       expect(
@@ -141,7 +141,7 @@ void main() {
           RequestOptions(path: "/test"),
           fromJson: APIResponse.fromJson,
         ),
-        throwsA(isA<Failure>()),
+        throwsA(isA<FailureType>()),
       );
     });
   });

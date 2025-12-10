@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../errors/exceptions.dart';
+import '../../../errors/failure.dart';
 import '../network/api_client.dart';
 import '../network/api_endpoint.dart';
 import '../network/network_connectivity.dart';
@@ -62,8 +62,8 @@ abstract class RemoteDataSource {
   /// Returns: A [Future] containing an instance of [T] on success.
   ///
   /// Throws:
-  /// - [Failure.noInternetConnection] if there is no internet connection.
-  /// - [Failure] variants if the API request fails.
+  /// - [FailureType.noInternetConnection] if there is no internet connection.
+  /// - [FailureType] variants if the API request fails.
   @protected
   Future<T> fetch<T>({
     required APIEndpoint target,
@@ -81,11 +81,11 @@ abstract class RemoteDataSource {
 
   /// Ensures that the device has internet connectivity.
   ///
-  /// Throws: [Failure.noInternetConnection] if there is no internet connection.
+  /// Throws: [FailureType.noInternetConnection] if there is no internet connection.
   Future<void> _ensureConnectivity() async {
     final isConnected = await _connectivity.isConnected;
     if (!isConnected) {
-      throw Failure.noInternetConnection;
+      throw FailureType.noInternetConnection;
     }
   }
 }

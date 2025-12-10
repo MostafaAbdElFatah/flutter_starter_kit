@@ -1,7 +1,7 @@
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_starter_kit/core/errors/exceptions.dart';
+import 'package:flutter_starter_kit/core/errors/failure.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/user.dart';
 import 'package:flutter_starter_kit/features/auth/domain/usecases/login_usecase.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/login_credentials.dart';
@@ -68,7 +68,7 @@ void main() {
       // Act & Assert
       await expectLater(
         usecase.call(testCredentials),
-        throwsA(isA<ServerException>()),
+        throwsA(isA<Failure>()),
       );
 
       verify(mockRepository.login(testCredentials)).called(1);

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../assets/localization_keys.dart';
-import '../../../errors/exceptions.dart';
+import '../../../errors/failure.dart';
 import '../../../utils/log.dart';
 import 'api_client.dart';
 import 'api_endpoint.dart';
@@ -16,7 +16,7 @@ class DioAPIClient implements APIClient {
   ///
   /// - Parameter dio: A [Dio] instance for making HTTP requests.
   /// - Parameter connectivity: A [NetworkConnectivity] instance for  network connectivity.
-  DioAPIClient(Dio dio): _dio = dio;
+  DioAPIClient(Dio dio) : _dio = dio;
 
   /// Sends an HTTP GET request to the given [path].
   ///
@@ -200,14 +200,10 @@ class DioAPIClient implements APIClient {
         // Use the provided fromJson function to create the model instance.
         return fromJson(statusCode, message, data);
       } else {
-        throw Failure.invalidData;
+        throw FailureType.invalidData;
       }
     } on DioException catch (error, stackTrace) {
-      Log.error(
-        '[DIO API Exception]',
-        error: error,
-        stackTrace: stackTrace,
-      );
+      Log.error('[DIO API Exception]', error: error, stackTrace: stackTrace);
       // Handle specific Dio errors.
       if (error.type == DioExceptionType.badResponse &&
           error.response?.data != null &&
@@ -224,11 +220,7 @@ class DioAPIClient implements APIClient {
       // For other types of Dio errors, throw a generic NetworkFailure.
       throw Failure.handle(error);
     } catch (error, stackTrace) {
-      Log.error(
-        '[API Exception]',
-        error: error,
-        stackTrace: stackTrace,
-      );
+      Log.error('[API Exception]', error: error, stackTrace: stackTrace);
       throw Failure.handle(error);
     }
   }
