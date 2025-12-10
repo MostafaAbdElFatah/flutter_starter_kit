@@ -175,16 +175,6 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i4.UpdateEnvironmentConfigUseCase(gh<_i365.EnvironmentRepository>()),
     );
-    gh.factory<_i266.EnvironmentCubit>(
-      () => _i266.EnvironmentCubitImpl(
-        developerLoginUseCase: gh<_i668.DeveloperLoginUseCase>(),
-        getCurrentApiConfigUseCase: gh<_i223.GetCurrentApiConfigUseCase>(),
-        getEnvironmentConfigUseCase: gh<_i572.GetEnvironmentConfigUseCase>(),
-        getCurrentEnvironmentUseCase: gh<_i272.GetCurrentEnvironmentUseCase>(),
-        updateEnvironmentConfigUseCase:
-            gh<_i4.UpdateEnvironmentConfigUseCase>(),
-      ),
-    );
     gh.lazySingleton<_i456.APIClient>(
       () => _i1035.DioAPIClient(gh<_i361.Dio>()),
     );
@@ -196,6 +186,16 @@ extension GetItInjectableX on _i174.GetIt {
         apiClient: gh<_i456.APIClient>(),
         connectivity: gh<_i498.NetworkConnectivity>(),
         authEndpoints: gh<_i802.AuthEndpoints>(),
+      ),
+    );
+    gh.factory<_i266.EnvironmentCubit>(
+      () => _i266.EnvironmentCubit(
+        developerLoginUseCase: gh<_i668.DeveloperLoginUseCase>(),
+        getCurrentApiConfigUseCase: gh<_i223.GetCurrentApiConfigUseCase>(),
+        getEnvironmentConfigUseCase: gh<_i572.GetEnvironmentConfigUseCase>(),
+        getCurrentEnvironmentUseCase: gh<_i272.GetCurrentEnvironmentUseCase>(),
+        updateEnvironmentConfigUseCase:
+            gh<_i4.UpdateEnvironmentConfigUseCase>(),
       ),
     );
     gh.lazySingleton<_i787.AuthRepository>(
