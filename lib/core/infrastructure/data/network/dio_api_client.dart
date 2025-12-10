@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../assets/localization_keys.dart';
-import '../../../errors/failure.dart';
+import '../../../errors/exceptions.dart';
 import '../../../utils/log.dart';
 import 'api_client.dart';
 import 'api_endpoint.dart';
@@ -222,14 +222,14 @@ class DioAPIClient implements APIClient {
       }
 
       // For other types of Dio errors, throw a generic NetworkFailure.
-      return throw Failure.handle(error);
+      throw Failure.handle(error);
     } catch (error, stackTrace) {
       Log.error(
         '[API Exception]',
         error: error,
         stackTrace: stackTrace,
       );
-      return throw Failure.handle(error);
+      throw Failure.handle(error);
     }
   }
 }

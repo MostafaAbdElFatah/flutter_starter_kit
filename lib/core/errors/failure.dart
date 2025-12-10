@@ -1,9 +1,4 @@
-import 'package:dio/dio.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:equatable/equatable.dart';
-
-import '../assets/localization_keys.dart';
-import 'exceptions.dart';
+part of 'exceptions.dart';
 
 /// An enum representing the different types of failures that can occur within the application.
 ///
@@ -13,7 +8,7 @@ import 'exceptions.dart';
 ///
 /// By implementing [Exception], instances of [Failure] can be thrown and caught like
 /// standard exceptions. The implementation of [Equatable] allows for value-based comparison.
-enum Failure implements Equatable, Exception {
+enum Failure implements Equatable, AppException {
   /// Represents a 422 Unprocessable Content error from the server.
   unprocessableContent(ErrorKeys.invalidDataError),
 
@@ -67,6 +62,7 @@ enum Failure implements Equatable, Exception {
   errorOccurred(ErrorKeys.unknownError);
 
   /// The localization key for the user-facing error message.
+  @override
   final String message;
 
   /// Associates a failure type with its corresponding message key.
@@ -81,7 +77,7 @@ enum Failure implements Equatable, Exception {
 
   /// Returns a localized string representation of the failure for display.
   @override
-  String toString() => "Exception: ${message.tr()}";
+  String toString() => "Failure: ${message.tr()}";
 
   /// Handles a dynamic error and converts it into a standardized [Exception].
   ///
@@ -89,13 +85,14 @@ enum Failure implements Equatable, Exception {
   /// If it's another type of [Exception], it's returned as is.
   /// Non-exception throwables are wrapped in an [UnexpectedException].
   static Exception handle(dynamic error) {
-    if (error is Exception) {
-      if (error is DioException) {
-        return _handleDioError(error);
-      }
-      return error;
+    switch (error) {
+      case AppException appException:
+        return appException;
+      case DioException dioException:
+        return _handleDioError(dioException);
+      default:
+        return UnexpectedException(error.toString());
     }
-    return UnexpectedException(error.toString());
   }
 
   /// Maps a [DioException] to a specific [Failure] type or a [ServerException].
@@ -120,7 +117,8 @@ enum Failure implements Equatable, Exception {
         // We attempt to extract a meaningful message from the server's response body.
         // If not available, we fall back to Dio's error message, the status message,
         // or a generic "unknown error" key.
-        final messageError = error.response?.data?["message"] ??
+        final messageError =
+            error.response?.data?["message"] ??
             error.message ??
             error.response?.statusMessage ??
             LocalizationKeys.unknownError;

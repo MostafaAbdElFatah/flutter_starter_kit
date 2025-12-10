@@ -67,18 +67,6 @@ void main() {
       expect(result, isNull);
       verify(mockSecureStorageService.getToken()).called(1);
     });
-
-    test('deleteToken should call secureStorageService.deleteToken', () async {
-      // Arrange
-      when(mockSecureStorageService.deleteToken())
-          .thenAnswer((_) async => Future.value());
-
-      // Act
-      await dataSource.deleteToken();
-
-      // Assert
-      verify(mockSecureStorageService.deleteToken()).called(1);
-    });
   });
 
   group('User Management', () {
@@ -183,7 +171,6 @@ void main() {
           .thenAnswer((_) async => Future.value());
 
       // Act
-      await dataSource.deleteToken();
       await dataSource.deleteUser();
 
       // Assert

@@ -4,9 +4,7 @@ import 'package:flutter_starter_kit/core/utils/device_services.dart';
 import 'package:flutter_starter_kit/core/utils/platform_checker.dart';
 import 'package:flutter_starter_kit/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_starter_kit/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:flutter_starter_kit/features/auth/data/models/responses/login_response.dart';
-import 'package:flutter_starter_kit/features/auth/domain/entities/login_credentials.dart';
-import 'package:flutter_starter_kit/features/auth/domain/entities/register_credentials.dart';
+
 
 import 'package:mockito/annotations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -49,9 +47,6 @@ import 'package:flutter_starter_kit/core/infrastructure/data/network/network_con
   DeviceServices,
 
   //Auth
-  LoginUser,
-  LoginCredentials,
-  RegisterCredentials,
   AuthLocalDataSource,
   AuthRemoteDataSource,
 ])

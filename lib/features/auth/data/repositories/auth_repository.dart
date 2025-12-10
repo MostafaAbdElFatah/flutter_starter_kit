@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/errors/failure.dart';
+import '../../../../core/errors/exceptions.dart';
 import '../../../../core/utils/device_services.dart';
 import '../../domain/entities/login_credentials.dart';
 import '../../domain/entities/register_credentials.dart';
@@ -49,8 +49,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<User?> getAuthenticatedUser() async {
     try {
-      final token = await _localDataSource.getToken();
-      if (token != null && token.isNotEmpty) {
+      if (await isLoggedIn()) {
         return _localDataSource.getUser();
       }
       return null;
@@ -111,29 +110,26 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
+    Exception? failure;
     try {
-      // Attempt to log out from the server, but don't let it block the local logout.
       await _remoteDataSource.logout();
+    } catch (e) {
+      failure = Failure.handle(e);
     } finally {
-      // Ensure local data is always cleared.
-      await _deleteUser();
+      // Always run, even on network/server failure
+      await _localDataSource.deleteUser(); // only after successful server delete
     }
+    if (failure != null) throw failure;
   }
 
   @override
   Future<void> deleteAccount() async {
     try {
-      // Attempt to log out from the server, but don't let it block the local logout.
       await _remoteDataSource.deleteAccount();
-    } finally {
-      // Ensure local data is always cleared.
-      await _deleteUser();
+      await _localDataSource.deleteUser(); // only after successful server delete
+    } catch (e) {
+      throw Failure.handle(e); // don't clear local session on failure
     }
   }
 
-  /// Deletes the user's data from local storage.
-  Future<void> _deleteUser() async {
-    await _localDataSource.deleteUser();
-    await _localDataSource.deleteToken();
-  }
 }

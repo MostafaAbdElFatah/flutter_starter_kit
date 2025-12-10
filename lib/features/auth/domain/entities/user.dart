@@ -9,8 +9,8 @@ class User extends Equatable {
   const User({
     required this.id,
     required this.email,
-    required this.name,
-    required this.avatarUrl,
+    this.name,
+    this.avatarUrl,
     required this.isVerified,
   });
 

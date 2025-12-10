@@ -22,7 +22,7 @@ abstract class AuthLocalDataSource {
   Future<String?> getToken();
 
   /// Deletes the saved authentication token from secure storage.
-  Future<void> deleteToken();
+  // Future<void> deleteToken();
 
   // ---------------------------------------------------------------------------
   // User Management
@@ -60,15 +60,12 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   AuthLocalDataSourceImpl({
     required StorageService storageService,
     required SecureStorageService secureStorageService,
-  })  : _storageService = storageService,
-        _secureStorageService = secureStorageService;
+  }) : _storageService = storageService,
+       _secureStorageService = secureStorageService;
 
   // ---------------------------------------------------------------------------
   // Token Management
   // ---------------------------------------------------------------------------
-
-  @override
-  Future<void> deleteToken() => _secureStorageService.deleteToken();
 
   @override
   Future<String?> getToken() => _secureStorageService.getToken();
@@ -82,13 +79,16 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   // ---------------------------------------------------------------------------
 
   @override
-  Future<void> deleteUser() => _storageService.delete(_loginUserKey);
-
-  @override
   UserModel? getUser() =>
       _storageService.getJson(key: _loginUserKey, fromJson: UserModel.fromJson);
 
   @override
   Future<void> saveUser(UserModel user) =>
       _storageService.putJson(key: _loginUserKey, value: user);
+
+  @override
+  Future<void> deleteUser() async {
+    await _storageService.delete(_loginUserKey);
+    await _secureStorageService.deleteToken();
+  }
 }

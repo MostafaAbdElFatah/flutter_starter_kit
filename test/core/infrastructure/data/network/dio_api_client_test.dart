@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_starter_kit/core/errors/exceptions.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter_starter_kit/core/extensions/iterable_extension.dart';
 import 'package:flutter_starter_kit/core/utils/log.dart';
-import 'package:flutter_starter_kit/core/errors/failure.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/network/api_endpoint.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/network/dio_api_client.dart';
 import '../../../../helper/helper_test.mocks.dart';
@@ -67,7 +67,7 @@ void main() {
 
       // Assert
       expect(
-        () async => client.request(
+        client.request(
           RequestOptions(path: "/test"),
           fromJson: APIResponse.fromJson,
         ),
@@ -122,7 +122,7 @@ void main() {
 
         // Assert
         expect(
-          () async => client.request(
+          client.request(
             RequestOptions(path: "/test"),
             fromJson: APIResponse.fromJson,
           ),
@@ -137,7 +137,7 @@ void main() {
 
       // Assert
       expect(
-        () async => client.request(
+        client.request(
           RequestOptions(path: "/test"),
           fromJson: APIResponse.fromJson,
         ),

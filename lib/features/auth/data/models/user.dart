@@ -9,10 +9,10 @@ class UserModel extends User {
   /// Creates an instance of [UserModel].
   const UserModel({
     required super.id,
-    required super.name,
     required super.email,
-    required super.avatarUrl,
     required super.isVerified,
+    super.name,
+    super.avatarUrl,
   });
 
   /// Creates a [UserModel] instance from a JSON map.
