@@ -5,7 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import '../assets/localization_keys.dart';
 part 'exceptions.dart';
 
-abstract class Failure extends Equatable implements Exception {
+class Failure extends Equatable implements Exception {
   final String message;
   const Failure([this.message = '']);
 

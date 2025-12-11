@@ -89,6 +89,14 @@ import 'package:flutter_starter_kit/features/environments_dev/domain/entities/ba
     as _i27;
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/environment.dart'
     as _i26;
+import 'package:flutter_starter_kit/features/environments_dev/domain/repositories/environment_repository.dart'
+    as _i56;
+import 'package:flutter_starter_kit/features/environments_dev/domain/usecases/developer_login_usecase.dart'
+    as _i59;
+import 'package:flutter_starter_kit/features/environments_dev/domain/usecases/get_environment_config_use_case.dart'
+    as _i57;
+import 'package:flutter_starter_kit/features/environments_dev/domain/usecases/update_environment_configuration_use_case.dart'
+    as _i58;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i25;
 
@@ -3185,4 +3193,65 @@ class MockEnvironmentLocalDataSource extends _i1.Mock
             returnValueForMissingStub: _i11.Future<void>.value(),
           )
           as _i11.Future<void>);
+}
+
+/// A class which mocks [EnvironmentRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockEnvironmentRepository extends _i1.Mock
+    implements _i56.EnvironmentRepository {
+  MockEnvironmentRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i9.APIConfig get currentApiConfig =>
+      (super.noSuchMethod(
+            Invocation.getter(#currentApiConfig),
+            returnValue: _FakeAPIConfig_7(
+              this,
+              Invocation.getter(#currentApiConfig),
+            ),
+          )
+          as _i9.APIConfig);
+
+  @override
+  _i26.Environment get currentEnvironment =>
+      (super.noSuchMethod(
+            Invocation.getter(#currentEnvironment),
+            returnValue: _i26.Environment.dev,
+          )
+          as _i26.Environment);
+
+  @override
+  _i9.APIConfig getConfigForEnvironment(
+    _i57.EnvironmentConfigGetParams? params,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getConfigForEnvironment, [params]),
+            returnValue: _FakeAPIConfig_7(
+              this,
+              Invocation.method(#getConfigForEnvironment, [params]),
+            ),
+          )
+          as _i9.APIConfig);
+
+  @override
+  _i11.Future<void> updateConfiguration(
+    _i58.EnvironmentConfigUpdateParams? params,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateConfiguration, [params]),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
+
+  @override
+  bool loginAsDeveloper(_i59.DevLoginParams? params) =>
+      (super.noSuchMethod(
+            Invocation.method(#loginAsDeveloper, [params]),
+            returnValue: false,
+          )
+          as bool);
 }

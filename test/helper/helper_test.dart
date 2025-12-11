@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_starter_kit/features/auth/data/network/auth_endpoints.dart';
 import 'package:flutter_starter_kit/features/environments_dev/data/datasources/environment_local_data_source.dart';
+import 'package:flutter_starter_kit/features/environments_dev/domain/repositories/environment_repository.dart';
 import 'package:mockito/annotations.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -65,6 +66,6 @@ import 'package:flutter_starter_kit/features/auth/domain/usecases/register_useca
 
   // EnvironmentDev
   EnvironmentLocalDataSource,
-
+  EnvironmentRepository,
 ])
 void main() {}
