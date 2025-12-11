@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../helper/helper_test.mocks.dart';
-// Fakes for fallback values
 
 void main() {
   late EnvironmentLocalDataSourceImpl dataSource;
