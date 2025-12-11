@@ -4,45 +4,6 @@ import '../../../../core/infrastructure/data/storage/secure_storage_service.dart
 import '../../../../core/infrastructure/data/storage/storage_service.dart';
 import '../models/user.dart';
 
-/// An abstract class representing the local data source for authentication.
-///
-/// This class defines the contract for caching authentication-related data,
-/// such as the user's profile and authentication token.
-abstract class AuthLocalDataSource {
-  // ---------------------------------------------------------------------------
-  // Token Management
-  // ---------------------------------------------------------------------------
-
-  /// Saves an authentication token to secure storage.
-  Future<void> saveToken(String token);
-
-  /// Retrieves the saved authentication token from secure storage.
-  ///
-  /// Returns `null` if no token is found.
-  Future<String?> getToken();
-
-  /// Deletes the saved authentication token from secure storage.
-  // Future<void> deleteToken();
-
-  // ---------------------------------------------------------------------------
-  // User Management
-  // ---------------------------------------------------------------------------
-
-  /// Deletes the cached user data.
-  Future<void> deleteUser();
-
-  /// Caches the user data.
-  ///
-  /// The [user] object is serialized to JSON before being stored.
-  Future<void> saveUser(UserModel user);
-
-  /// Retrieves the cached user data.
-  ///
-  /// The stored JSON is deserialized into a [User] object. Returns `null` if
-  /// no user is cached.
-  UserModel? getUser();
-}
-
 /// A concrete implementation of [AuthLocalDataSource] that uses [StorageService]
 /// for caching user data and [SecureStorageService] for managing the auth token.
 @LazySingleton(as: AuthLocalDataSource)
@@ -91,4 +52,62 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     await _storageService.delete(_loginUserKey);
     await _secureStorageService.deleteToken();
   }
+
+  @override
+  bool hasUser() => _storageService.has(_loginUserKey);
+}
+
+/// An abstract class representing the local data source for authentication.
+///
+/// This class defines the contract for caching authentication-related data,
+/// such as the user's profile and authentication token.
+abstract class AuthLocalDataSource
+    implements TokenLocalDataSource, UserLocalDataSource {}
+
+/// An abstract class representing the local data source for token management.
+///
+/// This class defines the contract for managing authentication tokens
+/// in secure storage.
+abstract class TokenLocalDataSource {
+  // ---------------------------------------------------------------------------
+  // Token Management
+  // ---------------------------------------------------------------------------
+
+  /// Saves an authentication token to secure storage.
+  Future<void> saveToken(String token);
+
+  /// Retrieves the saved authentication token from secure storage.
+  ///
+  /// Returns `null` if no token is found.
+  Future<String?> getToken();
+
+  /// Deletes the saved authentication token from secure storage.
+  //Future<void> deleteToken();
+}
+
+/// An abstract class representing the local data source for user data.
+///
+/// This class defines the contract for caching user profile information
+/// in local storage.
+abstract class UserLocalDataSource {
+  // ---------------------------------------------------------------------------
+  // User Management
+  // ---------------------------------------------------------------------------
+
+  /// Caches the user data.
+  ///
+  /// The [user] object is serialized to JSON before being stored.
+  Future<void> saveUser(UserModel user);
+
+  /// Retrieves the cached user data.
+  ///
+  /// The stored JSON is deserialized into a [UserModel] object.
+  /// Returns `null` if no user is cached.
+  UserModel? getUser();
+
+  /// Deletes the cached user data from local storage.
+  Future<void> deleteUser();
+
+  /// Checks if user data exists in local storage.
+  bool hasUser();
 }

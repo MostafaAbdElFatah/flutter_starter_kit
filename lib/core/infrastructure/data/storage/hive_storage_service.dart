@@ -61,6 +61,9 @@ class HiveStorageService implements StorageService {
   Future<void> delete(dynamic key) => _box.delete(key);
 
   @override
+  bool has(dynamic key) => _box.containsKey(key);
+
+  @override
   Future<void> put({required dynamic key, required dynamic value}) =>
       _box.put(key, value);
 

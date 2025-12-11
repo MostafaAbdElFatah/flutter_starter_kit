@@ -34,6 +34,11 @@ abstract class StorageService {
   /// [key] can be any object supported by the storage backend.
   Future<void> delete(dynamic key);
 
+  /// Retrieves a boolean value associated with the given [key] from storage.
+  ///
+  /// If the key is not found, it returns false else return true.
+  bool has(dynamic key);
+
   /// Stores a [value] associated with the given [key] in storage.
   ///
   /// Use this for plain data types such as [int], [String], [bool], [List], or [Map].

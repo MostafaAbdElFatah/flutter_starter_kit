@@ -1,181 +1,262 @@
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_starter_kit/features/auth/data/datasources/auth_local_datasource.dart';
-
+import 'package:flutter_starter_kit/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:flutter_starter_kit/core/errors/failure.dart';
+import 'package:flutter_starter_kit/features/auth/data/models/requests/login_request.dart';
+import 'package:flutter_starter_kit/features/auth/data/models/requests/register_request.dart';
+import 'package:flutter_starter_kit/features/auth/data/models/responses/login_response.dart';
+import 'package:flutter_starter_kit/core/infrastructure/data/models/api_response.dart';
+import 'package:flutter_starter_kit/features/auth/data/models/user.dart';
 import '../../../../helper/helper_test.mocks.dart';
 
-
 void main() {
-  late AuthLocalDataSourceImpl dataSource;
-  late MockStorageService mockStorageService;
-  late MockSecureStorageService mockSecureStorageService;
-  final mockUserModel = MockUserModel();
+  late MockAPIClient apiClient;
+  late MockNetworkConnectivity connectivity;
+  late MockAuthEndpoints authEndpoints;
+  late AuthRemoteDataSourceImpl dataSource;
+  final endpoint = MockAPIEndpoint();
 
   setUp(() {
-    mockStorageService = MockStorageService();
-    mockSecureStorageService = MockSecureStorageService();
-    dataSource = AuthLocalDataSourceImpl(
-      storageService: mockStorageService,
-      secureStorageService: mockSecureStorageService,
+    apiClient = MockAPIClient();
+    connectivity = MockNetworkConnectivity();
+    authEndpoints = MockAuthEndpoints();
+
+    // Default: device is online
+    when(connectivity.isConnected).thenAnswer((_) async => true);
+
+    dataSource = AuthRemoteDataSourceImpl(
+      apiClient: apiClient,
+      connectivity: connectivity,
+      authEndpoints: authEndpoints,
     );
-
-    // Default setup
-    when(mockUserModel.id).thenReturn('123');
-    when(mockUserModel.name).thenReturn('Test User');
-    when(mockUserModel.email).thenReturn('test@example.com');
-
   });
 
-  group('Token Management', () {
-    const testToken = 'test_auth_token_12345';
-
-    test('saveToken should call secureStorageService.saveToken', () async {
+  group("Connectivity", () {
+    test("throws noInternetConnection when offline", () async {
       // Arrange
-      when(mockSecureStorageService.saveToken(testToken))
-          .thenAnswer((_) async => Future.value());
+      when(connectivity.isConnected).thenAnswer((_) async => false);
+      final endpoint = MockAPIEndpoint();
 
-      // Act
-      await dataSource.saveToken(testToken);
+      /// Calling fetch indirectly by using login()
+      when(authEndpoints.login(any)).thenReturn(endpoint);
 
-      // Assert
-      verify(mockSecureStorageService.saveToken(testToken)).called(1);
-    });
-
-    test('getToken should return token from secureStorageService', () async {
-      // Arrange
-      when(mockSecureStorageService.getToken())
-          .thenAnswer((_) async => testToken);
-
-      // Act
-      final result = await dataSource.getToken();
-
-      // Assert
-      expect(result, testToken);
-      verify(mockSecureStorageService.getToken()).called(1);
-    });
-
-    test('getToken should return null when no token exists', () async {
-      // Arrange
-      when(mockSecureStorageService.getToken())
-          .thenAnswer((_) async => null);
-
-      // Act
-      final result = await dataSource.getToken();
-
-      // Assert
-      expect(result, isNull);
-      verify(mockSecureStorageService.getToken()).called(1);
+      // Act & Assert
+      expect(
+        dataSource.login(LoginRequest(email: "", password: "", deviceName: '')),
+        throwsA(FailureType.noInternetConnection),
+      );
+      verify(connectivity.isConnected).called(1);
+      verifyNever(
+        apiClient.fetch(target: endpoint, fromJson: anyNamed("fromJson")),
+      );
     });
   });
 
-  group('User Management', () {
+  group("Login", () {
+    final request = LoginRequest(
+      email: "a@mail.com",
+      password: "123",
+      deviceName: 'iPhone13,2',
+    );
+    final userModel = UserModel(
+      id: '1',
+      email: 'test@example.com',
+      name: 'Test User',
+      isVerified: true,
+    );
+    final loginUser = LoginUser(token: 'auth_token', user: userModel);
 
-    test('saveUser should call storageService.putJson with correct parameters', () async {
-      // Arrange
-      when(mockStorageService.putJson(
-        key: 'auth_user_key',
-        value: anyNamed('value'),
-      )).thenAnswer((_) async => Future.value());
-
-      // Act
-      await dataSource.saveUser(mockUserModel);
-
-      // Assert
-      verify(mockStorageService.putJson(
-        key: 'auth_user_key',
-        value: mockUserModel,
-      )).called(1);
+    setUp(() {
+      when(authEndpoints.login(request)).thenReturn(endpoint);
     });
 
-    test('getUser should return UserModel from storageService', () {
+    test("returns LoginUser when API succeeds", () async {
       // Arrange
-      when(mockStorageService.getJson<MockUserModel>(
-        key: 'auth_user_key',
-        fromJson: anyNamed('fromJson'),
-      )).thenReturn(mockUserModel);
+      final response = LoginResponse(statusCode: 200, data: loginUser);
+      when(
+        apiClient.fetch<LoginResponse>(
+          target: endpoint,
+          fromJson: LoginResponse.fromJson,
+        ),
+      ).thenAnswer((_) async => response);
 
       // Act
-      final result = dataSource.getUser();
+      final result = await dataSource.login(request);
 
       // Assert
-      expect(result, mockUserModel);
-      expect(result?.id, mockUserModel.id);
-      expect(result?.name, mockUserModel.name);
-      expect(result?.email, mockUserModel.email);
-      verify(mockStorageService.getJson<MockUserModel>(
-        key: 'auth_user_key',
-        fromJson: anyNamed('fromJson'),
-      )).called(1);
+      expect(result, loginUser);
+      verify(connectivity.isConnected).called(1);
+      verify(
+        apiClient.fetch<LoginResponse>(
+          target: endpoint,
+          fromJson: anyNamed("fromJson"),
+        ),
+      ).called(1);
     });
 
-    test('getUser should return null when no user exists', () {
+    test("throws ServerException when API returns error", () async {
       // Arrange
-      when(mockStorageService.getJson<MockUserModel>(
-        key: 'auth_user_key',
-        fromJson: anyNamed('fromJson'),
-      )).thenReturn(null);
+      final response = LoginResponse(
+        statusCode: 500,
+        message: "Invalid credentials",
+      );
 
-      // Act
-      final result = dataSource.getUser();
+      when(
+        apiClient.fetch<LoginResponse>(
+          target: endpoint,
+          fromJson: LoginResponse.fromJson,
+          isFormData: anyNamed("isFormData"),
+        ),
+      ).thenAnswer((_) async => response);
 
-      // Assert
-      expect(result, isNull);
-      verify( mockStorageService.getJson<MockUserModel>(
-        key: 'auth_user_key',
-        fromJson: anyNamed('fromJson'),
-      )).called(1);
-    });
-
-    test('deleteUser should call storageService.delete with correct key', () async {
-      // Arrange
-      when(mockStorageService.delete(any))
-          .thenAnswer((_) async => Future.value());
-
-      // Act
-      await dataSource.deleteUser();
-
-      // Assert
-      verify(mockStorageService.delete('auth_user_key')).called(1);
+      // Act & Assert
+      expect(
+        dataSource.login(request),
+        throwsA(
+          isA<ServerException>().having(
+            (e) => e.message,
+            'message',
+            'Invalid credentials',
+          ),
+        ),
+      );
     });
   });
 
-  group('Integration Scenarios', () {
-    test('should handle complete login flow - save token and user', () async {
-      // Arrange
-      const token = 'login_token_xyz';
-      when(mockSecureStorageService.saveToken(token))
-          .thenAnswer((_) async => Future.value());
-      when(mockStorageService.putJson(
-        key: anyNamed('key'),
-        value: anyNamed('value'),
-      )).thenAnswer((_) async => Future.value());
+  group("Register", () {
+    final request = RegisterRequest(
+      email: "b@mail.com",
+      password: "111",
+      name: "B",
+    );
+    final userModel = UserModel(
+      id: '1',
+      email: 'test@example.com',
+      name: 'Test User',
+      isVerified: true,
+    );
+    final loginUser = LoginUser(token: 'auth_token', user: userModel);
 
-      // Act
-      await dataSource.saveToken(token);
-      await dataSource.saveUser(mockUserModel);
-
-      // Assert
-      verify(mockSecureStorageService.saveToken(token)).called(1);
-      verify(mockStorageService.putJson(
-        key: 'auth_user_key',
-        value: mockUserModel,
-      )).called(1);
+    setUp(() {
+      when(authEndpoints.register(request)).thenReturn(endpoint);
     });
 
-    test('should handle complete logout flow - delete token and user', () async {
+    test("returns LoginUser when API response is 200", () async {
       // Arrange
-      when(mockSecureStorageService.deleteToken())
-          .thenAnswer((_) async => Future.value());
-      when(mockStorageService.delete(any))
-          .thenAnswer((_) async => Future.value());
+      final response = LoginResponse(statusCode: 200, data: loginUser);
+      when(
+        apiClient.fetch<LoginResponse>(
+          target: endpoint,
+          fromJson: LoginResponse.fromJson,
+        ),
+      ).thenAnswer((_) async => response);
 
       // Act
-      await dataSource.deleteUser();
+      final result = await dataSource.register(request);
 
-      // Assert
-      verify(mockSecureStorageService.deleteToken()).called(1);
-      verify(mockStorageService.delete('auth_user_key')).called(1);
+      //Assert
+      expect(result, loginUser);
+    });
+
+    test("throws ServerException on API failure", () async {
+      // Arrange
+      final response = LoginResponse(
+        statusCode: 400,
+        data: loginUser,
+        message: "Email exists",
+      );
+      when(
+        apiClient.fetch<LoginResponse>(
+          target: endpoint,
+          fromJson: LoginResponse.fromJson,
+        ),
+      ).thenAnswer((_) async => response);
+
+      // Act & Arrange
+      expect(
+        dataSource.register(request),
+        throwsA(
+          isA<ServerException>().having(
+            (e) => e.message,
+            'message',
+            'Email exists',
+          ),
+        ),
+      );
+    });
+  });
+
+  group("Logout", () {
+    final endpoint = MockAPIEndpoint();
+
+    setUp(() {
+      when(authEndpoints.logout()).thenReturn(endpoint);
+    });
+
+    test("completes when API is 200", () async {
+      // Arrange
+      final response = LoginResponse(statusCode: 200);
+      when(
+        apiClient.fetch<APIResponse>(
+          target: endpoint,
+          fromJson: APIResponse.fromJson,
+        ),
+      ).thenAnswer((_) async => response);
+
+      // Act & Arrange
+      expect(dataSource.logout(), completes);
+    });
+
+    test("throws ServerException when API is not 200", () async {
+      // Arrange
+      final response = LoginResponse(statusCode: 500, message: "Error");
+      when(
+        apiClient.fetch<APIResponse>(
+          target: endpoint,
+          fromJson: APIResponse.fromJson,
+          isFormData: anyNamed("isFormData"),
+        ),
+      ).thenAnswer((_) async => response);
+      // Act & Arrange
+      expect(dataSource.logout(), throwsA(isA<ServerException>()));
+    });
+  });
+
+  group("DeleteAccount", () {
+    final endpoint = MockAPIEndpoint();
+
+    setUp(() {
+      when(authEndpoints.deleteAccount()).thenReturn(endpoint);
+    });
+
+    test("completes when API returns 200", () async {
+      // Arrange
+      final response = LoginResponse(statusCode: 200);
+      when(
+        apiClient.fetch<APIResponse>(
+          target: endpoint,
+          fromJson: APIResponse.fromJson,
+        ),
+      ).thenAnswer((_) async => response);
+
+      // Act & Arrange
+      expect(dataSource.deleteAccount(), completes);
+    });
+
+    test("throws ServerException when API response != 200", () async {
+
+      // Arrange
+      final response = LoginResponse(statusCode: 500, message: "Failed");
+      when(
+        apiClient.fetch<APIResponse>(
+          target: endpoint,
+          fromJson: APIResponse.fromJson,
+        ),
+      ).thenAnswer((_) async => response);
+
+      // Act & Arrange
+      expect(dataSource.deleteAccount(), throwsA(isA<ServerException>()));
     });
   });
 }

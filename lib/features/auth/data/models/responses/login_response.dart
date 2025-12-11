@@ -10,12 +10,12 @@ import '../user.dart';
 /// to be immutable and supports value-based equality.
 final class LoginResponse extends APIResponse {
   const LoginResponse({
-    required this.data,
-    required super.links,
-    required super.meta,
-    required super.errors,
-    required super.message,
     required super.statusCode,
+    this.data,
+    super.links,
+    super.meta,
+    super.errors,
+    super.message,
   });
 
   /// The data payload of the response, containing the user and token.
@@ -26,15 +26,14 @@ final class LoginResponse extends APIResponse {
     int? statusCode,
     String? message,
     Map<String, dynamic> json,
-  ) =>
-      LoginResponse(
-        errors: json["errors"],
-        statusCode: statusCode ?? 0,
-        message: json["message"] ?? message,
-        data: json["data"] == null ? null : LoginUser.fromJson(json["data"]),
-        links: json["links"] == null ? null : Links.fromJson(json["links"]),
-        meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-      );
+  ) => LoginResponse(
+    errors: json["errors"],
+    statusCode: statusCode ?? 0,
+    message: json["message"] ?? message,
+    data: json["data"] == null ? null : LoginUser.fromJson(json["data"]),
+    links: json["links"] == null ? null : Links.fromJson(json["links"]),
+    meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
+  );
 
   /// Creates a copy of this [LoginResponse] but with the given fields replaced with the new values.
   @override
@@ -45,15 +44,14 @@ final class LoginResponse extends APIResponse {
     int? statusCode,
     String? message,
     Map<String, dynamic>? errors,
-  }) =>
-      LoginResponse(
-        data: data ?? this.data,
-        links: links ?? this.links,
-        meta: meta ?? this.meta,
-        statusCode: statusCode ?? this.statusCode,
-        message: message ?? this.message,
-        errors: errors ?? this.errors,
-      );
+  }) => LoginResponse(
+    data: data ?? this.data,
+    links: links ?? this.links,
+    meta: meta ?? this.meta,
+    statusCode: statusCode ?? this.statusCode,
+    message: message ?? this.message,
+    errors: errors ?? this.errors,
+  );
 
   @override
   List<Object?> get props => [...super.props, data];

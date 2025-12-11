@@ -5,7 +5,7 @@ import 'package:flutter_starter_kit/features/auth/data/datasources/auth_local_da
 import '../../../../helper/helper_test.mocks.dart';
 
 void main() {
-  late AuthLocalDataSourceImpl dataSource;
+  late AuthLocalDataSource dataSource;
   late MockStorageService mockStorageService;
   late MockSecureStorageService mockSecureStorageService;
   final mockUserModel = MockUserModel();
