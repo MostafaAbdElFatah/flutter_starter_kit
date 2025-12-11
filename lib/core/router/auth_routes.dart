@@ -13,7 +13,6 @@ class AuthRouter {
   AuthRouter._();
 
   static List<RouteBase> routes = [
-
     // Login
     GoRoute(
       path: AuthRoutes.login,

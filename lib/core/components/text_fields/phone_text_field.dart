@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 
 import '../../assets/localization_keys.dart';
 
-
 class PhoneTextField extends StatelessWidget {
   final PhoneNumber? initialPhone;
   final ValueChanged<PhoneNumber>? onSaved;
@@ -29,7 +28,7 @@ class PhoneTextField extends StatelessWidget {
       onInputChanged: onChanged,
       textFieldController: controller,
       autoValidateMode: AutovalidateMode.onUserInteraction,
-      errorMessage: LocalizationKeys.kInvalidPhoneError,
+      errorMessage: LocalizationKeys.invalidPhone,
       hintText: LocalizationKeys.phone,
       selectorConfig: SelectorConfig(
         selectorType: PhoneInputSelectorType.BOTTOM_SHEET,

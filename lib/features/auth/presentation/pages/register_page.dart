@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-
+import '../../../../core/components/text_fields/text_fields.dart';
 import '../../../../core/assets/localization_keys.dart';
 import '../../../../core/di/injection.dart';
-import '../../../../core/validators/email_validator.dart';
 import '../../../../core/validators/password_validator.dart';
 import '../../../../core/validators/user_name_validator.dart';
 import '../cubit/auth_cubit.dart';
@@ -70,9 +69,13 @@ class _RegisterFormState extends State<_RegisterForm> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField(
+                  CustomTextField(
+                    maxLines: 1,
                     controller: _nameController,
-                    decoration: const InputDecoration(labelText: 'Name'),
+                    hintText: LocalizationKeys.name,
+                    labelText: LocalizationKeys.name,
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
                     validator: UsernameValidator.validateUsername,
                     // Custom Username Requirements
                     // validator: (value) => UsernameValidator.validateUsername(
@@ -83,33 +86,17 @@ class _RegisterFormState extends State<_RegisterForm> {
                     // ),
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(labelText: 'Email'),
-                    validator: EmailValidator.validateEmail,
-                  ),
+                  EmailTextField(controller: _emailController),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(labelText: 'Password'),
-                    obscureText: true,
-                    validator: PasswordValidator.validatePassword,
-                    // Custom Password Requirements
-                    // validator: (value) => PasswordValidator.validatePassword(
-                    //   value,
-                    //   minLength: 12,
-                    //   requireSpecialChar: false,
-                    // ),
-                  ),
+                  PasswordTextField(controller: _passwordController),
                   const SizedBox(height: 16),
-                  TextFormField(
+                  PasswordTextField(
                     controller: _confirmPasswordController,
-                    decoration: const InputDecoration(labelText: 'Password'),
-                    obscureText: true,
-                    validator: (value) => PasswordValidator.validatePasswordConfirmation(
-                      value,
-                      _passwordController.text,
-                    ),
+                    validator: (value) =>
+                        PasswordValidator.validatePasswordConfirmation(
+                          value,
+                          _passwordController.text,
+                        ),
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
@@ -122,8 +109,9 @@ class _RegisterFormState extends State<_RegisterForm> {
                         );
                       }
                     },
-                    child: const Text('Register'),
+                    child: Text(LocalizationKeys.register),
                   ),
+                  const SizedBox(height: 24),
                   TextButton(
                     onPressed: () => context.pop(),
                     child: const Text('Go to Login'),

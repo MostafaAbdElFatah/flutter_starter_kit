@@ -29,9 +29,10 @@ class AuthGuard {
       NoParams(),
     ); // Check your auth state
     final isGoingToLogin = state.matchedLocation == AuthRoutes.login;
+    final isGoingToRegister = state.matchedLocation == AuthRoutes.register;
 
 
-    if (!isAuthenticated && !isGoingToLogin) {
+    if (!isAuthenticated && !isGoingToLogin && !isGoingToRegister) {
       return AuthRoutes.login;
     }
 
@@ -58,19 +59,3 @@ class AppRouter {
     ],
   );
 }
-
-// Extension for convenient navigation
-// extension GoRouterExtension on GoRouter {
-//   void goToLogin() => go(AppRoutes.login);
-//   void goToRegister() => go(AppRoutes.register);
-//   void goToOnboarding() => go(AppRoutes.onboarding);
-//   void goToHome() => go(AppRoutes.home);
-//   void goToSettings() => go(AppRoutes.settings);
-//   void goToEnvironmentConfig() => go(AppRoutes.environmentConfig);
-//
-//   // Navigation with back stack
-//   void pushLogin() => push(AppRoutes.login);
-//   void pushRegister() => push(AppRoutes.register);
-//   void pushSettings() => push(AppRoutes.settings);
-//   void pushEnvironmentConfig() => push(AppRoutes.environmentConfig);
-// }
