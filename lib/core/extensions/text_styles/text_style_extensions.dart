@@ -1,0 +1,205 @@
+import 'package:flutter/material.dart';
+
+import '../../assets/fonts.dart';
+// Import any other necessary packages, such as for responsive sizing
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+/// Extension on [TextStyle] to provide convenient methods for modifying [TextStyle]s
+/// with various font weights.
+///
+/// This extension allows you to easily change the font weight, color, size, and font family
+/// of existing [TextStyle] instances.
+extension AppTextStyle on TextStyle {
+  /// Makes the [TextStyle] thin.
+  ///
+  /// Thin is the least thick font weight.
+  static TextStyle get defaultTextStyle => TextStyle();
+
+  /// Creates a [TextStyle] with the specified parameters.
+  ///
+  /// - [fontSize]: The size of the font.
+  /// - [fontWeight]: The weight of the font. Defaults to [FontWeights.regular].
+  /// - [setSp]: If `true`, applies scalable pixels to [fontSize] (requires a responsive package like `flutter_screenutil`).
+  /// - [fontFamily]: The font family to use. Defaults to [Fonts.ibmPlexSanaArabic] if not provided.
+  ///
+  /// Returns a [TextStyle] configured with the provided parameters.
+  static TextStyle textStyle({
+    Color? color,
+    double? fontSize,
+    FontWeight? fontWeight,
+    bool setSp = false,
+    String? fontFamily,
+  }) {
+    return defaultTextStyle.copyWith(
+      // Uses the [Color] instance on which this extension is called
+      color: color,
+      fontWeight: fontWeight,
+      // Applies scalable pixels if [setSp] is true
+      fontSize: setSp ? fontSize : fontSize,
+      // Defaults to a specific font family
+      fontFamily: fontFamily ?? Fonts.primary,
+    );
+  }
+
+  /// Makes the [TextStyle] thin.
+  ///
+  /// Thin is the least thick font weight.
+  TextStyle thin({
+    Color? color,
+    double? fontSize,
+    bool setSp = false,
+    String? fontFamily,
+  }) {
+    return textStyle(
+      color: color,
+      setSp: setSp,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      fontWeight: FontWeights.thin,
+    );
+  }
+
+  /// Makes the [TextStyle] extra-light.
+  ///
+  /// Extra-light is slightly thicker than thin.
+  TextStyle extraLight({
+    Color? color,
+    double? fontSize,
+    bool setSp = false,
+    String? fontFamily,
+  }) {
+    return textStyle(
+      color: color,
+      setSp: setSp,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      fontWeight: FontWeights.extraLight,
+    );
+  }
+
+  /// Makes the [TextStyle] light.
+  ///
+  /// Light is thinner than regular.
+  TextStyle light({
+    Color? color,
+    double? fontSize,
+    bool setSp = false,
+    String? fontFamily,
+  }) {
+    return textStyle(
+      color: color,
+      setSp: setSp,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      fontWeight: FontWeights.light,
+    );
+  }
+
+  /// Makes the [TextStyle] regular (normal).
+  ///
+  /// Regular is the standard font weight.
+  TextStyle regular({
+    Color? color,
+    double? fontSize,
+    bool setSp = false,
+    String? fontFamily,
+  }) {
+    return textStyle(
+      color: color,
+      setSp: setSp,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      fontWeight: FontWeights.regular,
+    );
+  }
+
+  /// Makes the [TextStyle] medium.
+  ///
+  /// Medium is slightly thicker than regular.
+  TextStyle medium({
+    Color? color,
+    double? fontSize,
+    bool setSp = false,
+    String? fontFamily,
+  }) {
+    return textStyle(
+      color: color,
+      setSp: setSp,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      fontWeight: FontWeights.medium,
+    );
+  }
+
+  /// Makes the [TextStyle] semi-bold.
+  ///
+  /// Semi-bold is thicker than medium.
+  TextStyle semiBold({
+    Color? color,
+    double? fontSize,
+    bool setSp = false,
+    String? fontFamily,
+  }) {
+    return textStyle(
+      color: color,
+      setSp: setSp,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      fontWeight: FontWeights.semiBold,
+    );
+  }
+
+  /// Makes the [TextStyle] bold.
+  ///
+  /// Bold is thicker than semi-bold.
+  TextStyle bold({
+    Color? color,
+    double? fontSize,
+    bool setSp = false,
+    String? fontFamily,
+  }) {
+    return textStyle(
+      color: color,
+      setSp: setSp,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      fontWeight: FontWeights.bold,
+    );
+  }
+
+  /// Makes the [TextStyle] extra-bold.
+  ///
+  /// Extra-bold is thicker than bold.
+  TextStyle extraBold({
+    Color? color,
+    double? fontSize,
+    bool setSp = false,
+    String? fontFamily,
+  }) {
+    return textStyle(
+      color: color,
+      setSp: setSp,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      fontWeight: FontWeights.extraBold,
+    );
+  }
+
+  /// Makes the [TextStyle] black (heaviest).
+  ///
+  /// Black is the most thick font weight.
+  TextStyle black({
+    Color? color,
+    double? fontSize,
+    bool setSp = false,
+    String? fontFamily,
+  }) {
+    return textStyle(
+      color: color,
+      setSp: setSp,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      fontWeight: FontWeights.black,
+    );
+  }
+}
