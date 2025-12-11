@@ -97,6 +97,8 @@ import 'package:flutter_starter_kit/features/environments_dev/domain/usecases/ge
     as _i57;
 import 'package:flutter_starter_kit/features/environments_dev/domain/usecases/update_environment_configuration_use_case.dart'
     as _i58;
+import 'package:flutter_starter_kit/features/onboarding/data/datasources/onboarding_local_datasource.dart'
+    as _i60;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i25;
 
@@ -3254,4 +3256,31 @@ class MockEnvironmentRepository extends _i1.Mock
             returnValue: false,
           )
           as bool);
+}
+
+/// A class which mocks [OnboardingLocalDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockOnboardingLocalDataSource extends _i1.Mock
+    implements _i60.OnboardingLocalDataSource {
+  MockOnboardingLocalDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  bool isOnboardingCompleted() =>
+      (super.noSuchMethod(
+            Invocation.method(#isOnboardingCompleted, []),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
+  _i11.Future<void> completeOnboarding() =>
+      (super.noSuchMethod(
+            Invocation.method(#completeOnboarding, []),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
 }
