@@ -7,7 +7,7 @@ import '../../domain/entities/base_url_type.dart';
 ///
 /// This class is immutable and supports serialization to/from JSON, allowing it
 /// to be persisted locally. It uses [Equatable] for value-based comparison.
-final class BaseUrlConfigModel extends BaseUrlConfig {
+class BaseUrlConfigModel extends BaseUrlConfig {
   /// Creates a [BaseUrlConfigModel] with the URL setting and custom URL.
   const BaseUrlConfigModel({required super.type, super.customUrl});
 

@@ -55,8 +55,8 @@ void main() {
       final auth = service.getAuthConfigForEnvironment(env);
 
       // Assert
-      expect(auth.devUsername, data.devUser);
-      expect(auth.devPassword, data.devPass);
+      expect(auth.username, data.devUser);
+      expect(auth.password, data.devPass);
     });
   });
 

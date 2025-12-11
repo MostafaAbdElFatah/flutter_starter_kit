@@ -56,8 +56,8 @@ class EnvironmentRepositoryImpl implements EnvironmentRepository {
     final env = _localDataSource.currentEnvironment;
     final config = _localDataSource.getAuthConfigForEnvironment(env);
     final isValid =
-        params.username == config.devUsername &&
-        params.password == config.devPassword;
+        params.username == config.username &&
+        params.password == config.password;
     return isValid;
   }
 }

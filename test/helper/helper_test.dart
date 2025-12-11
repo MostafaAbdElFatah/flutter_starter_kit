@@ -61,5 +61,8 @@ import 'package:flutter_starter_kit/features/auth/domain/usecases/register_useca
   LogoutUseCase,
   DeleteAccountUsecase,
   GetAuthenticatedUserUseCase,
+
+  // EnvironmentDev
+
 ])
 void main() {}

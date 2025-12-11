@@ -51,7 +51,7 @@ class EnvironmentConfigStorageService implements EnvironmentConfigService {
   AuthConfig getAuthConfigForEnvironment(Environment env) {
     // Get the static data (API keys, etc.) for the loaded environment.
     final data = EnvData.get(env);
-    return AuthConfig(devUsername: data.devUser, devPassword: data.devPass);
+    return AuthConfig(username: data.devUser, password: data.devPass);
   }
 
   /// Retrieves the static API configuration (API key and default URL) for a given [Environment].
