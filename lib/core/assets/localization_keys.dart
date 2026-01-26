@@ -27,52 +27,48 @@ abstract class LocalizationKeys {
   LocalizationKeys._();
 
   // ===========================================================================
-  // General
-  // ===========================================================================
-
-  static String get appName => 'appName'.tr();
-  static String get welcome => 'welcome'.tr();
-  static String get welcomeFlutterStarterKit => "welcomeFlutterStarterKit".tr();
-  static String get getStarted => 'getStarted'.tr();
-  static String get next => 'next'.tr();
-  static String get skip => 'skip'.tr();
-  static String get changeLanguage => 'changeLanguage'.tr();
-  static String get settings => 'settings'.tr();
-
-  static String get developerModeEnabled => 'developerModeEnabled'.tr();
-  static String get environmentConfig => 'environmentConfig'.tr();
-  static String get configurationSaved => 'configurationSaved'.tr();
-  static String get baseUrl => 'baseUrl'.tr();
-  static String get environment => 'environment'.tr();
-  static String get saveAndRestart => 'saveAndRestart'.tr();
-  static String get defaultMode => 'default'.tr();
-  static String get customMode => 'custom'.tr();
-  static String get baseUrlConfiguration => 'baseUrlConfiguration'.tr();
-  static String get developerLogin => 'developerLogin'.tr();
-  static String get username => 'username'.tr();
-  static String get required => 'required'.tr();
-  static String get invalidCredentials => 'invalidCredentials'.tr();
-  static String get environmentChanged => 'environmentChanged'.tr();
-  static String switchedToEnv(String envName) =>
-      'switchedToEnv'.tr(args: [envName]);
-
-  // ===========================================================================
   // Common
   // ===========================================================================
 
-  static String get cancel => 'cancel'.tr();
-  static String get delete => 'delete'.tr();
-  static String get confirm => 'confirm'.tr();
+  static String get ok => 'ok'.tr();
   static String get yes => 'yes'.tr();
   static String get no => 'no'.tr();
-  static String get ok => 'ok'.tr();
   static String get save => 'save'.tr();
+  static String get confirm => 'confirm'.tr();
+  static String get cancel => 'cancel'.tr();
+  static String get delete => 'delete'.tr();
+  static String get next => 'next'.tr();
+  static String get skip => 'skip'.tr();
+
+  // ===========================================================================
+  // Errors
+  // ===========================================================================
+
+  static String get error => ErrorKeys.error.tr();
+  static String get cancelError => ErrorKeys.cancelError.tr();
+  static String get invalidDataError => ErrorKeys.invalidDataError.tr();
+  static String get badRequestError => ErrorKeys.badRequestError.tr();
+  static String get noContent => ErrorKeys.noContent.tr();
+  static String get forbiddenError => ErrorKeys.forbiddenError.tr();
+  static String get internalServerError => ErrorKeys.internalServerError.tr();
+  static String get unauthorizedError => ErrorKeys.unauthorizedError.tr();
+  static String get notFoundError => ErrorKeys.notFoundError.tr();
+  static String get conflictError => ErrorKeys.conflictError.tr();
+  static String get unknownError => ErrorKeys.unknownError.tr();
+  static String get timeoutError => ErrorKeys.timeoutError.tr();
+  static String get cacheError => ErrorKeys.cacheError.tr();
+  static String get noInternetError => ErrorKeys.noInternetError.tr();
+  static String get noConnectionError => ErrorKeys.noConnectionError.tr();
+  static String get pleaseMakeSureConnectedToInInternet =>
+      ErrorKeys.pleaseMakeSureConnectedToInternet.tr();
 
   // ===========================================================================
   // Validation Messages
   // ===========================================================================
 
   // General
+
+  static String get required => 'required'.tr();
   static String get fieldRequired => 'fieldRequired'.tr();
   static String get phoneRequired => "phoneRequired".tr();
   static String get invalidPhone => "invalidPhone".tr();
@@ -127,17 +123,6 @@ abstract class LocalizationKeys {
   }
 
   // ===========================================================================
-  // Account Management
-  // ===========================================================================
-
-  static String get logout => 'logout'.tr();
-  static String get deleteAccount => 'deleteAccount'.tr();
-  static String get deleteAccountWarning => 'deleteAccountWarning'.tr();
-  static String get accountDeletedSuccessfully =>
-      'accountDeletedSuccessfully'.tr();
-  static String get accountDeletionFailed => 'accountDeletionFailed'.tr();
-
-  // ===========================================================================
   // Onboarding
   // ===========================================================================
 
@@ -147,12 +132,6 @@ abstract class LocalizationKeys {
   static String get onboardingDesc2 => 'onboardingDesc2'.tr();
   static String get onboardingTitle3 => 'onboardingTitle3'.tr();
   static String get onboardingDesc3 => 'onboardingDesc3'.tr();
-
-  // ===========================================================================
-  // Home
-  // ===========================================================================
-
-  static String get homeTitle => 'homeTitle'.tr();
 
   // ===========================================================================
   // Auth
@@ -166,30 +145,55 @@ abstract class LocalizationKeys {
   static String get confirmPassword => 'confirmPassword'.tr();
   static String get forgotPassword => 'forgotPassword'.tr();
   static String get name => 'name'.tr();
+  static String get username => 'username'.tr();
   static String get dontHaveAccount => "dontHaveAnAccount".tr();
   static String get alreadyHaveAccount => "alreadyHaveAnAccount".tr();
 
   // ===========================================================================
-  // Errors
+  // Developer environment
   // ===========================================================================
 
-  static String get error => ErrorKeys.error.tr();
-  static String get cancelError => ErrorKeys.cancelError.tr();
-  static String get invalidDataError => ErrorKeys.invalidDataError.tr();
-  static String get badRequestError => ErrorKeys.badRequestError.tr();
-  static String get noContent => ErrorKeys.noContent.tr();
-  static String get forbiddenError => ErrorKeys.forbiddenError.tr();
-  static String get internalServerError => ErrorKeys.internalServerError.tr();
-  static String get unauthorizedError => ErrorKeys.unauthorizedError.tr();
-  static String get notFoundError => ErrorKeys.notFoundError.tr();
-  static String get conflictError => ErrorKeys.conflictError.tr();
-  static String get unknownError => ErrorKeys.unknownError.tr();
-  static String get timeoutError => ErrorKeys.timeoutError.tr();
-  static String get cacheError => ErrorKeys.cacheError.tr();
-  static String get noInternetError => ErrorKeys.noInternetError.tr();
-  static String get noConnectionError => ErrorKeys.noConnectionError.tr();
-  static String get pleaseMakeSureConnectedToInInternet =>
-      ErrorKeys.pleaseMakeSureConnectedToInternet.tr();
+  static String get developerModeEnabled => 'developerModeEnabled'.tr();
+  static String get environmentConfig => 'environmentConfig'.tr();
+  static String get configurationSaved => 'configurationSaved'.tr();
+  static String get baseUrl => 'baseUrl'.tr();
+  static String get environment => 'environment'.tr();
+  static String get saveAndRestart => 'saveAndRestart'.tr();
+  static String get defaultMode => 'default'.tr();
+  static String get customMode => 'custom'.tr();
+  static String get baseUrlConfiguration => 'baseUrlConfiguration'.tr();
+  static String get developerLogin => 'developerLogin'.tr();
+  static String get invalidCredentials => 'invalidCredentials'.tr();
+  static String get environmentChanged => 'environmentChanged'.tr();
+  static String switchedToEnv(String envName) =>
+      'switchedToEnv'.tr(args: [envName]);
+
+  // ===========================================================================
+  // Home
+  // ===========================================================================
+
+  static String get welcome => 'welcome'.tr();
+  static String get welcomeFlutterStarterKit => "welcomeFlutterStarterKit".tr();
+
+
+  static String get homeTitle => 'homeTitle'.tr();
+  static String get appName => 'appName'.tr();
+
+  static String get getStarted => 'getStarted'.tr();
+  static String get changeLanguage => 'changeLanguage'.tr();
+  static String get settings => 'settings'.tr();
+
+
+  // ===========================================================================
+  // Account Management
+  // ===========================================================================
+
+  static String get logout => 'logout'.tr();
+  static String get deleteAccount => 'deleteAccount'.tr();
+  static String get deleteAccountWarning => 'deleteAccountWarning'.tr();
+  static String get accountDeletedSuccessfully =>
+      'accountDeletedSuccessfully'.tr();
+  static String get accountDeletionFailed => 'accountDeletionFailed'.tr();
 
   // ===========================================================================
   // easy_localization examples

@@ -1,7 +1,22 @@
 {
     "appName": "Flutter Starter Kit",
+
+
+    "//common": "=== common keys ===",
+
     "ok": "OK",
+    "yes": "Yes",
+    "no": "No",
+    "save": "Save",
+    "confirm": "Confirm",
     "cancel": "Cancel",
+    "delete": "Delete",
+    "next": "Next",
+    "skip": "Skip",
+
+
+    "//error": "=== validation keys  ===",
+
     "error": "An error occurred",
     "success": "Operation completed successfully",
     "cancelError": "Unable to cancel the process",
@@ -20,8 +35,58 @@
     "noInternetError": "No internet connection",
     "noConnectionError": "Unable to connect to the server",
     "pleaseMakeSureConnectedToInternet": "Please make sure you are connected to the internet and try again later",
-    "welcome": "Welcome",
-    "welcomeFlutterStarterKit": "Welcome to Flutter Starter Kit!",
+
+
+
+    "//validation": "=== validation keys  ===",
+
+    "required": "Required",
+    "fieldRequired": "This field is required",
+    "phoneRequired":"Phone number is required.",
+    "invalidPhone":  "Please enter a valid phone number.",
+
+    "//comment_url": "URL Validation",
+
+    "urlRequired": "URL is required",
+    "invalidUrlFormat": "Invalid URL format",
+    "urlMustIncludeProtocol": "URL must include http:// or https://",
+    "urlMustUseHttpProtocol": "URL must use http or https protocol",
+    "urlMustIncludeDomain": "URL must include a valid domain",
+    "invalidDomainName": "Invalid domain name",
+
+    "//comment_email": "التحقق من البريد الإلكتروني",
+
+    "emailRequired": "Email is required",
+    "invalidEmailAddress": "Please enter a valid email address",
+    "emailTooLong": "Email is too long",
+    "emailUsernameTooLong": "Email username is too long",
+
+    "//comment_password": "Password Validation",
+
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least {} characters",
+    "passwordRequireUppercase": "Password must contain at least one uppercase letter",
+    "passwordRequireLowercase": "Password must contain at least one lowercase letter",
+    "passwordRequireNumber": "Password must contain at least one number",
+    "passwordRequireSpecialChar": "Password must contain at least one special character",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordsDoNotMatch": "Passwords do not match",
+
+    "//comment_username": "Username Validation",
+
+    "usernameRequired": "Username is required",
+    "usernameMinLength": "Username must be at least {} characters",
+    "usernameMaxLength": "Username must be at most {} characters",
+    "usernameInvalidCharactersAll": "Username can only contain letters, numbers, and underscores and must start with a letter",
+    "usernameInvalidCharactersNumbers": "Username can only contain letters and numbers and must start with a letter",
+    "usernameInvalidCharactersUnderscores": "Username can only contain letters and underscores and must start with a letter",
+    "usernameInvalidCharactersLettersOnly": "Username can only contain letters and must start with a letter",
+
+
+
+
+    "//onboarding": "=== onboarding keys  ===",
+
     "onboardingTitle1": "Welcome to the App",
     "onboardingDesc1": "This is the first step of onboarding.",
     "onboardingTitle2": "Discover Features",
@@ -29,54 +94,30 @@
     "onboardingTitle3": "Get Started",
     "onboardingDesc3": "You are ready to go!",
     "getStarted": "Get Started",
-    "next": "Next",
-    "skip": "Skip",
-    "homeTitle": "Home",
-    "changeLanguage": "Change Language",
-    "settings": "Settings",
-    "date": "{currentDate}.",
-    "dateLogging": "INFO: the date today is @:date",
-    "msg": "language Hello {} in the {} world",
-    "msg_named": "Hello {name} in the {type} world",
-    "msg_mixed": "{} are written in the {lang} language",
-    "example": {
-        "hello": "Hello",
-        "world": "World!",
-        "helloWorld": "@:example.hello @:example.world"
-    },
-    "gender": {
-        "male": "Hi man ;) {}",
-        "female": "Hello girl :) {}",
-        "other": "Hello {}"
-    },
-    "day": {
-        "zero": "{} days",
-        "one": "{} day",
-        "two": "{} days",
-        "few": "{} days",
-        "many": "{} days",
-        "other": "{} days"
-    },
-    "money": {
-        "zero": "You not have money",
-        "one": "You have {} dollar",
-        "many": "You have {} dollars",
-        "other": "You have {} dollars"
-    },
-    "money_args": {
-        "zero": "{} has no money",
-        "one": "{} has {} dollar",
-        "many": "{} has {} dollars",
-        "other": "{} has {} dollars"
-    },
-    "money_named_args": {
-        "zero": "{name} has no money",
-        "one": "{name} has {money} dollar",
-        "many": "{name} has {money} dollars",
-        "other": "{name} has {money} dollars"
-    },
-    "logout": "Logout",
-    "deleteAccount": "Delete Account",
+
+
+
+    "//auth": "=== auth keys  ===",
+
+
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "phone": "Phone",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password",
+    "name": "Name",
+    "dontHaveAnAccount": "Don\\'t have an account?",
+    "alreadyHaveAnAccount": "Already have an account?",
+    "username": "Username",
+    "password": "Password",
+
+
+
+
+    "//developer_environment": "=== developer environment keys  ===",
+
+
     "developerModeEnabled": "Developer Mode Enabled!",
     "environmentConfig": "Environment Config",
     "configurationSaved": "Configuration Saved. Please Restart App.",
@@ -87,70 +128,85 @@
     "custom": "Custom",
     "baseUrlConfiguration": "Base URL Configuration",
     "developerLogin": "Developer Login",
-    "username": "Username",
-    "password": "Password",
-    "required": "Required",
     "invalidCredentials": "Invalid credentials",
     "environmentChanged": "Environment Changed",
     "switchedToEnv": "Switched to {}. Restart the app to apply changes fully.",
+
+
+
+
+    "//home": "=== home keys  ===",
+
+
+    "welcome": "Welcome",
+    "welcomeFlutterStarterKit": "Welcome to Flutter Starter Kit!",
+    "homeTitle": "Home",
+    "changeLanguage": "Change Language",
+    "settings": "Settings",
     "restartRequiredTitle": "Restart Required",
     "restartRequiredBody": "The application needs to be restarted for the changes to take full effect.",
-    "restartLater": "Later",
     "restartNow": "Restart Now",
-    "login": "Login",
-    "register": "Register",
-    "email": "Email",
-    "phone": "Phone",
-    "confirmPassword": "Confirm Password",
-    "forgotPassword": "Forgot Password",
-    "name": "Name",
-    "dontHaveAnAccount": "Don\\'t have an account?",
-    "alreadyHaveAnAccount": "Already have an account?",
-    "delete": "Delete",
-    "deleteAccountConfirmation": "Are you sure you want to delete your account? This action cannot be undone.",
-    "deleteAccountWarning": "Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.",
-    "accountDeletedSuccessfully": "Account deleted successfully",
-    "accountDeletionFailed": "Failed to delete account. Please try again.",
-    "confirm": "Confirm",
-    "yes": "Yes",
-    "no": "No",
-    "save": "Save",
     "profile": "Profile",
     "notifications": "Notifications",
     "privacy": "Privacy",
     "language": "Language",
     "theme": "Theme",
-    "_comment_validation": "=== Validation Messages ===",
-    "fieldRequired": "This field is required",
-    "phoneRequired":"Phone number is required.",
-    "invalidPhone":  "Please enter a valid phone number.",
-    "_comment_url": "URL Validation",
-    "urlRequired": "URL is required",
-    "invalidUrlFormat": "Invalid URL format",
-    "urlMustIncludeProtocol": "URL must include http:// or https://",
-    "urlMustUseHttpProtocol": "URL must use http or https protocol",
-    "urlMustIncludeDomain": "URL must include a valid domain",
-    "invalidDomainName": "Invalid domain name",
-    "_comment_email": "Email Validation",
-    "emailRequired": "Email is required",
-    "invalidEmailAddress": "Please enter a valid email address",
-    "emailTooLong": "Email is too long",
-    "emailUsernameTooLong": "Email username is too long",
-    "_comment_password": "Password Validation",
-    "passwordRequired": "Password is required",
-    "passwordMinLength": "Password must be at least {} characters",
-    "passwordRequireUppercase": "Password must contain at least one uppercase letter",
-    "passwordRequireLowercase": "Password must contain at least one lowercase letter",
-    "passwordRequireNumber": "Password must contain at least one number",
-    "passwordRequireSpecialChar": "Password must contain at least one special character",
-    "confirmPasswordRequired": "Please confirm your password",
-    "passwordsDoNotMatch": "Passwords do not match",
-    "_comment_username": "Username Validation",
-    "usernameRequired": "Username is required",
-    "usernameMinLength": "Username must be at least {} characters",
-    "usernameMaxLength": "Username must be at most {} characters",
-    "usernameInvalidCharactersAll": "Username can only contain letters, numbers, and underscores and must start with a letter",
-    "usernameInvalidCharactersNumbers": "Username can only contain letters and numbers and must start with a letter",
-    "usernameInvalidCharactersUnderscores": "Username can only contain letters and underscores and must start with a letter",
-    "usernameInvalidCharactersLettersOnly": "Username can only contain letters and must start with a letter"
+
+
+
+   "//account_management": "=== account management keys  ===",
+
+
+    "logout": "Logout",
+    "deleteAccount": "Delete Account",
+    "deleteAccountConfirmation": "Are you sure you want to delete your account? This action cannot be undone.",
+    "deleteAccountWarning": "Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.",
+    "accountDeletedSuccessfully": "Account deleted successfully",
+    "accountDeletionFailed": "Failed to delete account. Please try again.",
+
+
+
+    "//easy_localization_examples": "=== easy_localization examples keys  ===",
+
+    "date": "{currentDate}.",
+    "dateLogging": "INFO: the date today is @:date",
+    "msg": "language Hello {} in the {} world",
+    "msg_named": "Hello {name} in the {type} world",
+    "msg_mixed": "{} are written in the {lang} language",
+    "example": {
+      "hello": "Hello",
+      "world": "World!",
+      "helloWorld": "@:example.hello @:example.world"
+    },
+    "gender": {
+      "male": "Hi man ;) {}",
+      "female": "Hello girl :) {}",
+      "other": "Hello {}"
+    },
+    "day": {
+      "zero": "{} days",
+      "one": "{} day",
+      "two": "{} days",
+      "few": "{} days",
+      "many": "{} days",
+      "other": "{} days"
+    },
+    "money": {
+      "zero": "You not have money",
+      "one": "You have {} dollar",
+      "many": "You have {} dollars",
+      "other": "You have {} dollars"
+    },
+    "money_args": {
+      "zero": "{} has no money",
+      "one": "{} has {} dollar",
+      "many": "{} has {} dollars",
+      "other": "{} has {} dollars"
+    },
+    "money_named_args": {
+      "zero": "{name} has no money",
+      "one": "{name} has {money} dollar",
+      "many": "{name} has {money} dollars",
+      "other": "{name} has {money} dollars"
+    }
 }
