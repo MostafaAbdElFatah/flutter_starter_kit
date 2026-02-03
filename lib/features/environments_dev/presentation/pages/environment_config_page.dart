@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/di/di.dart' as di;
+import '../../../../core/di/injection.dart' as injection;
 import '../../../../core/assets/localization_keys.dart';
 import '../../../../core/validators/url_validator.dart';
 import '../../domain/entities/environment.dart';
@@ -17,7 +17,7 @@ class EnvironmentConfigPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => di.get<EnvironmentCubit>(),
+      create: (context) => injection.get<EnvironmentCubit>(),
       child: _EnvironmentConfigPage(),
     );
   }

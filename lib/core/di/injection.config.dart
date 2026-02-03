@@ -75,7 +75,7 @@ import '../infrastructure/data/storage/secure_storage_service.dart' as _i224;
 import '../infrastructure/data/storage/storage_service.dart' as _i419;
 import '../utils/device_services.dart' as _i440;
 import '../utils/platform_checker.dart' as _i48;
-import 'di.dart' as _i913;
+import 'injection.dart' as _i464;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -243,6 +243,6 @@ extension GetItInjectableX on _i174.GetIt {
   }
 }
 
-class _$InjectionModule extends _i913.InjectionModule {}
+class _$InjectionModule extends _i464.InjectionModule {}
 
 class _$NetworkModule extends _i183.NetworkModule {}

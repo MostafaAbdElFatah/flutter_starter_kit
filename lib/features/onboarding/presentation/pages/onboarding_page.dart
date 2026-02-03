@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_router.dart';
 import '../../../../core/assets/localization_keys.dart';
-import '../../../../core/di/di.dart' as di;
+import '../../../../core/di/injection.dart' as injection;
 import '../bloc/onboarding_cubit.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -13,7 +13,7 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => di.get<OnboardingCubit>(),
+      create: (_) => injection.get<OnboardingCubit>(),
       child: OnboardingPageContent(),
     );
   }

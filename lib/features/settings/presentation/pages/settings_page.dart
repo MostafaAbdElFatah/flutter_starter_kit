@@ -7,8 +7,8 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'dart:async';
 import 'dart:math';
 
-import '../../../../core/di/di.dart' as di;
 import '../../../../core/utils/app_locale.dart';
+import '../../../../core/di/injection.dart' as injection;
 import '../../../../core/assets/localization_keys.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../dialogs/delete_account_dialog.dart';
@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => di.get<AuthCubit>()),
+        BlocProvider(create: (context) => injection.get<AuthCubit>()),
         // Uncomment when ready to use SettingsCubit
         // BlocProvider(create: (context) => di.get<SettingsCubit>()),
       ],

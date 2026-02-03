@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/di/di.dart' as di;
+import '../../../../core/di/injection.dart' as injection;
 import '../../../../core/assets/localization_keys.dart';
 import '../../../../core/router/app_router.dart';
 import '../cubit/environment_cubit.dart';
@@ -19,7 +19,7 @@ class DeveloperLoginDialog extends StatefulWidget {
       context: context,
       barrierDismissible: false,
       builder: (context) => BlocProvider(
-        create: (context) => di.get<EnvironmentCubit>(),
+        create: (context) => injection.get<EnvironmentCubit>(),
         child: DeveloperLoginDialog(
           onLoginResult: (bool p1) {
             GoRouter.of(context).pushEnvironmentConfig();

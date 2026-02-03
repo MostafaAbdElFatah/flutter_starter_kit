@@ -8,8 +8,10 @@ import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/environments_dev/presentation/pages/environment_config_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
-import '../di/di.dart' as di;
 import '../infrastructure/domain/entities/no_params.dart';
+import '../di/injection.dart' as injection;
+
+
 
 part 'auth_routes.dart';
 part 'home_routes.dart';
@@ -25,7 +27,7 @@ class AuthGuard {
       return state.matchedLocation;
     }
 
-    final isAuthenticated = await di.get<IsLoggedInUseCase>()(
+    final isAuthenticated = await injection.get<IsLoggedInUseCase>()(
       NoParams(),
     ); // Check your auth state
     final isGoingToLogin = state.matchedLocation == AuthRoutes.login;

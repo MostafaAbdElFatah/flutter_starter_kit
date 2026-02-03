@@ -5,7 +5,7 @@ import '../../../../core/components/text_fields/text_fields.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/assets/localization_keys.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/di/di.dart' as di;
+import '../../../../core/di/injection.dart' as injection;
 import '../../../../core/validators/password_validator.dart';
 import '../cubit/auth_cubit.dart';
 
@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => di.get<AuthCubit>(),
+      create: (context) => injection.get<AuthCubit>(),
       child: const _LoginForm(),
     );
   }

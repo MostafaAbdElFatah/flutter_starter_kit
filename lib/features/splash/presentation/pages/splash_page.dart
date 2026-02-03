@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/di/injection.dart' as injection;
 import '../bloc/splash_cubit.dart';
-import '../../../../core/di/di.dart' as di;
 
 
 class SplashPage extends StatelessWidget {
@@ -12,7 +12,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => di.get<SplashCubit>()..checkAuth(),
+      create: (_) => injection.get<SplashCubit>()..checkAuth(),
       child: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
           if (state == SplashState.onboarding) {

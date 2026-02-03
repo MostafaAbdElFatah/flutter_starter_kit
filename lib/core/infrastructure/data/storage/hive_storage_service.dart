@@ -1,6 +1,9 @@
 import 'dart:convert';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:io';
+import 'package:hive_ce/hive_ce.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../../utils/log.dart';
 import 'secure_storage_service.dart';
 import 'storage_service.dart';
@@ -27,19 +30,16 @@ class HiveStorageService implements StorageService {
   @PostConstruct(preResolve: true)
   Future<void> init() async {
     try {
+      final path = Directory.current.path;
+      Hive.init(path);
       // Retrieve the encryption key from secure storage.
-      String? encryptionKeyString = await _secureStorage.read(
-        key: _hiveKey,
-      );
+      String? encryptionKeyString = await _secureStorage.read(key: _hiveKey);
 
       if (encryptionKeyString == null) {
         // If no key exists, generate a new one and save it securely.
         final key = Hive.generateSecureKey();
         encryptionKeyString = base64UrlEncode(key);
-        await _secureStorage.write(
-          key: _hiveKey,
-          value: encryptionKeyString,
-        );
+        await _secureStorage.write(key: _hiveKey, value: encryptionKeyString);
       }
 
       final encryptionKeyUint8List = base64Url.decode(encryptionKeyString);
@@ -50,7 +50,11 @@ class HiveStorageService implements StorageService {
         encryptionCipher: HiveAesCipher(encryptionKeyUint8List),
       );
     } catch (e, s) {
-      Log.fatalError('Failed to initialize HiveStorageService', error: e, stackTrace: s);
+      Log.fatalError(
+        'Failed to initialize HiveStorageService',
+        error: e,
+        stackTrace: s,
+      );
       // Depending on the app's requirements, we might want to rethrow the exception
       // or handle it in a way that doesn't crash the app.
       rethrow;
