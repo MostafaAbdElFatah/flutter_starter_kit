@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:hive_ce/hive_ce.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:injectable/injectable.dart';
@@ -30,8 +29,7 @@ class HiveStorageService implements StorageService {
   @PostConstruct(preResolve: true)
   Future<void> init() async {
     try {
-      final path = Directory.current.path;
-      Hive.init(path);
+      Hive.initFlutter();
       // Retrieve the encryption key from secure storage.
       String? encryptionKeyString = await _secureStorage.read(key: _hiveKey);
 

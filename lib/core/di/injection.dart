@@ -9,6 +9,15 @@ import '../../features/environments_dev/data/storage/environment_config_service.
 import '../utils/platform_checker.dart';
 import 'injection.config.dart';
 
+final getIt = GetIt.instance;
+
+@InjectableInit(
+  initializerName: 'init',
+  preferRelativeImports: true,
+  asExtension: true,
+)
+Future<void> configureDependencies() => getIt.init();
+
 
 /// A global service locator instance for dependency injection.
 final _sl = GetIt.instance;
@@ -26,18 +35,6 @@ final EnvironmentConfigService environmentConfigService = _sl<EnvironmentConfigS
 /// final myService = get<MyService>();
 /// ```
 T get<T extends Object>() => _sl<T>();
-
-
-final getIt = GetIt.instance;
-
-@InjectableInit(
-  initializerName: 'init',
-  preferRelativeImports: true,
-  asExtension: true,
-)
-Future<void> configureDependencies() => getIt.init();
-
-
 
 /// A module for registering third-party dependencies that injectable cannot
 /// construct on its own.
