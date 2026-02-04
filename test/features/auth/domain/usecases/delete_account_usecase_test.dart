@@ -8,11 +8,11 @@ import '../../../../helper/helper_test.mocks.dart';
 
 void main() {
   late MockAuthRepository mockRepository;
-  late DeleteAccountUsecase usecase;
+  late DeleteAccountUseCase usecase;
 
   setUp(() {
     mockRepository = MockAuthRepository();
-    usecase = DeleteAccountUsecase(mockRepository);
+    usecase = DeleteAccountUseCase(mockRepository);
   });
 
   group('DeleteAccountUsecase', () {

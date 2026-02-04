@@ -29,7 +29,6 @@ class HiveStorageService implements StorageService {
   @PostConstruct(preResolve: true)
   Future<void> init() async {
     try {
-      Hive.initFlutter();
       // Retrieve the encryption key from secure storage.
       String? encryptionKeyString = await _secureStorage.read(key: _hiveKey);
 

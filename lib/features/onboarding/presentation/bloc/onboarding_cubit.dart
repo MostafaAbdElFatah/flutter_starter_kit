@@ -1,15 +1,30 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../core/infrastructure/presentation/cubits/base_cubit.dart';
 import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../domain/usecases/complete_onboarding_usecase.dart';
 
+/// The concrete implementation of the [OnboardingCubit].
+///
+/// This cubit marks onboarding as completed.
 @injectable
-class OnboardingCubit extends Cubit<void> {
+class OnboardingCubit extends BaseCubit<void> {
   final CompleteOnboardingUseCase _completeOnboardingUseCase;
 
   OnboardingCubit(this._completeOnboardingUseCase) : super(null);
 
-  static OnboardingCubit of(context) => BlocProvider.of(context);
+  /// A static helper method to retrieve the [OnboardingCubit] instance from the widget tree.
+  ///
+  /// This simplifies accessing the cubit from UI components.
+  ///
+  /// Example:
+  /// ```dart
+  /// OnboardingCubit.of(context).completeOnboarding();
+  /// ```
+  static OnboardingCubit of(BuildContext context, {bool listen = false}) =>
+      BaseCubit.of(context, listen: listen);
 
+  /// Marks onboarding as completed for the current user.
   Future<void> completeOnboarding() => _completeOnboardingUseCase(NoParams());
 }

@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:mockito/mockito.dart';
-import 'package:hive_test/hive_test.dart';
+import 'package:hive_ce_test/hive_ce_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_starter_kit/core/infrastructure/data/storage/hive_storage_service.dart';

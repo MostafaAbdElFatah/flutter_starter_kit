@@ -1,5 +1,7 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../core/infrastructure/presentation/cubits/base_cubit.dart';
 import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../../auth/domain/usecases/is_logged_in_usecase.dart';
 import '../../../onboarding/domain/usecases/check_onboarding_status_usecase.dart';
@@ -12,14 +14,35 @@ enum SplashState {
   onboarding,
 }
 
+/// The concrete implementation of the [SplashCubit].
+///
+/// This cubit drives the splash flow by checking onboarding completion and
+/// authentication status, then emitting the appropriate [SplashState].
 @injectable
-class SplashCubit extends Cubit<SplashState> {
+class SplashCubit extends BaseCubit<SplashState> {
   final IsLoggedInUseCase _isLoggedInUseCase;
   final CheckOnboardingStatusUseCase _checkOnboardingStatusUseCase;
 
   SplashCubit(this._isLoggedInUseCase, this._checkOnboardingStatusUseCase)
     : super(SplashState.initial);
 
+  /// A static helper method to retrieve the [SplashCubit] instance from the widget tree.
+  ///
+  /// This simplifies accessing the cubit from UI components.
+  ///
+  /// Example:
+  /// ```dart
+  /// SplashCubit.of(context).checkAuth();
+  /// ```
+  static SplashCubit of(BuildContext context, {bool listen = false}) =>
+      BaseCubit.of(context, listen: listen);
+
+  /// Checks onboarding completion and login status to determine the splash outcome.
+  ///
+  /// Emits [SplashState.loading], then:
+  /// - [SplashState.onboarding] if onboarding is incomplete.
+  /// - [SplashState.authenticated] if logged in.
+  /// - [SplashState.unauthenticated] otherwise.
   Future<void> checkAuth() async {
     emit(SplashState.loading);
     await Future.delayed(const Duration(seconds: 2)); // Simulate splash delay

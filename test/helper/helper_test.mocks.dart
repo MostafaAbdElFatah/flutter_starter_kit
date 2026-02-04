@@ -3075,7 +3075,7 @@ class MockLogoutUseCase extends _i1.Mock implements _i51.LogoutUseCase {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockDeleteAccountUsecase extends _i1.Mock
-    implements _i53.DeleteAccountUsecase {
+    implements _i53.DeleteAccountUseCase {
   MockDeleteAccountUsecase() {
     _i1.throwOnMissingStub(this);
   }

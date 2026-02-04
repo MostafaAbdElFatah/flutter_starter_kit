@@ -205,8 +205,8 @@ extension GetItInjectableX on _i174.GetIt {
         remoteDataSource: gh<_i161.AuthRemoteDataSource>(),
       ),
     );
-    gh.lazySingleton<_i914.DeleteAccountUsecase>(
-      () => _i914.DeleteAccountUsecase(gh<_i787.AuthRepository>()),
+    gh.lazySingleton<_i914.DeleteAccountUseCase>(
+      () => _i914.DeleteAccountUseCase(gh<_i787.AuthRepository>()),
     );
     gh.lazySingleton<_i435.GetAuthenticatedUserUseCase>(
       () => _i435.GetAuthenticatedUserUseCase(gh<_i787.AuthRepository>()),
@@ -235,7 +235,7 @@ extension GetItInjectableX on _i174.GetIt {
         registerUseCase: gh<_i941.RegisterUseCase>(),
         logoutUseCase: gh<_i48.LogoutUseCase>(),
         isLoggedInUseCase: gh<_i48.IsLoggedInUseCase>(),
-        deleteAccountUsecase: gh<_i914.DeleteAccountUsecase>(),
+        deleteAccountUseCase: gh<_i914.DeleteAccountUseCase>(),
         getAuthenticatedUserUseCase: gh<_i435.GetAuthenticatedUserUseCase>(),
       ),
     );

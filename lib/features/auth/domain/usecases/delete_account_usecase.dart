@@ -9,12 +9,12 @@ import '../repositories/auth_repository.dart';
 /// This class encapsulates the business logic for logging out. It interacts with
 /// the [AuthRepository] to clear local session data and sign the user out.
 @lazySingleton
-class DeleteAccountUsecase
+class DeleteAccountUseCase
     extends AsyncUseCase<AuthRepository, void, NoParams> {
   /// Creates an instance of [LogoutUseCase].
   ///
   /// Requires an [AuthRepository] to be injected.
-  DeleteAccountUsecase(super.repository);
+  DeleteAccountUseCase(super.repository);
 
   /// Executes the logout use case.
   ///
