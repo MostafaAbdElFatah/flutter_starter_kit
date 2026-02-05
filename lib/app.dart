@@ -24,6 +24,14 @@ class App extends StatelessWidget {
         di.appLocaleState.current = context.locale;
         return context.locale;
       },
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.noScaling),
+          child: child!,
+        );
+      },
     );
   }
 }
