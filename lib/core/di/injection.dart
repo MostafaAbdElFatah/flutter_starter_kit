@@ -6,30 +6,34 @@ import 'package:hive_ce_flutter/adapters.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/environments_dev/data/storage/environment_config_service.dart';
-import '../utils/platform_checker.dart';
+import '../utils/app_locale.dart';
 import 'injection.config.dart';
-
-final getIt = GetIt.instance;
 
 @InjectableInit(
   initializerName: 'init',
   preferRelativeImports: true,
   asExtension: true,
 )
-Future<void> configureDependencies() {
-  Hive.initFlutter();
-  return getIt.init();
+Future<GetIt> configureDependencies() async {
+  await Hive.initFlutter();
+  return _getIt.init();
 }
 
 /// A global service locator instance for dependency injection.
-final _sl = GetIt.instance;
+final _getIt = GetIt.instance;
+
+/// A convenient global accessor for the application's [AppLocaleState].
+///
+/// This provides easy access to locate without needing to
+/// repeatedly look up the BuildContext.
+AppLocaleState get appLocaleState => _getIt<AppLocaleState>();
 
 /// A convenient global accessor for the application's [ConfigService].
 ///
 /// This provides easy access to configuration settings without needing to
 /// repeatedly look up the service from the service locator.
-final EnvironmentConfigService environmentConfigService =
-    _sl<EnvironmentConfigService>();
+EnvironmentConfigService get environmentConfigService =>
+    _getIt<EnvironmentConfigService>();
 
 /// A top-level convenience function for resolving dependencies from the service locator.
 ///
@@ -37,7 +41,7 @@ final EnvironmentConfigService environmentConfigService =
 /// ```dart
 /// final myService = get<MyService>();
 /// ```
-T get<T extends Object>() => _sl<T>();
+T get<T extends Object>() => _getIt<T>();
 
 /// A module for registering third-party dependencies that injectable cannot
 /// construct on its own.
@@ -54,10 +58,6 @@ abstract class InjectionModule {
   /// Provides a lazy singleton instance of [DeviceInfoPlugin].
   @lazySingleton
   DeviceInfoPlugin get deviceInfoPlugin => DeviceInfoPlugin();
-
-  /// Provides a lazy singleton instance of [DeviceInfoPlugin].
-  @lazySingleton
-  PlatformChecker get platformChecker => PlatformChecker();
 
   /// Provides a lazy singleton instance of [FlutterSecureStorage].
   @lazySingleton

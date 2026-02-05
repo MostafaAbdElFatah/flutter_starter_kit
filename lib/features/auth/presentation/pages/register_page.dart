@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/components/text_fields/text_fields.dart';
 import '../../../../core/assets/localization_keys.dart';
-import '../../../../core/di/injection.dart';
 import '../../../../core/validators/password_validator.dart';
 import '../../../../core/validators/user_name_validator.dart';
+import '../../../../core/di/injection.dart' as di;
 import '../cubit/auth_cubit.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -15,7 +15,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<AuthCubit>(),
+      create: (context) => di.get<AuthCubit>(),
       child: const _RegisterForm(),
     );
   }

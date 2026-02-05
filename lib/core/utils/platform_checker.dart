@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'package:injectable/injectable.dart';
 
 /// Helper class to check platform, making it testable
+@lazySingleton
 class PlatformChecker {
   const PlatformChecker();
 

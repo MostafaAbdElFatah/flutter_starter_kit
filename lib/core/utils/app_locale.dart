@@ -2,6 +2,12 @@ import 'package:flutter/material.dart' as ui;
 import 'package:flutter/material.dart' hide TextDirection;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:injectable/injectable.dart';
+
+@lazySingleton
+class AppLocaleState {
+  Locale current = AppLocale.defaultLocale;
+}
 
 enum AppLocale {
   arabic('ar'),

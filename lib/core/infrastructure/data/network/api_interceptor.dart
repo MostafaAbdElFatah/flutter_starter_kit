@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../features/environments_dev/data/storage/environment_config_service.dart';
+import '../../../utils/app_locale.dart';
 import '../storage/secure_storage_service.dart';
 import 'api_endpoint.dart';
 
@@ -13,14 +14,17 @@ import 'api_endpoint.dart';
 
 @lazySingleton
 class APIInterceptor extends Interceptor {
+  final AppLocaleState _appLocaleState;
   final SecureStorageService _secureStorage;
   final EnvironmentConfigService _environmentConfigService;
 
   /// Creates a new [APIInterceptor] instance.
   APIInterceptor({
+    required AppLocaleState appLocaleState,
     required SecureStorageService secureStorage,
     required EnvironmentConfigService environmentConfigService,
-  }) : _secureStorage = secureStorage,
+  }) : _appLocaleState = appLocaleState,
+       _secureStorage = secureStorage,
        _environmentConfigService = environmentConfigService;
 
   @override
@@ -32,6 +36,9 @@ class APIInterceptor extends Interceptor {
 
     // Add the API key to the request headers.
     options.headers['X-Api-Key'] = appConfig.apiKey;
+
+    // Add the current languageCode to the request headers.
+    options.headers['Accept-Language'] = _appLocaleState.current.languageCode;
 
     // Add the authorization token if it exists.
     final token = await _secureStorage.getToken();

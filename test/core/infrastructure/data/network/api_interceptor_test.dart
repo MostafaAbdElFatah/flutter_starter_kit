@@ -3,27 +3,30 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:flutter_starter_kit/core/infrastructure/data/network/api_interceptor.dart';
+import 'package:flutter_starter_kit/core/utils/app_locale.dart';
 import '../../../../helper/helper_test.mocks.dart';
-
-
 
 void main() {
   late APIInterceptor interceptor;
   late MockSecureStorageService mockSecureStorage;
   late MockEnvironmentConfigService mockEnvironmentConfigService;
   late MockRequestInterceptorHandler mockHandler;
+  late MockAppLocaleState mockAppLocaleState;
   late MockAPIConfig mockApiConfig;
   const expectedApiKey = 'test-api-key';
   const defaultBaseUrl = 'https://api.example.com';
+  const expectedLanguageCode = 'ar';
 
   setUp(() {
     mockSecureStorage = MockSecureStorageService();
     mockEnvironmentConfigService = MockEnvironmentConfigService();
     mockHandler = MockRequestInterceptorHandler();
+    mockAppLocaleState = MockAppLocaleState();
     mockApiConfig = MockAPIConfig();
 
     interceptor = APIInterceptor(
       secureStorage: mockSecureStorage,
+      appLocaleState: mockAppLocaleState,
       environmentConfigService: mockEnvironmentConfigService,
     );
 
@@ -32,6 +35,8 @@ void main() {
         .thenReturn(mockApiConfig);
     when(mockApiConfig.apiKey).thenReturn(expectedApiKey);
     when(mockApiConfig.baseUrl).thenReturn(defaultBaseUrl);
+    when(mockAppLocaleState.current)
+        .thenReturn(AppLocale.defaultLocale);
   });
 
   group('APIInterceptor Tests', () {
@@ -50,6 +55,7 @@ void main() {
         // Assert
         expect(options.headers['Authorization'], null);
         expect(options.headers['X-Api-Key'], expectedApiKey);
+        expect(options.headers['Accept-Language'], expectedLanguageCode);
         expect(options.headers.containsKey('Authorization'), false);
         verify(mockEnvironmentConfigService.currentApiConfig).called(1);
         verify(mockSecureStorage.getToken()).called(1);
@@ -71,6 +77,7 @@ void main() {
         // Assert
         expect(options.headers['Authorization'], 'Bearer $testToken');
         expect(options.headers['X-Api-Key'], expectedApiKey);
+        expect(options.headers['Accept-Language'], expectedLanguageCode);
         verify(mockSecureStorage.getToken()).called(1);
         verify(mockHandler.next(any)).called(1);
       });
@@ -96,6 +103,7 @@ void main() {
         // Assert
         expect(options.baseUrl, defaultBaseUrl);
         expect(options.uri.toString(), '$defaultBaseUrl/test');
+        expect(options.headers['Accept-Language'], expectedLanguageCode);
         expect(options.extra.containsKey('endpoint'), false);
         verify(mockHandler.next(any)).called(1);
       });
@@ -122,6 +130,7 @@ void main() {
 
         // Assert
         expect(options.baseUrl, originalBaseUrl);
+        expect(options.headers['Accept-Language'], expectedLanguageCode);
         expect(options.extra.containsKey('endpoint'), false);
         expect(options.baseUrl, isNot(equals(defaultBaseUrl)));
       });
@@ -144,6 +153,7 @@ void main() {
 
         // Assert
         expect(options.baseUrl, originalBaseUrl);
+        expect(options.headers['Accept-Language'], expectedLanguageCode);
         expect(options.extra.containsKey('endpoint'), false);
         expect(options.baseUrl, isNot(equals(defaultBaseUrl)));
       });
@@ -161,6 +171,7 @@ void main() {
 
         // Assert
         verify(mockHandler.next(options)).called(1);
+        expect(options.headers['Accept-Language'], expectedLanguageCode);
       });
 
       test('should handle all operations together correctly', () async {
@@ -186,6 +197,7 @@ void main() {
         expect(options.headers['X-Api-Key'], expectedApiKey);
         expect(options.headers['Authorization'], 'Bearer $testToken');
         expect(options.baseUrl, defaultBaseUrl);
+        expect(options.headers['Accept-Language'], expectedLanguageCode);
         expect(options.extra.containsKey('endpoint'), false);
         verify(mockHandler.next(options)).called(1);
       });
@@ -206,6 +218,7 @@ void main() {
 
         // Assert
         expect(options.headers['Authorization'], 'Bearer delayed-token');
+        expect(options.headers['Accept-Language'], expectedLanguageCode);
       });
     });
   });
