@@ -15,7 +15,7 @@ void main() {
   late MockAPIConfig mockApiConfig;
   const expectedApiKey = 'test-api-key';
   const defaultBaseUrl = 'https://api.example.com';
-  const expectedLanguageCode = 'ar';
+  final expectedLocale = AppLocale.defaultLocale;
 
   setUp(() {
     mockSecureStorage = MockSecureStorageService();
@@ -31,12 +31,12 @@ void main() {
     );
 
     // Default setup
-    when(mockEnvironmentConfigService.currentApiConfig)
-        .thenReturn(mockApiConfig);
+    when(
+      mockEnvironmentConfigService.currentApiConfig,
+    ).thenReturn(mockApiConfig);
     when(mockApiConfig.apiKey).thenReturn(expectedApiKey);
     when(mockApiConfig.baseUrl).thenReturn(defaultBaseUrl);
-    when(mockAppLocaleState.current)
-        .thenReturn(AppLocale.defaultLocale);
+    when(mockAppLocaleState.current).thenReturn(expectedLocale);
   });
 
   group('APIInterceptor Tests', () {
@@ -44,10 +44,8 @@ void main() {
       test('does NOT add Authorization header when token is null', () async {
         // Arrange
         final options = RequestOptions(path: '/test');
-        when(mockSecureStorage.getToken())
-            .thenAnswer((_) async => null);
-        when(mockHandler.next(any))
-            .thenAnswer((_) async {});
+        when(mockSecureStorage.getToken()).thenAnswer((_) async => null);
+        when(mockHandler.next(any)).thenAnswer((_) async {});
 
         // Act
         await interceptor.onRequest(options, mockHandler);
@@ -55,7 +53,7 @@ void main() {
         // Assert
         expect(options.headers['Authorization'], null);
         expect(options.headers['X-Api-Key'], expectedApiKey);
-        expect(options.headers['Accept-Language'], expectedLanguageCode);
+        expect(options.headers['Accept-Language'], expectedLocale.languageCode);
         expect(options.headers.containsKey('Authorization'), false);
         verify(mockEnvironmentConfigService.currentApiConfig).called(1);
         verify(mockSecureStorage.getToken()).called(1);
@@ -66,10 +64,8 @@ void main() {
         // Arrange
         final options = RequestOptions(path: '/test');
         const testToken = 'test-bearer-token';
-        when(mockSecureStorage.getToken())
-            .thenAnswer((_) async => testToken);
-        when(mockHandler.next(any))
-            .thenAnswer((_) async {});
+        when(mockSecureStorage.getToken()).thenAnswer((_) async => testToken);
+        when(mockHandler.next(any)).thenAnswer((_) async {});
 
         // Act
         await interceptor.onRequest(options, mockHandler);
@@ -77,7 +73,7 @@ void main() {
         // Assert
         expect(options.headers['Authorization'], 'Bearer $testToken');
         expect(options.headers['X-Api-Key'], expectedApiKey);
-        expect(options.headers['Accept-Language'], expectedLanguageCode);
+        expect(options.headers['Accept-Language'], expectedLocale.languageCode);
         verify(mockSecureStorage.getToken()).called(1);
         verify(mockHandler.next(any)).called(1);
       });
@@ -92,10 +88,8 @@ void main() {
           extra: {'endpoint': mockEndpoint},
         );
 
-        when(mockSecureStorage.getToken())
-            .thenAnswer((_) async => null);
-        when(mockHandler.next(any))
-            .thenAnswer((_) async {});
+        when(mockSecureStorage.getToken()).thenAnswer((_) async => null);
+        when(mockHandler.next(any)).thenAnswer((_) async {});
 
         // Act
         await interceptor.onRequest(options, mockHandler);
@@ -103,57 +97,53 @@ void main() {
         // Assert
         expect(options.baseUrl, defaultBaseUrl);
         expect(options.uri.toString(), '$defaultBaseUrl/test');
-        expect(options.headers['Accept-Language'], expectedLanguageCode);
+        expect(options.headers['Accept-Language'], expectedLocale.languageCode);
         expect(options.extra.containsKey('endpoint'), false);
         verify(mockHandler.next(any)).called(1);
       });
 
-      test('should not modify baseUrl when endpoint is not composite', () async {
-        // Arrange
-        final mockEndpoint = MockAPIEndpoint();
-        when(mockEndpoint.isCompositeUrl).thenReturn(false);
+      test(
+        'should not modify baseUrl when endpoint is not composite',
+        () async {
+          // Arrange
+          final mockEndpoint = MockAPIEndpoint();
+          when(mockEndpoint.isCompositeUrl).thenReturn(false);
 
-        final originalBaseUrl = 'https://original.example.com';
-        final options = RequestOptions(
-          path: '/test',
-          baseUrl: originalBaseUrl,
-          extra: {'endpoint': mockEndpoint},
-        );
+          final originalBaseUrl = 'https://original.example.com';
+          final options = RequestOptions(
+            path: '/test',
+            baseUrl: originalBaseUrl,
+            extra: {'endpoint': mockEndpoint},
+          );
 
-        when(mockSecureStorage.getToken())
-            .thenAnswer((_) async => null);
-        when(mockHandler.next(any))
-            .thenAnswer((_) async {});
+          when(mockSecureStorage.getToken()).thenAnswer((_) async => null);
+          when(mockHandler.next(any)).thenAnswer((_) async {});
 
-        // Act
-        await interceptor.onRequest(options, mockHandler);
+          // Act
+          await interceptor.onRequest(options, mockHandler);
 
-        // Assert
-        expect(options.baseUrl, originalBaseUrl);
-        expect(options.headers['Accept-Language'], expectedLanguageCode);
-        expect(options.extra.containsKey('endpoint'), false);
-        expect(options.baseUrl, isNot(equals(defaultBaseUrl)));
-      });
+          // Assert
+          expect(options.baseUrl, originalBaseUrl);
+          expect(options.headers['Accept-Language'], expectedLocale.languageCode);
+          expect(options.extra.containsKey('endpoint'), false);
+          expect(options.baseUrl, isNot(equals(defaultBaseUrl)));
+        },
+      );
 
       test('should not modify baseUrl when endpoint is null', () async {
         // Arrange
         final originalBaseUrl = 'https://original.example.com';
-        final options = RequestOptions(
-          path: '/test',
-          baseUrl: originalBaseUrl,
-        );
+        final options = RequestOptions(path: '/test', baseUrl: originalBaseUrl);
 
-        when(mockSecureStorage.getToken())
-            .thenAnswer((_) async => null);
-        when(mockHandler.next(any))
-            .thenAnswer((_) async {});
+        when(mockSecureStorage.getToken()).thenAnswer((_) async => null);
+        when(mockHandler.next(any)).thenAnswer((_) async {});
 
         // Act
         await interceptor.onRequest(options, mockHandler);
 
         // Assert
         expect(options.baseUrl, originalBaseUrl);
-        expect(options.headers['Accept-Language'], expectedLanguageCode);
+        expect(options.headers['Accept-Language'], expectedLocale.languageCode);
         expect(options.extra.containsKey('endpoint'), false);
         expect(options.baseUrl, isNot(equals(defaultBaseUrl)));
       });
@@ -161,17 +151,15 @@ void main() {
       test('should call super.onRequest with correct parameters', () async {
         // Arrange
         final options = RequestOptions(path: '/test');
-        when(mockSecureStorage.getToken())
-            .thenAnswer((_) async => null);
-        when(mockHandler.next(any))
-            .thenAnswer((_) async {});
+        when(mockSecureStorage.getToken()).thenAnswer((_) async => null);
+        when(mockHandler.next(any)).thenAnswer((_) async {});
 
         // Act
         await interceptor.onRequest(options, mockHandler);
 
         // Assert
         verify(mockHandler.next(options)).called(1);
-        expect(options.headers['Accept-Language'], expectedLanguageCode);
+        expect(options.headers['Accept-Language'], expectedLocale.languageCode);
       });
 
       test('should handle all operations together correctly', () async {
@@ -185,10 +173,8 @@ void main() {
         );
 
         const testToken = 'full-test-token';
-        when(mockSecureStorage.getToken())
-            .thenAnswer((_) async => testToken);
-        when(mockHandler.next(any))
-            .thenAnswer((_) async {});
+        when(mockSecureStorage.getToken()).thenAnswer((_) async => testToken);
+        when(mockHandler.next(any)).thenAnswer((_) async {});
 
         // Act
         await interceptor.onRequest(options, mockHandler);
@@ -197,7 +183,7 @@ void main() {
         expect(options.headers['X-Api-Key'], expectedApiKey);
         expect(options.headers['Authorization'], 'Bearer $testToken');
         expect(options.baseUrl, defaultBaseUrl);
-        expect(options.headers['Accept-Language'], expectedLanguageCode);
+        expect(options.headers['Accept-Language'], expectedLocale.languageCode);
         expect(options.extra.containsKey('endpoint'), false);
         verify(mockHandler.next(options)).called(1);
       });
@@ -205,20 +191,20 @@ void main() {
       test('should handle async token retrieval correctly', () async {
         // Arrange
         final options = RequestOptions(path: '/test');
-        when(mockSecureStorage.getToken())
-            .thenAnswer((_) => Future.delayed(
-          const Duration(milliseconds: 100),
-              () => 'delayed-token',
-        ));
-        when(mockHandler.next(any))
-            .thenAnswer((_) async {});
+        when(mockSecureStorage.getToken()).thenAnswer(
+          (_) => Future.delayed(
+            const Duration(milliseconds: 100),
+            () => 'delayed-token',
+          ),
+        );
+        when(mockHandler.next(any)).thenAnswer((_) async {});
 
         // Act
         await interceptor.onRequest(options, mockHandler);
 
         // Assert
         expect(options.headers['Authorization'], 'Bearer delayed-token');
-        expect(options.headers['Accept-Language'], expectedLanguageCode);
+        expect(options.headers['Accept-Language'], expectedLocale.languageCode);
       });
     });
   });
