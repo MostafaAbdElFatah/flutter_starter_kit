@@ -14,7 +14,10 @@ class OnboardingRouter {
   static List<RouteBase> routes = [
     GoRoute(
       path: OnboardingRoutes.onboarding,
-      builder: (context, state) => const OnboardingPage(),
+      builder: (context, state) => BlocProvider(
+        create: (_) => di.get<OnboardingCubit>(),
+        child: OnboardingPage(),
+      ),
     ),
   ];
 }

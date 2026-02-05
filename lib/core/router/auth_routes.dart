@@ -16,13 +16,19 @@ class AuthRouter {
     // Login
     GoRoute(
       path: AuthRoutes.login,
-      builder: (context, state) => const LoginPage(),
+      builder: (context, state) => BlocProvider(
+        create: (context) => di.get<AuthCubit>(),
+        child: const LoginPage(),
+      ),
     ),
 
     // Register
     GoRoute(
       path: AuthRoutes.register,
-      builder: (context, state) => const RegisterPage(),
+      builder: (context, state) => BlocProvider(
+        create: (context) => di.get<AuthCubit>(),
+        child: const RegisterPage(),
+      ),
     ),
   ];
 }

@@ -5,30 +5,17 @@ import '../../../../core/components/text_fields/text_fields.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/assets/localization_keys.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/di/injection.dart' as injection;
 import '../../../../core/validators/password_validator.dart';
 import '../cubit/auth_cubit.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => injection.get<AuthCubit>(),
-      child: const _LoginForm(),
-    );
-  }
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginForm extends StatefulWidget {
-  const _LoginForm();
-
-  @override
-  State<_LoginForm> createState() => _LoginFormState();
-}
-
-class _LoginFormState extends State<_LoginForm> {
+class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();

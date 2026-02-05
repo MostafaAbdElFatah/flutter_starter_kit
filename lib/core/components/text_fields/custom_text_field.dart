@@ -194,7 +194,7 @@ class CustomTextField extends StatelessWidget {
       onTapOutside: onTapOutside,
       onFieldSubmitted: onFieldSubmitted,
       onEditingComplete: onEditingComplete,
-      style: AppColors.white.regular(fontSize: 16),
+      style: AppColors.black.regular(fontSize: 16),
       decoration:
           decoration ??
           InputDecoration(

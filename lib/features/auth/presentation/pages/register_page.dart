@@ -6,29 +6,16 @@ import '../../../../core/components/text_fields/text_fields.dart';
 import '../../../../core/assets/localization_keys.dart';
 import '../../../../core/validators/password_validator.dart';
 import '../../../../core/validators/user_name_validator.dart';
-import '../../../../core/di/injection.dart' as di;
 import '../cubit/auth_cubit.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => di.get<AuthCubit>(),
-      child: const _RegisterForm(),
-    );
-  }
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterForm extends StatefulWidget {
-  const _RegisterForm();
-
-  @override
-  State<_RegisterForm> createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<_RegisterForm> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();

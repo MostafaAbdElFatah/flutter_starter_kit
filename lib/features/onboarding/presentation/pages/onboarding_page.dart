@@ -1,32 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_router.dart';
 import '../../../../core/assets/localization_keys.dart';
-import '../../../../core/di/injection.dart' as injection;
 import '../bloc/onboarding_cubit.dart';
 
-class OnboardingPage extends StatelessWidget {
+
+class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => injection.get<OnboardingCubit>(),
-      child: OnboardingPageContent(),
-    );
-  }
+  State<OnboardingPage> createState() => _OnboardingPageState();
 }
 
-class OnboardingPageContent extends StatefulWidget {
-  const OnboardingPageContent({super.key});
-
-  @override
-  State<OnboardingPageContent> createState() => _OnboardingPageContentState();
-}
-
-class _OnboardingPageContentState extends State<OnboardingPageContent> {
+class _OnboardingPageState extends State<OnboardingPage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   final int _totalPages = 3;
