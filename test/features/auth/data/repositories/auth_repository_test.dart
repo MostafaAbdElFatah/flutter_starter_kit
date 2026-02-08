@@ -11,7 +11,6 @@ import 'package:flutter_starter_kit/core/errors/failure.dart';
 import 'package:flutter_starter_kit/core/utils/log.dart';
 import '../../../../helper/helper_test.mocks.dart';
 
-// Generate mocks for all dependencies.
 
 void main() {
   Log.overrideShouldDebugForTests = true;
