@@ -26,18 +26,18 @@ extension AppTextStyle on TextStyle {
   static TextStyle textStyle({
     Color? color,
     double? fontSize,
-    FontWeight? fontWeight,
+    FontWeights? fontWeight,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) {
     return defaultTextStyle.copyWith(
       // Uses the [Color] instance on which this extension is called
       color: color,
-      fontWeight: fontWeight,
+      fontWeight: fontWeight?.weight,
       // Applies scalable pixels if [setSp] is true
       fontSize: setSp ? fontSize : fontSize,
       // Defaults to a specific font family
-      fontFamily: fontFamily ?? Fonts.primary,
+      fontFamily: fontFamily?.name ?? FontFamily.primary.name,
     );
   }
 
@@ -48,7 +48,7 @@ extension AppTextStyle on TextStyle {
     Color? color,
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
@@ -66,7 +66,7 @@ extension AppTextStyle on TextStyle {
     Color? color,
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
@@ -84,7 +84,7 @@ extension AppTextStyle on TextStyle {
     Color? color,
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
@@ -102,7 +102,7 @@ extension AppTextStyle on TextStyle {
     Color? color,
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
@@ -120,7 +120,7 @@ extension AppTextStyle on TextStyle {
     Color? color,
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
@@ -138,7 +138,7 @@ extension AppTextStyle on TextStyle {
     Color? color,
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
@@ -156,7 +156,7 @@ extension AppTextStyle on TextStyle {
     Color? color,
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
@@ -174,7 +174,7 @@ extension AppTextStyle on TextStyle {
     Color? color,
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
@@ -192,7 +192,7 @@ extension AppTextStyle on TextStyle {
     Color? color,
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,

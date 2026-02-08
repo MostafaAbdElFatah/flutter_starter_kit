@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_starter_kit/core/extensions/text_styles/color_text_style_extensions.dart';
 
-import '../../constants/app_colors.dart';
+
+import '../../core.dart';
 
 /// A customizable search field widget with optional styling and functionality.
 ///

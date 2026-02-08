@@ -1,9 +1,9 @@
-import 'package:dio/dio.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-
 import 'package:flutter_starter_kit/core/infrastructure/data/network/api_interceptor.dart';
 import 'package:flutter_starter_kit/core/utils/app_locale.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:dio/dio.dart';
+
 import '../../../../helper/helper_test.mocks.dart';
 
 void main() {

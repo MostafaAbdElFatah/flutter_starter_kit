@@ -20,7 +20,7 @@ import '../../features/auth/data/datasources/auth_local_datasource.dart'
     as _i992;
 import '../../features/auth/data/datasources/auth_remote_datasource.dart'
     as _i161;
-import '../../features/auth/data/network/auth_endpoints.dart' as _i802;
+import '../../features/auth/data/models/auth_endpoints.dart' as _i802;
 import '../../features/auth/data/repositories/auth_repository.dart' as _i573;
 import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
 import '../../features/auth/domain/usecases/delete_account_usecase.dart'

@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/infrastructure/data/network/api_endpoint.dart';
-import '../models/requests/login_request.dart';
-import '../models/requests/register_request.dart';
+import 'requests/login_request.dart';
+import 'requests/register_request.dart';
 
 /// A provider class for authentication-related API endpoints.
 ///

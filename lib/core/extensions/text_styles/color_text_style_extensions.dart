@@ -22,11 +22,11 @@ extension CustomTextStylesThemeExtensions on Color {
   /// - [fontFamily]: The font family to use. Defaults to [Fonts.ibmPlexSanaArabic] if not provided.
   ///
   /// Returns a [TextStyle] configured with the provided parameters.
-  TextStyle getTextStyle({
+  TextStyle textStyle({
     double? fontSize,
-    FontWeight? fontWeight,
+    FontWeights? fontWeight,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) {
     return AppTextStyle.textStyle(
       // Uses the [Color] instance on which this extension is called
@@ -35,7 +35,7 @@ extension CustomTextStylesThemeExtensions on Color {
       fontSize: fontSize,
       fontWeight: fontWeight,
       // Defaults to a specific font family
-      fontFamily: fontFamily ?? Fonts.primary,
+      fontFamily: fontFamily ?? FontFamily.primary,
     );
   }
 
@@ -45,9 +45,9 @@ extension CustomTextStylesThemeExtensions on Color {
   TextStyle thin({
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) =>
-      getTextStyle(
+      textStyle(
         fontSize: fontSize,
         setSp: setSp,
         fontFamily: fontFamily,
@@ -58,9 +58,9 @@ extension CustomTextStylesThemeExtensions on Color {
   TextStyle extraLight({
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) =>
-      getTextStyle(
+      textStyle(
         fontSize: fontSize,
         setSp: setSp,
         fontFamily: fontFamily,
@@ -71,9 +71,9 @@ extension CustomTextStylesThemeExtensions on Color {
   TextStyle light({
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) =>
-      getTextStyle(
+      textStyle(
         fontSize: fontSize,
         setSp: setSp,
         fontFamily: fontFamily,
@@ -86,9 +86,9 @@ extension CustomTextStylesThemeExtensions on Color {
   TextStyle regular({
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) =>
-      getTextStyle(
+      textStyle(
         fontSize: fontSize,
         setSp: setSp,
         fontFamily: fontFamily,
@@ -99,9 +99,9 @@ extension CustomTextStylesThemeExtensions on Color {
   TextStyle medium({
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) =>
-      getTextStyle(
+      textStyle(
         fontSize: fontSize,
         setSp: setSp,
         fontFamily: fontFamily,
@@ -112,9 +112,9 @@ extension CustomTextStylesThemeExtensions on Color {
   TextStyle semiBold({
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) =>
-      getTextStyle(
+      textStyle(
         fontSize: fontSize,
         setSp: setSp,
         fontFamily: fontFamily,
@@ -125,9 +125,9 @@ extension CustomTextStylesThemeExtensions on Color {
   TextStyle bold({
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) =>
-      getTextStyle(
+      textStyle(
         fontSize: fontSize,
         setSp: setSp,
         fontFamily: fontFamily,
@@ -138,9 +138,9 @@ extension CustomTextStylesThemeExtensions on Color {
   TextStyle extraBold({
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) =>
-      getTextStyle(
+      textStyle(
         fontSize: fontSize,
         setSp: setSp,
         fontFamily: fontFamily,
@@ -153,9 +153,9 @@ extension CustomTextStylesThemeExtensions on Color {
   TextStyle black({
     double? fontSize,
     bool setSp = false,
-    String? fontFamily,
+    FontFamily? fontFamily,
   }) =>
-      getTextStyle(
+      textStyle(
         fontSize: fontSize,
         setSp: setSp,
         fontFamily: fontFamily,

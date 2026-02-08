@@ -6,7 +6,7 @@ import '../../../../core/infrastructure/data/models/api_response.dart';
 import '../models/requests/login_request.dart';
 import '../models/requests/register_request.dart';
 import '../models/responses/login_response.dart';
-import '../network/auth_endpoints.dart';
+import '../models/auth_endpoints.dart';
 
 /// An abstract class representing the remote data source for authentication.
 ///

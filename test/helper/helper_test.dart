@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_starter_kit/core/utils/app_locale.dart';
-import 'package:flutter_starter_kit/features/auth/data/network/auth_endpoints.dart';
+import 'package:flutter_starter_kit/features/auth/data/models/auth_endpoints.dart';
 import 'package:flutter_starter_kit/features/environments_dev/data/datasources/environment_local_data_source.dart';
 import 'package:flutter_starter_kit/features/environments_dev/domain/repositories/environment_repository.dart';
 import 'package:flutter_starter_kit/features/onboarding/data/datasources/onboarding_local_datasource.dart';

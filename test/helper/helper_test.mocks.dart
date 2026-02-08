@@ -55,7 +55,7 @@ import 'package:flutter_starter_kit/features/auth/data/models/responses/login_re
     as _i23;
 import 'package:flutter_starter_kit/features/auth/data/models/user.dart'
     as _i33;
-import 'package:flutter_starter_kit/features/auth/data/network/auth_endpoints.dart'
+import 'package:flutter_starter_kit/features/auth/data/models/auth_endpoints.dart'
     as _i44;
 import 'package:flutter_starter_kit/features/auth/domain/entities/login_credentials.dart'
     as _i49;
