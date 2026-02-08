@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart' hide Environment;
 
-import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../entities/environment.dart';
 import '../repositories/environment_repository.dart';

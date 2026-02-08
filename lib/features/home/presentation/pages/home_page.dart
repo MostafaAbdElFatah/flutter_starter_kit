@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injection.dart' as di;
 import '../../../../core/assets/localization_keys.dart';
-import '../../../../core/infrastructure/domain/entities/no_params.dart';
+import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../environments_dev/domain/usecases/get_current_environment_use_case.dart';
 

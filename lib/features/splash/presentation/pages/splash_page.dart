@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/di/injection.dart' as injection;
-import '../bloc/splash_cubit.dart';
+import '../cubit/splash_cubit.dart';
 
 
 class SplashPage extends StatelessWidget {

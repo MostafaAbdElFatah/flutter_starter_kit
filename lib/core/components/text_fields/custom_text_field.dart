@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_starter_kit/core/extensions/text_styles/color_text_style_extensions.dart';
 
-import '../../constants/app_colors.dart';
-import '../general/svg_icon.dart' show SvgIcon;
+
+import '../../core.dart';
 
 /// A customizable text input field that provides extensive configuration options
 /// for enhanced flexibility and styling.

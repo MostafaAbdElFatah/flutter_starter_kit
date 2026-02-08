@@ -21,11 +21,11 @@ class AppTheme {
     // Transparent canvas color
     canvasColor: AppColors.backgroundColor,
     // Primary color for the app
-    primaryColor: AppColors.surfieGreen,
+    primaryColor: AppColors.primary,
     // Light variant of the primary color
-    primaryColorLight: AppColors.surfieGreen,
+    primaryColorLight: AppColors.primary,
     // Dark variant of the primary color
-    primaryColorDark: AppColors.surfieGreen,
+    primaryColorDark: AppColors.primary,
 
     /// Color scheme for the app
     colorScheme: ColorScheme.fromSeed(
@@ -33,21 +33,21 @@ class AppTheme {
       brightness: Brightness.dark,
       // Light theme brightness
       // Primary color
-      primary: AppColors.surfieGreen,
+      primary: AppColors.primary,
       // Color for content on primary color
-      onPrimary: AppColors.surfieGreen,
+      onPrimary: AppColors.primary,
       // Secondary color
-      secondary: AppColors.surf,
+      secondary: AppColors.secondary,
       // Color for content on secondary color
-      onSecondary: AppColors.surf,
+      onSecondary: AppColors.secondary,
       // Surface color
       //surface: AppColors.backgroundColor,
       // Color for content on surface
-      onSurface: AppColors.surfieGreen,
+      onSurface: AppColors.white,
       // Error color
-      error: Colors.red, //AppColors.red,
+      error: AppColors.red,
       // Color for content on error color
-      onError: Colors.red, //AppColors.red,
+      onError: AppColors.red,
     ),
     inputDecorationTheme: InputDecorationTheme(
       // Label text style

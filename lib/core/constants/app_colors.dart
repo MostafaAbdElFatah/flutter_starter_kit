@@ -4,6 +4,9 @@ class AppColors{
 
   AppColors._();
 
+  static Color primary = surfieGreen;
+  static Color secondary = pigmentGreen;
+  static Color third = seaGreen;
   static Color backgroundColor = white;
 
   static Color surf = const Color(0xffB8D9C4);

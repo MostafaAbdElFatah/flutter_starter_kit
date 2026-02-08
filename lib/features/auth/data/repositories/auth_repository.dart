@@ -35,6 +35,8 @@ class AuthRepositoryImpl implements AuthRepository {
   // ---------------------------------------------------------------------------
   // Auth Management
   // ---------------------------------------------------------------------------
+  @override
+  User? getAuthenticatedUser() =>  _localDataSource.getUser();
 
   @override
   Future<bool> isLoggedIn() async {
@@ -52,18 +54,6 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  @override
-  Future<User?> getAuthenticatedUser() async {
-    try {
-      if (await isLoggedIn()) {
-        return _localDataSource.getUser();
-      }
-      return null;
-    } catch (e) {
-      // In case of an error, we assume the user is not authenticated.
-      return null;
-    }
-  }
 
   @override
   Future<User> login(LoginCredentials params) async {

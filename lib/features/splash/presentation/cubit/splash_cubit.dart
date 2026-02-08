@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../../../../core/infrastructure/presentation/cubits/base_cubit.dart';
-import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../../auth/domain/usecases/is_logged_in_usecase.dart';
 import '../../../onboarding/domain/usecases/check_onboarding_status_usecase.dart';
 

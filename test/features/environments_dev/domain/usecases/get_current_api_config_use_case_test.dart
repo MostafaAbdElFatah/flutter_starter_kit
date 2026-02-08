@@ -1,4 +1,4 @@
-import 'package:flutter_starter_kit/core/infrastructure/domain/entities/no_params.dart';
+import 'package:flutter_starter_kit/core/infrastructure/domain/usecases/usecase.dart';
 import 'package:flutter_starter_kit/features/environments_dev/data/models/base_url_config.dart';
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/api_config.dart';
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/environment.dart';

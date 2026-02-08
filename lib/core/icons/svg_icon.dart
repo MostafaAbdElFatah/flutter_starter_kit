@@ -82,9 +82,7 @@ class SvgIcon extends StatelessWidget {
     final ColorFilter? colorFilter = isEnabled
         ? null
         : ColorFilter.mode(
-            color ?? disableColor ?? Colors.grey,
-            BlendMode.srcIn,
-          );
+        color ?? disableColor ?? Colors.grey, BlendMode.srcIn);
     final svgIcon = SvgPicture.asset(
       svgAssetPath,
       height: size,
@@ -97,6 +95,9 @@ class SvgIcon extends StatelessWidget {
         child: const CircularProgressIndicator(),
       ),
     );
-    return Padding(padding: padding, child: svgIcon);
+    return Padding(
+      padding: padding,
+      child: svgIcon,
+    );
   }
 }

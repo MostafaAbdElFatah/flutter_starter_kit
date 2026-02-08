@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../entities/api_config.dart';
 import '../repositories/environment_repository.dart';

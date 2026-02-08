@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/extensions/context/context_extension.dart';
+import '../../extensions/context/context_extension.dart';
 
 
 /// A customizable scaffold widget that wraps Flutter's [Scaffold] with additional
@@ -7,7 +7,7 @@ import '../../../core/extensions/context/context_extension.dart';
 ///
 /// This widget simplifies scaffold setup by providing default behaviors
 /// and allowing easy customization through its parameters.
-class AppScaffold extends StatelessWidget {
+class CustomScaffold extends StatelessWidget {
   // ================================
   //        Widget Parameters
   // ================================
@@ -49,10 +49,10 @@ class AppScaffold extends StatelessWidget {
   //        Constructor
   // ================================
 
-  /// Creates an [AppScaffold] with the given parameters.
+  /// Creates an [CustomScaffold] with the given parameters.
   ///
   /// All parameters are optional and have sensible defaults to ensure flexibility.
-  const AppScaffold({
+  const CustomScaffold({
     super.key,
     this.scaffoldKey,
     this.appBar,

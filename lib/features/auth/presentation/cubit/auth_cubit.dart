@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/domain/entities/no_params.dart';
+import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../../../../core/infrastructure/presentation/cubits/base_cubit.dart';
 import '../../domain/entities/login_credentials.dart';
 import '../../domain/entities/register_credentials.dart';
@@ -17,7 +17,6 @@ import '../../domain/usecases/register_usecase.dart';
 part 'auth_state.dart';
 
 enum AuthOperation {
-  checkAuthStatus,
   login,
   register,
   logout,
@@ -74,12 +73,7 @@ class AuthCubit extends BaseCubit<AuthState> {
   /// [AuthAuthenticated]; otherwise, it emits [AuthUnauthenticated].
   Future<void> checkAuthStatus() async {
     try {
-      final result = await runLatest<User?>(
-        AuthOperation.checkAuthStatus,
-        _getAuthenticatedUserUseCase(NoParams()),
-      );
-      if (result.isCanceled) return;
-      final loggedUser = result.requireValue<User?>();
+      final loggedUser = _getAuthenticatedUserUseCase(NoParams());
       emit(loggedUser != null
           ? AuthAuthenticated(loggedUser)
           : const AuthUnauthenticated());

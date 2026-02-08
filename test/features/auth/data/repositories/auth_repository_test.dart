@@ -175,13 +175,13 @@ void main() {
 
     test('should return null on error', () async {
       // Arrange
-      when(mockLocalDataSource.getUser()).thenThrow(Exception('Error'));
+      when(mockLocalDataSource.getUser()).thenReturn(null);
       when(
         mockLocalDataSource.getToken(),
       ).thenAnswer((_) async => 'valid_token');
 
       // Act
-      final result = await repository.getAuthenticatedUser();
+      final result = repository.getAuthenticatedUser();
 
       // Assert
       expect(result, isNull);

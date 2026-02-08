@@ -2,8 +2,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../entities/register_credentials.dart';
-import '../entities/user.dart';
 import '../repositories/auth_repository.dart';
+import '../entities/user.dart';
 
 /// A use case for registering a new user.
 ///

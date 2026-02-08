@@ -1,7 +1,7 @@
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_starter_kit/core/infrastructure/domain/entities/no_params.dart';
+import 'package:flutter_starter_kit/core/infrastructure/domain/usecases/usecase.dart';
 import 'package:flutter_starter_kit/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import '../../../../helper/helper_test.mocks.dart';
 

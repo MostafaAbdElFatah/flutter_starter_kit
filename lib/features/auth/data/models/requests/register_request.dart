@@ -1,4 +1,4 @@
-import '../../../../../core/extensions/iterable_extension.dart';
+import '../../../../../core/extensions/iterable/iterable_extension.dart';
 import '../../../domain/entities/register_credentials.dart';
 
 /// A data transfer object (DTO) representing the request body for a user registration.

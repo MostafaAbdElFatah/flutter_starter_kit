@@ -62,9 +62,9 @@ import '../../features/onboarding/domain/usecases/check_onboarding_status_usecas
     as _i462;
 import '../../features/onboarding/domain/usecases/complete_onboarding_usecase.dart'
     as _i360;
-import '../../features/onboarding/presentation/bloc/onboarding_cubit.dart'
-    as _i153;
-import '../../features/splash/presentation/bloc/splash_cubit.dart' as _i955;
+import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart'
+    as _i807;
+import '../../features/splash/presentation/cubit/splash_cubit.dart' as _i125;
 import '../infrastructure/data/network/api_client.dart' as _i456;
 import '../infrastructure/data/network/api_interceptor.dart' as _i50;
 import '../infrastructure/data/network/dio_api_client.dart' as _i1035;
@@ -211,11 +211,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i941.RegisterUseCase>(
       () => _i941.RegisterUseCase(gh<_i787.AuthRepository>()),
     );
-    gh.factory<_i153.OnboardingCubit>(
-      () => _i153.OnboardingCubit(gh<_i360.CompleteOnboardingUseCase>()),
+    gh.factory<_i807.OnboardingCubit>(
+      () => _i807.OnboardingCubit(gh<_i360.CompleteOnboardingUseCase>()),
     );
-    gh.factory<_i955.SplashCubit>(
-      () => _i955.SplashCubit(
+    gh.factory<_i125.SplashCubit>(
+      () => _i125.SplashCubit(
         gh<_i48.IsLoggedInUseCase>(),
         gh<_i462.CheckOnboardingStatusUseCase>(),
       ),

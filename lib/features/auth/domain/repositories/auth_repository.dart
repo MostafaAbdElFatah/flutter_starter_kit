@@ -33,7 +33,7 @@ abstract class AuthRepository {
   /// fetching the cached user data.
   ///
   /// Returns the [User] object if found, otherwise returns `null`.
-  Future<User?> getAuthenticatedUser();
+  User? getAuthenticatedUser();
 
   /// Logs out the current user.
   ///

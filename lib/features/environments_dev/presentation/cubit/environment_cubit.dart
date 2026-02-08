@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart' hide Environment;
 
-import '../../../../core/infrastructure/domain/entities/no_params.dart';
+import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../../../../core/infrastructure/presentation/cubits/base_cubit.dart';
 import '../../domain/entities/api_config.dart';
 import '../../domain/entities/base_url_config.dart';

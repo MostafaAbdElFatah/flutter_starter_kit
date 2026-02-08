@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/infrastructure/domain/usecases/usecase.dart';
 import '../../../../core/infrastructure/presentation/cubits/base_cubit.dart';
-import '../../../../core/infrastructure/domain/entities/no_params.dart';
 import '../../domain/usecases/complete_onboarding_usecase.dart';
 
 /// The concrete implementation of the [OnboardingCubit].

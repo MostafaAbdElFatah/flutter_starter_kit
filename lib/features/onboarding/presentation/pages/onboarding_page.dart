@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_router.dart';
 import '../../../../core/assets/localization_keys.dart';
-import '../bloc/onboarding_cubit.dart';
+import '../cubit/onboarding_cubit.dart';
 
 
 class OnboardingPage extends StatefulWidget {
