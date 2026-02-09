@@ -72,15 +72,28 @@ enum FontFamily {
   static FontFamily get primary => cairo;
 
   /// Base folder containing font assets.
-  static const String assetPath = 'assets/fonts';
+  static const String _assetPath = 'assets/fonts';
 
   /// Loads the font asset for the given [weight] and returns a `data:` URI.
   ///
-  /// The asset path is built as:
+  /// Asset path format:
   /// `assets/fonts/<FamilyName>/<FamilyName>-<Weight>.<ext>`
-  Future<String> fontUri([FontWeights weight = FontWeights.regular]) async {
+  Future<String> fontUriByWeight([
+    FontWeights weight = FontWeights.regular,
+  ]) async {
     final fileName = '$name-${weight.assetName}.${extension.value}';
-    final fontData = await rootBundle.load('$assetPath/${name.toLowerCase()}/$fileName');
+    final fontAssetPath = '$_assetPath/${name.toLowerCase()}/$fileName';
+
+    return _fontUriFromAsset(fontAssetPath);
+  }
+
+  /// Loads the font asset from a custom [assetPath] and returns a `data:` URI.
+  Future<String> fontUriByAssetPath(String assetPath) =>
+      _fontUriFromAsset(assetPath);
+
+  /// Shared helper
+  Future<String> _fontUriFromAsset(String assetPath) async {
+    final fontData = await rootBundle.load(assetPath);
 
     return Uri.dataFromBytes(
       fontData.buffer.asUint8List(
