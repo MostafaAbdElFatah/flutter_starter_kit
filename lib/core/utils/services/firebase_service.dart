@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -171,6 +173,7 @@ class FirebaseService {
   // ---------------------------------------------------------------------------
 
   Future<void> _handleForegroundMessage(RemoteMessage message) async {
+    if(Platform.isIOS) return;
     final notification = message.notification;
     final title = notification?.title ?? message.data['title']?.toString();
     final body = notification?.body ?? message.data['body']?.toString();
