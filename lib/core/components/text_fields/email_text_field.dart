@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../assets/localization_keys.dart';
-import '../../validators/email_validator.dart';
+import '../../utils/validators/email_validator.dart';
 import 'custom_text_field.dart';
 
 /// A specialized text field widget tailored for email input.

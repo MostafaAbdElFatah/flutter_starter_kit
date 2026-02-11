@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_starter_kit/core/assets/localization_keys.dart';
-import 'package:flutter_starter_kit/core/validators/email_validator.dart';
+import 'package:flutter_starter_kit/core/utils/validators/email_validator.dart';
 
 void main() {
   EasyLocalization.logger.enableLevels = [];

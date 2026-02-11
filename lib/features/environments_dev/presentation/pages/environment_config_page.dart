@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/injection.dart' as injection;
 import '../../../../core/assets/localization_keys.dart';
-import '../../../../core/validators/url_validator.dart';
+import '../../../../core/utils/validators/url_validator.dart';
 import '../../domain/entities/environment.dart';
 import '../dialogs/environment_changed_dialog.dart';
 import '../widgets/base_url_type_segmented_button.dart';

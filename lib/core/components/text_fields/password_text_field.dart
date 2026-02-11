@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/app_colors.dart';
-import '../../validators/password_validator.dart';
+import '../../utils/validators/password_validator.dart';
 import 'custom_text_field.dart';
 
 /// A specialized text field widget tailored for password input.

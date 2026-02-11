@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../features/auth/domain/usecases/is_logged_in_usecase.dart';
+import 'package:injectable/injectable.dart';
 import '../../features/auth/presentation/cubit/auth_cubit.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
@@ -12,7 +14,7 @@ import '../../features/environments_dev/presentation/pages/environment_config_pa
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../di/injection.dart' as di;
-import '../infrastructure/domain/usecases/usecase.dart';
+import '../utils/log.dart';
 
 
 
@@ -21,41 +23,60 @@ part 'home_routes.dart';
 part 'settings_routes.dart';
 part 'onboarding_routes.dart';
 
+
+@lazySingleton
 class AuthGuard {
-  static Future<String?>? redirect(BuildContext context, GoRouterState state) async {
-    final isGoingToSplash = state.matchedLocation == HomeRoutes.splash;
-    final isGoingToOnboarding = state.matchedLocation == OnboardingRoutes.onboarding;
+  final AuthCubit authCubit;
+  AuthGuard(this.authCubit) {
+    authCubit.checkAuthStatus();
+  }
 
-    if(isGoingToOnboarding || isGoingToSplash) {
-      return state.matchedLocation;
-    }
+  final publicRoutes = <String>[
+    //AuthRoutes.otp,
+    HomeRoutes.splash,
+    OnboardingRoutes.onboarding,
+  ];
 
-    final isAuthenticated = await di.get<IsLoggedInUseCase>()(
-      NoParams(),
-    ); // Check your auth state
-    final isGoingToLogin = state.matchedLocation == AuthRoutes.login;
-    final isGoingToRegister = state.matchedLocation == AuthRoutes.register;
+  final authRoutes = <String>[
+    AuthRoutes.login,
+    AuthRoutes.register,
+  ];
 
+  Future<String?>? redirect(BuildContext context, GoRouterState state) async {
+    final location = state.matchedLocation;
 
-    if (!isAuthenticated && !isGoingToLogin && !isGoingToRegister) {
+    // final isGoingToOnboarding = location == OnboardingRoutes.onboarding;
+
+    // final isOnboardingCompleted =
+    // di.get<CheckOnboardingStatusUseCase>()(const NoParams());
+    // if (!isOnboardingCompleted) {
+    //   return isGoingToOnboarding ? null : AuthRoutes.onboarding;
+    // }
+
+    // 3️⃣ Auth check
+    final isAuthenticated = authCubit.state is AuthAuthenticated;
+
+    if (!isAuthenticated && !authRoutes.contains(location)) {
       return AuthRoutes.login;
-    }
-
-    if (isAuthenticated && isGoingToLogin) {
-      return HomeRoutes.home;
     }
 
     return null;
   }
 }
 
-/// Application router configuration
+@lazySingleton
 class AppRouter {
-  AppRouter._(); // Private constructor to prevent instantiation
+  final AuthGuard authGuard;
+  final GoRouterRefreshStream _goRouterRefreshStream;
+  AppRouter(this.authGuard)
+      : _goRouterRefreshStream =
+  GoRouterRefreshStream(authGuard.authCubit.stream);
+  GoRouter get router => _router;
 
-  static final router = GoRouter(
+  late final GoRouter _router = GoRouter(
+    redirect: authGuard.redirect,
     initialLocation: HomeRoutes.splash,
-    redirect: AuthGuard.redirect,
+    refreshListenable: _goRouterRefreshStream,
     routes: [
       ...AuthRouter.routes,
       ...OnboardingRouter.routes,
@@ -63,4 +84,31 @@ class AppRouter {
       ...SettingsRouter.routes,
     ],
   );
+}
+
+/// Wraps any Stream (e.g., AuthCubit) and notifies GoRouter on changes
+class GoRouterRefreshStream extends ChangeNotifier {
+  late final StreamSubscription _subscription;
+  GoRouterRefreshStream(Stream<AuthState> stream) {
+    notifyListeners(); // trigger first check
+    _subscription = stream.asBroadcastStream().distinct().listen(
+          (state) {
+        switch (state) {
+          case AuthAuthenticated():
+          case AuthUnauthenticated():
+            notifyListeners();
+          default:
+            break;
+        }
+      },
+      onError: (error) => Log.error('Stream error:', error: error),
+      onDone: () => Log.debug('Stream closed'),
+    );
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
 }

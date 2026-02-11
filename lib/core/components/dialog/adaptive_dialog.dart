@@ -142,6 +142,8 @@ class AdaptiveDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+
+
               if (options.icon != null ||
                   options.svgAssetPath != null ||
                   options.imageAssetPath != null ||
@@ -177,15 +179,9 @@ class AdaptiveDialog extends StatelessWidget {
                   options.onCancelPressed != null)
                 Row(
                   children: [
-                    Expanded(
-                      flex: 3,
-                      child: _buildConfirmButton(context),
-                    ),
+                    Expanded(flex: 3, child: _buildConfirmButton(context)),
                     SizedBox(width: 10.w),
-                    Expanded(
-                      flex: 2,
-                      child: _buildCancelButton(context),
-                    ),
+                    Expanded(flex: 2, child: _buildCancelButton(context)),
                   ],
                 )
               else
@@ -222,11 +218,7 @@ class AdaptiveDialog extends StatelessWidget {
 
     if (options.icon != null) {
       final double size = options.imageWidth ?? options.imageHeight ?? 80.w;
-      return Icon(
-        options.icon,
-        size: size,
-        color: AppColors.white,
-      );
+      return Icon(options.icon, size: size, color: AppColors.white);
     }
 
     return SvgPicture.asset(
@@ -238,8 +230,7 @@ class AdaptiveDialog extends StatelessWidget {
 
   Widget _buildConfirmButton(BuildContext context) => FlexibleElevatedButton(
     padding: EdgeInsets.zero,
-    onPressed:
-    options.onConfirmPressed ?? () => Navigator.of(context).pop(),
+    onPressed: options.onConfirmPressed ?? () => Navigator.of(context).pop(),
     label: options.confirmLabel ?? LocalizationKeys.ok,
     backgroundColor: options.confirmBackground,
     buttonStyle: options.confirmButtonStyle,
@@ -291,11 +282,10 @@ extension DialogX on BuildContext {
   ///
   /// This is the base method used by other dialog helpers in this extension.
   Future<T?> openAdaptiveDialog<T>(
-      AdaptiveDialogOptions options, {
-        bool barrierDismissible = true,
-      }) =>
-      openDialog<T>(
-        barrierDismissible: barrierDismissible,
-        child: AdaptiveDialog(options: options),
-      );
+    AdaptiveDialogOptions options, {
+    bool barrierDismissible = true,
+  }) => openDialog<T>(
+    barrierDismissible: barrierDismissible,
+    child: AdaptiveDialog(options: options),
+  );
 }

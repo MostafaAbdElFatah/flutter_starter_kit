@@ -5,7 +5,7 @@ export 'package:go_router/go_router.dart';
 //            assets
 // ================================
 
-export 'assets/assets_exports.dart';
+export 'assets/assets.dart';
 
 // ================================
 //            components
