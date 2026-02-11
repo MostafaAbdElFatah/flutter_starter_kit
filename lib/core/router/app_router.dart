@@ -46,7 +46,6 @@ class AuthGuard {
     final location = state.matchedLocation;
 
     // final isGoingToOnboarding = location == OnboardingRoutes.onboarding;
-
     // final isOnboardingCompleted =
     // di.get<CheckOnboardingStatusUseCase>()(const NoParams());
     // if (!isOnboardingCompleted) {
