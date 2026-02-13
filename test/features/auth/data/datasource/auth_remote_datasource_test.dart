@@ -48,7 +48,7 @@ void main() {
       );
       verify(connectivity.isConnected).called(1);
       verifyNever(
-        apiClient.fetch(target: endpoint, fromJson: anyNamed("fromJson")),
+        apiClient.fetch(target: endpoint, mapper: anyNamed("fromJson")),
       );
     });
   });
@@ -77,7 +77,7 @@ void main() {
       when(
         apiClient.fetch<LoginResponse>(
           target: endpoint,
-          fromJson: LoginResponse.fromJson,
+          mapper: LoginResponse.fromJson,
         ),
       ).thenAnswer((_) async => response);
 
@@ -90,7 +90,7 @@ void main() {
       verify(
         apiClient.fetch<LoginResponse>(
           target: endpoint,
-          fromJson: anyNamed("fromJson"),
+          mapper: anyNamed("fromJson"),
         ),
       ).called(1);
     });
@@ -105,7 +105,7 @@ void main() {
       when(
         apiClient.fetch<LoginResponse>(
           target: endpoint,
-          fromJson: LoginResponse.fromJson,
+          mapper: LoginResponse.fromJson,
           isFormData: anyNamed("isFormData"),
         ),
       ).thenAnswer((_) async => response);
@@ -148,7 +148,7 @@ void main() {
       when(
         apiClient.fetch<LoginResponse>(
           target: endpoint,
-          fromJson: LoginResponse.fromJson,
+          mapper: LoginResponse.fromJson,
         ),
       ).thenAnswer((_) async => response);
 
@@ -169,7 +169,7 @@ void main() {
       when(
         apiClient.fetch<LoginResponse>(
           target: endpoint,
-          fromJson: LoginResponse.fromJson,
+          mapper: LoginResponse.fromJson,
         ),
       ).thenAnswer((_) async => response);
 
@@ -200,7 +200,7 @@ void main() {
       when(
         apiClient.fetch<APIResponse>(
           target: endpoint,
-          fromJson: APIResponse.fromJson,
+          mapper: APIResponse.fromJson,
         ),
       ).thenAnswer((_) async => response);
 
@@ -214,7 +214,7 @@ void main() {
       when(
         apiClient.fetch<APIResponse>(
           target: endpoint,
-          fromJson: APIResponse.fromJson,
+          mapper: APIResponse.fromJson,
           isFormData: anyNamed("isFormData"),
         ),
       ).thenAnswer((_) async => response);
@@ -236,7 +236,7 @@ void main() {
       when(
         apiClient.fetch<APIResponse>(
           target: endpoint,
-          fromJson: APIResponse.fromJson,
+          mapper: APIResponse.fromJson,
         ),
       ).thenAnswer((_) async => response);
 
@@ -251,7 +251,7 @@ void main() {
       when(
         apiClient.fetch<APIResponse>(
           target: endpoint,
-          fromJson: APIResponse.fromJson,
+          mapper: APIResponse.fromJson,
         ),
       ).thenAnswer((_) async => response);
 

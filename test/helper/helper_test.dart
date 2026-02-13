@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_starter_kit/core/infrastructure/data/network/api_response_parser.dart';
 import 'package:flutter_starter_kit/core/utils/app_locale.dart';
 import 'package:flutter_starter_kit/features/auth/data/models/auth_endpoints.dart';
 import 'package:flutter_starter_kit/features/environments_dev/data/datasources/environment_local_data_source.dart';
@@ -36,6 +37,7 @@ import 'package:flutter_starter_kit/features/auth/domain/usecases/register_useca
   APIEndpoint,
   Connectivity,
   AppLocaleState,
+  APIResponseParser,
   RequestInterceptorHandler,
   UserModel,
   APIClient,

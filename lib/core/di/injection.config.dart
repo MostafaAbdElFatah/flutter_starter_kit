@@ -20,7 +20,7 @@ import '../../features/auth/data/datasources/auth_local_datasource.dart'
     as _i992;
 import '../../features/auth/data/datasources/auth_remote_datasource.dart'
     as _i161;
-import '../../features/auth/data/models/auth_endpoints.dart' as _i802;
+import '../../features/auth/data/models/auth_endpoints.dart' as _i990;
 import '../../features/auth/data/repositories/auth_repository.dart' as _i573;
 import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
 import '../../features/auth/domain/usecases/delete_account_usecase.dart'
@@ -52,6 +52,22 @@ import '../../features/environments_dev/domain/usecases/update_environment_confi
     as _i4;
 import '../../features/environments_dev/presentation/cubit/environment_cubit.dart'
     as _i266;
+import '../../features/notifications/data/repositories/notification_repository_impl.dart'
+    as _i361;
+import '../../features/notifications/data/services/local_notification_service.dart'
+    as _i1058;
+import '../../features/notifications/domain/repositories/notification_repository.dart'
+    as _i367;
+import '../../features/notifications/domain/usecases/cancel_all_notifications.dart'
+    as _i142;
+import '../../features/notifications/domain/usecases/cancel_notification.dart'
+    as _i333;
+import '../../features/notifications/domain/usecases/schedule_notification.dart'
+    as _i347;
+import '../../features/notifications/domain/usecases/show_notification.dart'
+    as _i49;
+import '../../features/notifications/presentation/cubit/notification_cubit.dart'
+    as _i459;
 import '../../features/onboarding/data/datasources/onboarding_local_datasource.dart'
     as _i804;
 import '../../features/onboarding/data/repositories/onboarding_repository_impl.dart'
@@ -64,6 +80,8 @@ import '../../features/onboarding/domain/usecases/complete_onboarding_usecase.da
     as _i360;
 import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart'
     as _i807;
+import '../../features/settings/domain/repositories/settings_repository.dart'
+    as _i674;
 import '../../features/splash/presentation/cubit/splash_cubit.dart' as _i125;
 import '../infrastructure/data/network/api_client.dart' as _i456;
 import '../infrastructure/data/network/api_interceptor.dart' as _i50;
@@ -71,10 +89,13 @@ import '../infrastructure/data/network/api_response_parser.dart' as _i409;
 import '../infrastructure/data/network/dio_api_client.dart' as _i1035;
 import '../infrastructure/data/network/dio_module.dart' as _i183;
 import '../infrastructure/data/network/network_connectivity.dart' as _i498;
-import '../services/parser/payload_parser.dart' as _i226;
 import '../infrastructure/data/storage/hive_storage_service.dart' as _i581;
 import '../infrastructure/data/storage/secure_storage_service.dart' as _i224;
 import '../infrastructure/data/storage/storage_service.dart' as _i419;
+import '../router/app_router.dart' as _i81;
+import '../services/firebase/firebase_messaging_service.dart' as _i340;
+import '../services/notification/local_notification_service.dart' as _i474;
+import '../services/parser/payload_parser.dart' as _i356;
 import '../utils/app_locale.dart' as _i845;
 import '../utils/device_services.dart' as _i440;
 import '../utils/platform_checker.dart' as _i48;
@@ -96,16 +117,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => injectionModule.flutterSecureStorage,
     );
+    await gh.lazySingletonAsync<_i474.LocalNotificationService>(() {
+      final i = _i474.LocalNotificationService();
+      return i.init().then((_) => i);
+    }, preResolve: true);
     gh.lazySingleton<_i845.AppLocaleState>(() => _i845.AppLocaleState());
     gh.lazySingleton<_i48.PlatformChecker>(() => const _i48.PlatformChecker());
-    gh.lazySingleton<_i802.AuthEndpoints>(() => _i802.AuthEndpoints());
-    gh.lazySingleton<_i226.PayloadParser>(() => _i226.IsolatePayloadParser());
-    gh.lazySingleton<_i409.APIResponseParser>(
-      () => _i409.IsolateAPIResponseParser(gh<_i226.PayloadParser>()),
+    gh.lazySingleton<_i990.AuthEndpoints>(() => _i990.AuthEndpoints());
+    gh.lazySingleton<_i1058.LocalNotificationService>(
+      () => _i1058.LocalNotificationService(),
     );
     gh.lazySingleton<_i224.SecureStorageService>(
       () => _i224.SecureStorageServiceImpl(gh<_i558.FlutterSecureStorage>()),
     );
+    gh.lazySingleton<_i356.PayloadParser>(() => _i356.IsolatePayloadParser());
     gh.lazySingleton<_i498.NetworkConnectivity>(
       () => _i498.NetworkConnectivityImpl(gh<_i895.Connectivity>()),
     );
@@ -114,6 +139,14 @@ extension GetItInjectableX on _i174.GetIt {
         platformChecker: gh<_i48.PlatformChecker>(),
         deviceInfoPlugin: gh<_i833.DeviceInfoPlugin>(),
       ),
+    );
+    gh.lazySingleton<_i367.NotificationRepository>(
+      () => _i361.NotificationRepositoryImpl(
+        service: gh<_i1058.LocalNotificationService>(),
+      ),
+    );
+    gh.lazySingleton<_i409.APIResponseParser>(
+      () => _i409.IsolateAPIResponseParser(gh<_i356.PayloadParser>()),
     );
     await gh.factoryAsync<_i419.StorageService>(() {
       final i = _i581.HiveStorageService(gh<_i224.SecureStorageService>());
@@ -148,6 +181,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i804.OnboardingLocalDataSource>(
       () => _i804.OnboardingLocalDataSourceImpl(gh<_i419.StorageService>()),
     );
+    gh.lazySingleton<_i142.CancelAllNotificationsUseCase>(
+      () => _i142.CancelAllNotificationsUseCase(
+        gh<_i367.NotificationRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i333.CancelNotificationUseCase>(
+      () => _i333.CancelNotificationUseCase(gh<_i367.NotificationRepository>()),
+    );
+    gh.lazySingleton<_i347.ScheduleNotificationUseCase>(
+      () =>
+          _i347.ScheduleNotificationUseCase(gh<_i367.NotificationRepository>()),
+    );
+    gh.lazySingleton<_i49.ShowNotificationUseCase>(
+      () => _i49.ShowNotificationUseCase(gh<_i367.NotificationRepository>()),
+    );
     gh.lazySingleton<_i456.APIClient>(
       () => _i1035.DioAPIClient(gh<_i361.Dio>(), gh<_i409.APIResponseParser>()),
     );
@@ -155,7 +203,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i161.AuthRemoteDataSourceImpl(
         apiClient: gh<_i456.APIClient>(),
         connectivity: gh<_i498.NetworkConnectivity>(),
-        authEndpoints: gh<_i802.AuthEndpoints>(),
+        authEndpoints: gh<_i990.AuthEndpoints>(),
       ),
     );
     gh.lazySingleton<_i430.OnboardingRepository>(
@@ -174,12 +222,29 @@ extension GetItInjectableX on _i174.GetIt {
         remoteDataSource: gh<_i161.AuthRemoteDataSource>(),
       ),
     );
+    await gh.lazySingletonAsync<_i340.FirebaseMessageService>(() {
+      final i = _i340.FirebaseMessageService(
+        authRepository: gh<_i787.AuthRepository>(),
+        settingsRepository: gh<_i674.SettingsRepository>(),
+        localNotificationService: gh<_i474.LocalNotificationService>(),
+      );
+      return i.init().then((_) => i);
+    }, preResolve: true);
     gh.lazySingleton<_i462.CheckOnboardingStatusUseCase>(
       () =>
           _i462.CheckOnboardingStatusUseCase(gh<_i430.OnboardingRepository>()),
     );
     gh.lazySingleton<_i360.CompleteOnboardingUseCase>(
       () => _i360.CompleteOnboardingUseCase(gh<_i430.OnboardingRepository>()),
+    );
+    gh.factory<_i459.NotificationCubit>(
+      () => _i459.NotificationCubit(
+        showNotificationUseCase: gh<_i49.ShowNotificationUseCase>(),
+        scheduleNotificationUseCase: gh<_i347.ScheduleNotificationUseCase>(),
+        cancelNotificationUseCase: gh<_i333.CancelNotificationUseCase>(),
+        cancelAllNotificationsUseCase:
+            gh<_i142.CancelAllNotificationsUseCase>(),
+      ),
     );
     gh.lazySingleton<_i668.DeveloperLoginUseCase>(
       () => _i668.DeveloperLoginUseCase(gh<_i365.EnvironmentRepository>()),
@@ -245,6 +310,12 @@ extension GetItInjectableX on _i174.GetIt {
         deleteAccountUseCase: gh<_i914.DeleteAccountUseCase>(),
         getAuthenticatedUserUseCase: gh<_i435.GetAuthenticatedUserUseCase>(),
       ),
+    );
+    gh.lazySingleton<_i81.AuthGuard>(
+      () => _i81.AuthGuard(gh<_i117.AuthCubit>()),
+    );
+    gh.lazySingleton<_i81.AppRouter>(
+      () => _i81.AppRouter(gh<_i81.AuthGuard>()),
     );
     return this;
   }

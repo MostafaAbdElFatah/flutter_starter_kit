@@ -6,11 +6,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter_starter_kit/core/utils/log.dart';
+import 'package:flutter_starter_kit/core/infrastructure/data/network/api_client.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/network/api_endpoint.dart';
+import 'package:flutter_starter_kit/core/infrastructure/data/network/api_response_parser.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/network/dio_api_client.dart';
 import 'package:flutter_starter_kit/core/errors/failure.dart';
 import '../../../../helper/helper_test.mocks.dart';
-
 
 void main() {
   EasyLocalization.logger.enableLevels = [];
@@ -20,7 +21,7 @@ void main() {
 
   setUp(() {
     mockDio = MockDio();
-    client = DioAPIClient(mockDio);
+    client = DioAPIClient(mockDio, _TestAPIResponseParser());
     Log.overrideShouldDebugForTests = true;
 
     // Default dio headers
@@ -48,7 +49,7 @@ void main() {
       // Act
       final result = await client.request(
         RequestOptions(path: "/test"),
-        fromJson: APIResponse.fromJson,
+        mapper: APIResponse.fromJson,
       );
 
       // Assert
@@ -69,7 +70,7 @@ void main() {
       expect(
         client.request(
           RequestOptions(path: "/test"),
-          fromJson: APIResponse.fromJson,
+          mapper: APIResponse.fromJson,
         ),
         throwsA(FailureType.invalidData),
       );
@@ -100,7 +101,7 @@ void main() {
         // Act
         final result = await client.request(
           RequestOptions(path: "/test"),
-          fromJson: APIResponse.fromJson,
+          mapper: APIResponse.fromJson,
         );
 
         // Assert
@@ -124,7 +125,7 @@ void main() {
         expect(
           client.request(
             RequestOptions(path: "/test"),
-            fromJson: APIResponse.fromJson,
+            mapper: APIResponse.fromJson,
           ),
           throwsA(isA<FailureType>()),
         );
@@ -139,13 +140,12 @@ void main() {
       expect(
         client.request(
           RequestOptions(path: "/test"),
-          fromJson: APIResponse.fromJson,
+          mapper: APIResponse.fromJson,
         ),
         throwsA(isA<FailureType>()),
       );
     });
   });
-
 
   group('fetch()', () {
     test('APIEndpoint', () async {
@@ -171,12 +171,12 @@ void main() {
       // Act
       final _ = await client.fetch(
         target: endpoint,
-        fromJson: APIResponse.fromJson,
+        mapper: APIResponse.fromJson,
       );
 
       // Assert
       final captured =
-      verify(mockDio.fetch(captureAny)).captured.single as RequestOptions;
+          verify(mockDio.fetch(captureAny)).captured.single as RequestOptions;
 
       expect(captured.path, "/api/v1/fetch");
       //expect(captured.path, "/api/v2/fetch");
@@ -204,12 +204,12 @@ void main() {
       // Act
       final _ = await client.fetch(
         target: endpoint,
-        fromJson: APIResponse.fromJson,
+        mapper: APIResponse.fromJson,
       );
 
       // Assert
       final captured =
-      verify(mockDio.fetch(captureAny)).captured.single as RequestOptions;
+          verify(mockDio.fetch(captureAny)).captured.single as RequestOptions;
 
       expect(captured.path, "/fetch");
     });
@@ -237,12 +237,12 @@ void main() {
       // Act
       final _ = await client.fetch(
         target: endpoint,
-        fromJson: APIResponse.fromJson,
+        mapper: APIResponse.fromJson,
       );
 
       // Assert
       final captured =
-      verify(mockDio.fetch(captureAny)).captured.single as RequestOptions;
+          verify(mockDio.fetch(captureAny)).captured.single as RequestOptions;
 
       expect(captured.path, "$defaultBaseUrl/fetch");
     });
@@ -269,7 +269,7 @@ void main() {
       // Act
       final result = await client.fetch(
         target: endpoint,
-        fromJson: APIResponse.fromJson,
+        mapper: APIResponse.fromJson,
       );
 
       // Assert
@@ -302,7 +302,7 @@ void main() {
       );
 
       // Act
-      final result = await client.get("/g", fromJson: APIResponse.fromJson);
+      final result = await client.get("/g", mapper: APIResponse.fromJson);
 
       // Assert
       expect(result, expectedResult);
@@ -320,7 +320,7 @@ void main() {
       );
 
       // Act
-      final result = await client.post("/p", fromJson: APIResponse.fromJson);
+      final result = await client.post("/p", mapper: APIResponse.fromJson);
 
       // Assert
       expect(result, expectedResult);
@@ -338,7 +338,7 @@ void main() {
       );
 
       // Act
-      final result = await client.put("/u", fromJson: APIResponse.fromJson);
+      final result = await client.put("/u", mapper: APIResponse.fromJson);
 
       // Assert
       expect(result, expectedResult);
@@ -356,7 +356,7 @@ void main() {
       );
 
       // Act
-      final result = await client.delete("/d", fromJson: APIResponse.fromJson);
+      final result = await client.delete("/d", mapper: APIResponse.fromJson);
 
       // Assert
       expect(result, expectedResult);
@@ -374,12 +374,22 @@ void main() {
       );
 
       // Act
-      final result = await client.patch("/pa", fromJson: APIResponse.fromJson);
+      final result = await client.patch("/pa", mapper: APIResponse.fromJson);
 
       // Assert
       expect(result, expectedResult);
     });
   });
+}
+
+class _TestAPIResponseParser implements APIResponseParser {
+  @override
+  Future<T> parse<T>({
+    required int? statusCode,
+    required String? message,
+    required Map<String, dynamic> data,
+    required APICallback parser,
+  }) async => parser(statusCode, message, data) as T;
 }
 
 class APIResponse extends Equatable {
