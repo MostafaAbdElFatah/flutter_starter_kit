@@ -63,7 +63,7 @@ class AuthRemoteDataSourceImpl extends RemoteDataSource
   Future<LoginUser> login(LoginRequest request) async {
     final response = await fetch<LoginResponse>(
       target: _authEndpoints.login(request),
-      fromJson: LoginResponse.fromJson,
+      mapper: LoginResponse.fromJson,
     );
 
     if (response.statusCode == 200 && response.data != null) {
@@ -77,7 +77,7 @@ class AuthRemoteDataSourceImpl extends RemoteDataSource
   Future<LoginUser> register(RegisterRequest request) async {
     final response = await fetch<LoginResponse>(
       target: _authEndpoints.register(request),
-      fromJson: LoginResponse.fromJson,
+      mapper: LoginResponse.fromJson,
     );
 
     if (response.statusCode == 200 && response.data != null) {
@@ -91,7 +91,7 @@ class AuthRemoteDataSourceImpl extends RemoteDataSource
   Future<void> logout() async {
     final response = await fetch<APIResponse>(
       target: _authEndpoints.logout(),
-      fromJson: APIResponse.fromJson,
+      mapper: APIResponse.fromJson,
     );
 
     if (response.statusCode != 200) {
@@ -103,7 +103,7 @@ class AuthRemoteDataSourceImpl extends RemoteDataSource
   Future<void> deleteAccount() async {
     final response = await fetch<APIResponse>(
       target: _authEndpoints.deleteAccount(),
-      fromJson: APIResponse.fromJson,
+      mapper: APIResponse.fromJson,
     );
 
     if (response.statusCode != 200) {

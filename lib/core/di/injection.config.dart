@@ -67,9 +67,11 @@ import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart'
 import '../../features/splash/presentation/cubit/splash_cubit.dart' as _i125;
 import '../infrastructure/data/network/api_client.dart' as _i456;
 import '../infrastructure/data/network/api_interceptor.dart' as _i50;
+import '../infrastructure/data/network/api_response_parser.dart' as _i409;
 import '../infrastructure/data/network/dio_api_client.dart' as _i1035;
 import '../infrastructure/data/network/dio_module.dart' as _i183;
 import '../infrastructure/data/network/network_connectivity.dart' as _i498;
+import '../services/parser/payload_parser.dart' as _i226;
 import '../infrastructure/data/storage/hive_storage_service.dart' as _i581;
 import '../infrastructure/data/storage/secure_storage_service.dart' as _i224;
 import '../infrastructure/data/storage/storage_service.dart' as _i419;
@@ -97,6 +99,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i845.AppLocaleState>(() => _i845.AppLocaleState());
     gh.lazySingleton<_i48.PlatformChecker>(() => const _i48.PlatformChecker());
     gh.lazySingleton<_i802.AuthEndpoints>(() => _i802.AuthEndpoints());
+    gh.lazySingleton<_i226.PayloadParser>(() => _i226.IsolatePayloadParser());
+    gh.lazySingleton<_i409.APIResponseParser>(
+      () => _i409.IsolateAPIResponseParser(gh<_i226.PayloadParser>()),
+    );
     gh.lazySingleton<_i224.SecureStorageService>(
       () => _i224.SecureStorageServiceImpl(gh<_i558.FlutterSecureStorage>()),
     );
@@ -143,7 +149,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i804.OnboardingLocalDataSourceImpl(gh<_i419.StorageService>()),
     );
     gh.lazySingleton<_i456.APIClient>(
-      () => _i1035.DioAPIClient(gh<_i361.Dio>()),
+      () => _i1035.DioAPIClient(gh<_i361.Dio>(), gh<_i409.APIResponseParser>()),
     );
     gh.lazySingleton<_i161.AuthRemoteDataSource>(
       () => _i161.AuthRemoteDataSourceImpl(

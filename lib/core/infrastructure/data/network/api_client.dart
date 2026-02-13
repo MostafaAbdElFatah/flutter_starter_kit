@@ -22,7 +22,7 @@ abstract class APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback parser,
+    required APICallback mapper,
   });
 
   /// Sends an HTTP POST request to the given [path].
@@ -36,7 +36,7 @@ abstract class APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback parser,
+    required APICallback mapper,
   });
 
   /// Sends an HTTP PUT request to the given [path].
@@ -50,7 +50,7 @@ abstract class APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback parser,
+    required APICallback mapper,
   });
 
   /// Sends an HTTP DELETE request to the given [path].
@@ -64,7 +64,7 @@ abstract class APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback parser,
+    required APICallback mapper,
   });
 
   /// Sends an HTTP PATCH request to the given [path].
@@ -78,17 +78,17 @@ abstract class APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback parser,
+    required APICallback mapper,
   });
 
   /// Sends a custom [RequestOptions] request and parses the response.
   ///
-  /// [parser] is a callback function that converts a JSON map to the desired [Model].
+  /// [mapper] is a callback function that converts a JSON map to the desired [Model].
   /// Returns an instance of [Model] decoded from the response.
   /// Throws a [NetworkFailure] or decoding error if the request fails or parsing fails.
   Future<Model> request<Model>(
     RequestOptions options, {
-    required APICallback parser,
+    required APICallback mapper,
   });
 
   /// Fetches data from a specific [APIEndpoint] and decodes it into [Model].
@@ -101,6 +101,6 @@ abstract class APIClient {
   Future<Model> fetch<Model>({
     bool isFormData = false,
     required APIEndpoint target,
-    required APICallback parser,
+    required APICallback mapper,
   });
 }

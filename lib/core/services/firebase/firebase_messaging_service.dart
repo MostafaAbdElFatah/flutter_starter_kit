@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/utils/log.dart';
 import '../../../features/auth/domain/repositories/auth_repository.dart';
 import '../../../features/settings/domain/repositories/settings_repository.dart';
-import 'local_notification_service.dart';
+import '../notification/local_notification_service.dart';
 
 /// Background handler for FCM messages.
 ///
@@ -32,8 +32,8 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 /// - Listen to foreground/background/terminated messages.
 /// - Sync the FCM token with the backend when needed.
 @lazySingleton
-class FirebaseService {
-  FirebaseService({
+class FirebaseMessageService {
+  FirebaseMessageService({
     required AuthRepository authRepository,
     required SettingsRepository settingsRepository,
     required LocalNotificationService localNotificationService,

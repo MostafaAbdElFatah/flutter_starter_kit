@@ -44,7 +44,7 @@ abstract class RemoteDataSource {
   ///
   /// This method first checks for network connectivity. If connected, it proceeds
   /// to fetch data using the injected [APIClient] instance. It utilizes
-  /// the provided [fromJson] callback to parse the JSON response into the model.
+  /// the provided [mapper] callback to parse the JSON response into the model.
   ///
   /// Example usage:
   /// ```dart
@@ -56,7 +56,7 @@ abstract class RemoteDataSource {
   ///
   /// - [T]: The type of the model to be returned.
   /// - [target]: The [APIEndpoint] defining the API request details.
-  /// - [fromJson]: A callback function to convert JSON into an instance of [T].
+  /// - [mapper]: A callback function to convert JSON into an instance of [T].
   /// - [isFormData]: Whether the request body should be sent as form data (default: false).
   ///
   /// Returns: A [Future] containing an instance of [T] on success.
@@ -67,14 +67,14 @@ abstract class RemoteDataSource {
   @protected
   Future<T> fetch<T>({
     required APIEndpoint target,
-    required APICallback fromJson,
+    required APICallback mapper,
     bool isFormData = false,
   }) async {
     await _ensureConnectivity();
 
     return _apiClient.fetch<T>(
       target: target,
-      fromJson: fromJson,
+      mapper: mapper,
       isFormData: isFormData,
     );
   }

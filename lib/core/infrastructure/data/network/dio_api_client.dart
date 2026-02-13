@@ -6,17 +6,21 @@ import '../../../errors/failure.dart';
 import '../../../utils/log.dart';
 import 'api_client.dart';
 import 'api_endpoint.dart';
+import 'api_response_parser.dart';
 
 /// A concrete implementation of [ApiService] using the [Dio] package.
 @LazySingleton(as: APIClient)
 class DioAPIClient implements APIClient {
   final Dio _dio;
+  final APIResponseParser _parser;
 
   /// Creates an instance of [DioApiService].
   ///
   /// - Parameter dio: A [Dio] instance for making HTTP requests.
   /// - Parameter connectivity: A [NetworkConnectivity] instance for  network connectivity.
-  DioAPIClient(Dio dio) : _dio = dio;
+  DioAPIClient(Dio dio, APIResponseParser parser)
+    : _dio = dio,
+      _parser = parser;
 
   /// Sends an HTTP GET request to the given [path].
   ///
@@ -30,7 +34,7 @@ class DioAPIClient implements APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback parser,
+    required APICallback mapper,
   }) => request(
     RequestOptions(
       path: path,
@@ -39,7 +43,7 @@ class DioAPIClient implements APIClient {
       method: HttpMethod.get.rawValue,
       queryParameters: queryParameters,
     ),
-    parser: parser,
+    mapper: mapper,
   );
 
   /// Sends an HTTP POST request to the given [path].
@@ -54,7 +58,7 @@ class DioAPIClient implements APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback parser,
+    required APICallback mapper,
   }) => request(
     RequestOptions(
       path: path,
@@ -63,7 +67,7 @@ class DioAPIClient implements APIClient {
       method: HttpMethod.post.rawValue,
       queryParameters: queryParameters,
     ),
-    parser: parser,
+    mapper: mapper,
   );
 
   /// Sends an HTTP PUT request to the given [path].
@@ -78,7 +82,7 @@ class DioAPIClient implements APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback parser,
+    required APICallback mapper,
   }) => request(
     RequestOptions(
       path: path,
@@ -87,7 +91,7 @@ class DioAPIClient implements APIClient {
       method: HttpMethod.put.rawValue,
       queryParameters: queryParameters,
     ),
-    parser: parser,
+    mapper: mapper,
   );
 
   /// Sends an HTTP DELETE request to the given [path].
@@ -102,7 +106,7 @@ class DioAPIClient implements APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback parser,
+    required APICallback mapper,
   }) => request(
     RequestOptions(
       path: path,
@@ -111,7 +115,7 @@ class DioAPIClient implements APIClient {
       method: HttpMethod.delete.rawValue,
       queryParameters: queryParameters,
     ),
-    parser: parser,
+    mapper: mapper,
   );
 
   /// Sends an HTTP PATCH request to the given [path].
@@ -126,7 +130,7 @@ class DioAPIClient implements APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback parser,
+    required APICallback mapper,
   }) => request(
     RequestOptions(
       path: path,
@@ -135,7 +139,7 @@ class DioAPIClient implements APIClient {
       method: HttpMethod.patch.rawValue,
       queryParameters: queryParameters,
     ),
-    parser: parser,
+    mapper: mapper,
   );
 
   /// Fetches data from a specific [APIEndpoint] and decodes it into [Model].
@@ -149,7 +153,7 @@ class DioAPIClient implements APIClient {
   Future<Model> fetch<Model>({
     bool isFormData = false,
     required APIEndpoint target,
-    required APICallback parser,
+    required APICallback mapper,
   }) {
     final body = target.body;
     final queryParameters = target.queryParameters;
@@ -171,19 +175,19 @@ class DioAPIClient implements APIClient {
         queryParameters: queryParameters,
         extra: {"endpoint": target},
       ),
-      parser: parser,
+      mapper: mapper,
     );
   }
 
   /// Sends a custom [RequestOptions] request and parses the response.
   ///
-  /// [parser] is a callback function that converts a JSON map to the desired [Model].
+  /// [mapper] is a callback function that converts a JSON map to the desired [Model].
   /// Returns an instance of [Model] decoded from the response.
   /// Throws a [NetworkFailure] or decoding error if the request fails or parsing fails.
   @override
   Future<Model> request<Model>(
     RequestOptions options, {
-    required APICallback parser,
+    required APICallback mapper,
   }) async {
     try {
       // Make the HTTP request using Dio.
@@ -198,7 +202,12 @@ class DioAPIClient implements APIClient {
         final message = response.statusMessage;
 
         // Use the provided parser function to create the model instance.
-        return parser(statusCode, message, data);
+        return _parser.parse<Model>(
+          statusCode: statusCode,
+          message: message,
+          data: data,
+          parser: mapper,
+        );
       } else {
         throw FailureType.invalidData;
       }
@@ -213,8 +222,12 @@ class DioAPIClient implements APIClient {
         final message =
             error.response!.statusMessage ?? LocalizationKeys.unknownError;
         // Attempt to create a model from the error response.
-        final errorModel = parser(statusCode, message, errorData);
-        return errorModel;
+        return _parser.parse<Model>(
+          statusCode: statusCode,
+          message: message,
+          data: errorData,
+          parser: mapper,
+        );
       }
 
       // For other types of Dio errors, throw a generic NetworkFailure.
