@@ -80,8 +80,6 @@ import '../../features/onboarding/domain/usecases/complete_onboarding_usecase.da
     as _i360;
 import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart'
     as _i807;
-import '../../features/settings/domain/repositories/settings_repository.dart'
-    as _i674;
 import '../../features/splash/presentation/cubit/splash_cubit.dart' as _i125;
 import '../infrastructure/data/network/api_client.dart' as _i456;
 import '../infrastructure/data/network/api_interceptor.dart' as _i50;
@@ -93,7 +91,10 @@ import '../infrastructure/data/storage/hive_storage_service.dart' as _i581;
 import '../infrastructure/data/storage/secure_storage_service.dart' as _i224;
 import '../infrastructure/data/storage/storage_service.dart' as _i419;
 import '../router/app_router.dart' as _i81;
+import '../services/firebase/firebase_analytics_service.dart' as _i520;
+import '../services/firebase/firebase_crashlytics_service.dart' as _i521;
 import '../services/firebase/firebase_messaging_service.dart' as _i340;
+import '../services/firebase/firebase_service.dart' as _i522;
 import '../services/notification/local_notification_service.dart' as _i474;
 import '../services/parser/payload_parser.dart' as _i356;
 import '../utils/app_locale.dart' as _i845;
@@ -206,6 +207,17 @@ extension GetItInjectableX on _i174.GetIt {
         authEndpoints: gh<_i990.AuthEndpoints>(),
       ),
     );
+    gh.lazySingleton<_i522.FirebaseService>(() => _i522.FirebaseService());
+    gh.lazySingleton<_i520.FirebaseAnalyticsService>(
+      () => _i520.FirebaseAnalyticsService(
+        firebaseService: gh<_i522.FirebaseService>(),
+      ),
+    );
+    gh.lazySingleton<_i521.FirebaseCrashlyticsService>(
+      () => _i521.FirebaseCrashlyticsService(
+        firebaseService: gh<_i522.FirebaseService>(),
+      ),
+    );
     gh.lazySingleton<_i430.OnboardingRepository>(
       () =>
           _i452.OnboardingRepositoryImpl(gh<_i804.OnboardingLocalDataSource>()),
@@ -224,8 +236,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     await gh.lazySingletonAsync<_i340.FirebaseMessageService>(() {
       final i = _i340.FirebaseMessageService(
+        firebaseService: gh<_i522.FirebaseService>(),
+        analyticsService: gh<_i520.FirebaseAnalyticsService>(),
+        crashlyticsService: gh<_i521.FirebaseCrashlyticsService>(),
         authRepository: gh<_i787.AuthRepository>(),
-        settingsRepository: gh<_i674.SettingsRepository>(),
         localNotificationService: gh<_i474.LocalNotificationService>(),
       );
       return i.init().then((_) => i);
