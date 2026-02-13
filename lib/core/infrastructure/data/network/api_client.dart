@@ -22,7 +22,7 @@ abstract class APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback fromJson,
+    required APICallback parser,
   });
 
   /// Sends an HTTP POST request to the given [path].
@@ -36,7 +36,7 @@ abstract class APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback fromJson,
+    required APICallback parser,
   });
 
   /// Sends an HTTP PUT request to the given [path].
@@ -50,7 +50,7 @@ abstract class APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback fromJson,
+    required APICallback parser,
   });
 
   /// Sends an HTTP DELETE request to the given [path].
@@ -64,7 +64,7 @@ abstract class APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback fromJson,
+    required APICallback parser,
   });
 
   /// Sends an HTTP PATCH request to the given [path].
@@ -78,29 +78,29 @@ abstract class APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback fromJson,
+    required APICallback parser,
   });
 
   /// Sends a custom [RequestOptions] request and parses the response.
   ///
-  /// [fromJson] is a callback function that converts a JSON map to the desired [Model].
+  /// [parser] is a callback function that converts a JSON map to the desired [Model].
   /// Returns an instance of [Model] decoded from the response.
   /// Throws a [NetworkFailure] or decoding error if the request fails or parsing fails.
   Future<Model> request<Model>(
     RequestOptions options, {
-    required APICallback fromJson,
+    required APICallback parser,
   });
 
   /// Fetches data from a specific [APIEndpoint] and decodes it into [Model].
   ///
   /// [target] specifies the API endpoint.
-  /// [fromJson] is a callback function used to decode the JSON response.
+  /// [parser] is a callback function used to decode the JSON response.
   /// [isFormData] indicates if the request body should be sent as `multipart/form-data`.
   /// Returns an instance of [Model].
   /// Throws [NetworkFailure] or decoding error on failure.
   Future<Model> fetch<Model>({
     bool isFormData = false,
     required APIEndpoint target,
-    required APICallback fromJson,
+    required APICallback parser,
   });
 }

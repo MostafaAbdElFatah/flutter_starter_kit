@@ -30,7 +30,7 @@ class DioAPIClient implements APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback fromJson,
+    required APICallback parser,
   }) => request(
     RequestOptions(
       path: path,
@@ -39,7 +39,7 @@ class DioAPIClient implements APIClient {
       method: HttpMethod.get.rawValue,
       queryParameters: queryParameters,
     ),
-    fromJson: fromJson,
+    parser: parser,
   );
 
   /// Sends an HTTP POST request to the given [path].
@@ -54,7 +54,7 @@ class DioAPIClient implements APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback fromJson,
+    required APICallback parser,
   }) => request(
     RequestOptions(
       path: path,
@@ -63,7 +63,7 @@ class DioAPIClient implements APIClient {
       method: HttpMethod.post.rawValue,
       queryParameters: queryParameters,
     ),
-    fromJson: fromJson,
+    parser: parser,
   );
 
   /// Sends an HTTP PUT request to the given [path].
@@ -78,7 +78,7 @@ class DioAPIClient implements APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback fromJson,
+    required APICallback parser,
   }) => request(
     RequestOptions(
       path: path,
@@ -87,7 +87,7 @@ class DioAPIClient implements APIClient {
       method: HttpMethod.put.rawValue,
       queryParameters: queryParameters,
     ),
-    fromJson: fromJson,
+    parser: parser,
   );
 
   /// Sends an HTTP DELETE request to the given [path].
@@ -102,7 +102,7 @@ class DioAPIClient implements APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback fromJson,
+    required APICallback parser,
   }) => request(
     RequestOptions(
       path: path,
@@ -111,7 +111,7 @@ class DioAPIClient implements APIClient {
       method: HttpMethod.delete.rawValue,
       queryParameters: queryParameters,
     ),
-    fromJson: fromJson,
+    parser: parser,
   );
 
   /// Sends an HTTP PATCH request to the given [path].
@@ -126,7 +126,7 @@ class DioAPIClient implements APIClient {
     dynamic data,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
-    required APICallback fromJson,
+    required APICallback parser,
   }) => request(
     RequestOptions(
       path: path,
@@ -135,13 +135,13 @@ class DioAPIClient implements APIClient {
       method: HttpMethod.patch.rawValue,
       queryParameters: queryParameters,
     ),
-    fromJson: fromJson,
+    parser: parser,
   );
 
   /// Fetches data from a specific [APIEndpoint] and decodes it into [Model].
   ///
   /// [target] specifies the API endpoint.
-  /// [fromJson] is a callback function used to decode the JSON response.
+  /// [parser] is a callback function used to decode the JSON response.
   /// [isFormData] indicates if the request body should be sent as `multipart/form-data`.
   /// Returns an instance of [Model].
   /// Throws [NetworkFailure] or decoding error on failure.
@@ -149,7 +149,7 @@ class DioAPIClient implements APIClient {
   Future<Model> fetch<Model>({
     bool isFormData = false,
     required APIEndpoint target,
-    required APICallback fromJson,
+    required APICallback parser,
   }) {
     final body = target.body;
     final queryParameters = target.queryParameters;
@@ -171,19 +171,19 @@ class DioAPIClient implements APIClient {
         queryParameters: queryParameters,
         extra: {"endpoint": target},
       ),
-      fromJson: fromJson,
+      parser: parser,
     );
   }
 
   /// Sends a custom [RequestOptions] request and parses the response.
   ///
-  /// [fromJson] is a callback function that converts a JSON map to the desired [Model].
+  /// [parser] is a callback function that converts a JSON map to the desired [Model].
   /// Returns an instance of [Model] decoded from the response.
   /// Throws a [NetworkFailure] or decoding error if the request fails or parsing fails.
   @override
   Future<Model> request<Model>(
     RequestOptions options, {
-    required APICallback fromJson,
+    required APICallback parser,
   }) async {
     try {
       // Make the HTTP request using Dio.
@@ -197,8 +197,8 @@ class DioAPIClient implements APIClient {
         final statusCode = response.statusCode;
         final message = response.statusMessage;
 
-        // Use the provided fromJson function to create the model instance.
-        return fromJson(statusCode, message, data);
+        // Use the provided parser function to create the model instance.
+        return parser(statusCode, message, data);
       } else {
         throw FailureType.invalidData;
       }
@@ -213,7 +213,7 @@ class DioAPIClient implements APIClient {
         final message =
             error.response!.statusMessage ?? LocalizationKeys.unknownError;
         // Attempt to create a model from the error response.
-        final errorModel = fromJson(statusCode, message, errorData);
+        final errorModel = parser(statusCode, message, errorData);
         return errorModel;
       }
 
