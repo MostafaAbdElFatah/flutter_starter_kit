@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -14,9 +16,10 @@ class FirebaseCrashlyticsService {
   FirebaseCrashlyticsService({required FirebaseService firebaseService})
     : _firebaseService = firebaseService;
 
-  final FirebaseService _firebaseService;
   bool _initialized = false;
+  bool _globalHandlersBound = false;
   FirebaseCrashlytics? _instance;
+  final FirebaseService _firebaseService;
 
   FirebaseCrashlytics get _crashlytics =>
       _instance ?? FirebaseCrashlytics.instance;
@@ -31,6 +34,7 @@ class FirebaseCrashlyticsService {
     await _crashlytics.setCrashlyticsCollectionEnabled(enabled);
 
     _initialized = true;
+    bindGlobalErrorHandlers();
   }
 
   Future<void> setUserId(String? userId) async {
@@ -93,5 +97,39 @@ class FirebaseCrashlyticsService {
         stackTrace: recordingStackTrace,
       );
     }
+  }
+
+  /// Binds global Flutter error handlers to Crashlytics.
+  ///
+  /// Safe to call multiple times.
+  void bindGlobalErrorHandlers() {
+    if (_globalHandlersBound) return;
+
+    FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.presentError(details);
+      unawaited(
+        recordError(
+          details.exception,
+          details.stack ?? StackTrace.current,
+          reason: 'flutter_error',
+          fatal: false,
+        ),
+      );
+    };
+
+    PlatformDispatcher.instance.onError =
+        (Object error, StackTrace stackTrace) {
+          unawaited(
+            recordError(
+              error,
+              stackTrace,
+              reason: 'platform_dispatcher_error',
+              fatal: true,
+            ),
+          );
+          return true;
+        };
+
+    _globalHandlersBound = true;
   }
 }
