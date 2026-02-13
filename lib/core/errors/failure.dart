@@ -18,7 +18,7 @@ class Failure extends Equatable implements Exception {
 
   /// Returns a localized string representation of the failure for display.
   @override
-  String toString() => "Exception: ${message.tr()}";
+  String toString() => message.tr();
 
   /// Handles a dynamic error and converts it into a standardized [Exception].
   ///
@@ -145,5 +145,5 @@ enum FailureType implements Equatable, Failure {
 
   /// Returns a localized string representation of the failure for display.
   @override
-  String toString() => "Failure: ${message.tr()}";
+  String toString() => message.tr();
 }
