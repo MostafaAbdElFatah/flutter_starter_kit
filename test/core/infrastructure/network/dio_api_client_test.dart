@@ -11,7 +11,7 @@ import 'package:flutter_starter_kit/core/infrastructure/network/api_endpoint.dar
 import 'package:flutter_starter_kit/core/infrastructure/network/api_response_parser.dart';
 import 'package:flutter_starter_kit/core/infrastructure/network/dio_api_client.dart';
 import 'package:flutter_starter_kit/core/errors/failure.dart';
-import '../../../../helper/helper_test.mocks.dart';
+import '../../../helper/helper_test.mocks.dart';
 
 void main() {
   EasyLocalization.logger.enableLevels = [];

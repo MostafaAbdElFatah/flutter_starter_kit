@@ -37,8 +37,8 @@ abstract class RemoteDataSource {
   const RemoteDataSource({
     required APIClient apiClient,
     required NetworkConnectivity connectivity,
-  })  : _apiClient = apiClient,
-        _connectivity = connectivity;
+  }) : _apiClient = apiClient,
+       _connectivity = connectivity;
 
   /// Fetches data from the specified [APIEndpoint] and decodes it into the desired model type [T].
   ///
@@ -84,8 +84,6 @@ abstract class RemoteDataSource {
   /// Throws: [FailureType.noInternetConnection] if there is no internet connection.
   Future<void> _ensureConnectivity() async {
     final isConnected = await _connectivity.isConnected;
-    if (!isConnected) {
-      throw FailureType.noInternetConnection;
-    }
+    if (!isConnected) throw FailureType.noInternetConnection;
   }
 }
