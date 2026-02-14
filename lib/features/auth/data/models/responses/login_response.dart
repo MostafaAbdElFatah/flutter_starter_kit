@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../core/infrastructure/data/models/api_response.dart';
+import '../../../../../core/infrastructure/models/api_response.dart';
 import '../user.dart';
 
 /// Represents the API response for a successful login or registration.

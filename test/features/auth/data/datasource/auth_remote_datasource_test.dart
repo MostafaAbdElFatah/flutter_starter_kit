@@ -6,7 +6,7 @@ import 'package:flutter_starter_kit/core/errors/failure.dart';
 import 'package:flutter_starter_kit/features/auth/data/models/requests/login_request.dart';
 import 'package:flutter_starter_kit/features/auth/data/models/requests/register_request.dart';
 import 'package:flutter_starter_kit/features/auth/data/models/responses/login_response.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/models/api_response.dart';
+import 'package:flutter_starter_kit/core/infrastructure/models/api_response.dart';
 import 'package:flutter_starter_kit/features/auth/data/models/user.dart';
 import '../../../../helper/helper_test.mocks.dart';
 

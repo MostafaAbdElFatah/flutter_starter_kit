@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/data/storage/secure_storage_service.dart';
-import '../../../../core/infrastructure/data/storage/storage_service.dart';
+import '../../../../core/infrastructure/storage/secure_storage_service.dart';
+import '../../../../core/infrastructure/storage/storage_service.dart';
 import '../models/user.dart';
 
 /// A concrete implementation of [AuthLocalDataSource] that uses [StorageService]

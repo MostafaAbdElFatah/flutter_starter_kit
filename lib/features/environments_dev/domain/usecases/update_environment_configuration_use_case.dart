@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart' hide Environment;
 
-import '../../../../core/infrastructure/domain/usecases/usecase.dart';
+import '../../../../core/infrastructure/usecases/usecase.dart';
 import '../repositories/environment_repository.dart';
 import '../entities/base_url_config.dart';
 import '../entities/environment.dart';

@@ -1,4 +1,6 @@
-import '../../../../core.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+
+import '../../core.dart';
 
 class ErrorPage extends StatelessWidget {
   final Exception? exception;
@@ -7,6 +9,7 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final group = AutoSizeGroup();
     return Material(
       child: Container(
         width: double.infinity,
@@ -83,10 +86,11 @@ class ErrorPage extends StatelessWidget {
                     Expanded(
                       child: IconTextElevatedButton(
                         iconSize: 20,
+                        group: group,
                         title: LocalizationKeys.close,
                         icon: Icons.exit_to_app,
                         iconColor: Colors.amber,
-                        titleColor: AppColors.black,
+                        titleStyle: AppColors.blackRussian.medium(fontSize: 14),
                         backgroundColor: Colors.white.withValues(alpha: 0.1),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
@@ -95,11 +99,12 @@ class ErrorPage extends StatelessWidget {
                     Expanded(
                       child: IconTextElevatedButton(
                         iconSize: 20,
+                        group: group,
                         title: LocalizationKeys.technicalSupport,
                         icon: Icons.lightbulb_outline_rounded,
                         iconColor: Colors.amber,
-                        titleColor: AppColors.black,
                         backgroundColor: Colors.white.withValues(alpha: 0.1),
+                        titleStyle: AppColors.blackRussian.medium(fontSize: 14),
                         onPressed: () {},
                       ),
                     ),

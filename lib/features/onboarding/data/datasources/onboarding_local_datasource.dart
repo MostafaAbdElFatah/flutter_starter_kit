@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/constants/app_constants.dart';
-import '../../../../core/infrastructure/data/storage/storage_service.dart';
+import '../../../../core/infrastructure/storage/storage_service.dart';
 
 /// An abstract class defining the contract for the onboarding local data source.
 ///

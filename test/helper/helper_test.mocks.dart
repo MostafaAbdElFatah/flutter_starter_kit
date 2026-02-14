@@ -28,19 +28,19 @@ import 'package:dio/src/response.dart' as _i6;
 import 'package:dio/src/transformer.dart' as _i5;
 import 'package:flutter/material.dart' as _i37;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i13;
-import 'package:flutter_starter_kit/core/infrastructure/data/network/api_client.dart'
+import 'package:flutter_starter_kit/core/infrastructure/network/api_client.dart'
     as _i33;
-import 'package:flutter_starter_kit/core/infrastructure/data/network/api_endpoint.dart'
+import 'package:flutter_starter_kit/core/infrastructure/network/api_endpoint.dart'
     as _i22;
-import 'package:flutter_starter_kit/core/infrastructure/data/network/api_response_parser.dart'
+import 'package:flutter_starter_kit/core/infrastructure/network/api_response_parser.dart'
     as _i32;
-import 'package:flutter_starter_kit/core/infrastructure/data/network/network_connectivity.dart'
+import 'package:flutter_starter_kit/core/infrastructure/network/network_connectivity.dart'
     as _i36;
-import 'package:flutter_starter_kit/core/infrastructure/data/storage/secure_storage_service.dart'
+import 'package:flutter_starter_kit/core/infrastructure/storage/secure_storage_service.dart'
     as _i39;
-import 'package:flutter_starter_kit/core/infrastructure/data/storage/storage_service.dart'
+import 'package:flutter_starter_kit/core/infrastructure/storage/storage_service.dart'
     as _i38;
-import 'package:flutter_starter_kit/core/infrastructure/domain/usecases/usecase.dart'
+import 'package:flutter_starter_kit/core/infrastructure/usecases/usecase.dart'
     as _i55;
 import 'package:flutter_starter_kit/core/utils/app_locale.dart' as _i31;
 import 'package:flutter_starter_kit/core/utils/device_services.dart' as _i44;

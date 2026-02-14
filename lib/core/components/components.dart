@@ -54,6 +54,13 @@ export 'loading/progress_spinner.dart';
 export 'loading/custom_loading_indicator.dart';
 
 // ================================
+//            loading
+// ================================
+
+export 'pages/errors_page.dart';
+export 'pages/error_page.dart';
+
+// ================================
 //            rating
 // ================================
 

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../errors/failure.dart';
+import '../../errors/failure.dart';
 import '../network/api_client.dart';
 import '../network/api_endpoint.dart';
 import '../network/network_connectivity.dart';

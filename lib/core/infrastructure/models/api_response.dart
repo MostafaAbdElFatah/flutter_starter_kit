@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../assets/localization_keys.dart';
+import '../../assets/localization_keys.dart';
 
 /// Represents a generic API response.
 ///

@@ -1,4 +1,4 @@
-import 'package:flutter_starter_kit/core/infrastructure/domain/usecases/usecase.dart';
+import 'package:flutter_starter_kit/core/infrastructure/usecases/usecase.dart';
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/environment.dart';
 import 'package:flutter_starter_kit/features/environments_dev/domain/usecases/get_current_environment_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';

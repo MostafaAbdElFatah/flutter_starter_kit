@@ -81,15 +81,15 @@ import '../../features/onboarding/domain/usecases/complete_onboarding_usecase.da
 import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart'
     as _i807;
 import '../../features/splash/presentation/cubit/splash_cubit.dart' as _i125;
-import '../infrastructure/data/network/api_client.dart' as _i456;
-import '../infrastructure/data/network/api_interceptor.dart' as _i50;
-import '../infrastructure/data/network/api_response_parser.dart' as _i409;
-import '../infrastructure/data/network/dio_api_client.dart' as _i1035;
-import '../infrastructure/data/network/dio_module.dart' as _i183;
-import '../infrastructure/data/network/network_connectivity.dart' as _i498;
-import '../infrastructure/data/storage/hive_storage_service.dart' as _i581;
-import '../infrastructure/data/storage/secure_storage_service.dart' as _i224;
-import '../infrastructure/data/storage/storage_service.dart' as _i419;
+import '../infrastructure/network/api_client.dart' as _i456;
+import '../infrastructure/network/api_interceptor.dart' as _i50;
+import '../infrastructure/network/api_response_parser.dart' as _i409;
+import '../infrastructure/network/dio_api_client.dart' as _i1035;
+import '../infrastructure/network/dio_module.dart' as _i183;
+import '../infrastructure/network/network_connectivity.dart' as _i498;
+import '../infrastructure/storage/hive_storage_service.dart' as _i581;
+import '../infrastructure/storage/secure_storage_service.dart' as _i224;
+import '../infrastructure/storage/storage_service.dart' as _i419;
 import '../router/app_router.dart' as _i81;
 import '../services/firebase/firebase_analytics_service.dart' as _i520;
 import '../services/firebase/firebase_crashlytics_service.dart' as _i521;

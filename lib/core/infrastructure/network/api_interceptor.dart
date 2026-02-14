@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../features/environments_dev/data/storage/environment_config_service.dart';
-import '../../../utils/app_locale.dart';
+import '../../../features/environments_dev/data/storage/environment_config_service.dart';
+import '../../utils/app_locale.dart';
 import '../storage/secure_storage_service.dart';
 import 'api_endpoint.dart';
 

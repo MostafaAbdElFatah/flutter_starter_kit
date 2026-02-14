@@ -1,4 +1,4 @@
-import 'package:flutter_starter_kit/core/infrastructure/data/network/api_interceptor.dart';
+import 'package:flutter_starter_kit/core/infrastructure/network/api_interceptor.dart';
 import 'package:flutter_starter_kit/core/utils/app_locale.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

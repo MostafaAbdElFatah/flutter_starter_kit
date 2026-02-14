@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import 'package:flutter_starter_kit/core/infrastructure/data/storage/secure_storage_service.dart';
+import 'package:flutter_starter_kit/core/infrastructure/storage/secure_storage_service.dart';
 import '../../../../helper/helper_test.mocks.dart';
 
 

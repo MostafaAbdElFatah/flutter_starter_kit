@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/domain/usecases/usecase.dart';
-import '../../../../core/infrastructure/presentation/cubits/base_cubit.dart';
+import '../../../../core/infrastructure/usecases/usecase.dart';
+import '../../../../core/infrastructure/cubits/base_cubit.dart';
 import '../../domain/entities/notification_entity.dart';
 import '../../domain/usecases/cancel_all_notifications.dart';
 import '../../domain/usecases/cancel_notification.dart';

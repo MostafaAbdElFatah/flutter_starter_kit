@@ -6,10 +6,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter_starter_kit/core/utils/log.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/network/api_client.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/network/api_endpoint.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/network/api_response_parser.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/network/dio_api_client.dart';
+import 'package:flutter_starter_kit/core/infrastructure/network/api_client.dart';
+import 'package:flutter_starter_kit/core/infrastructure/network/api_endpoint.dart';
+import 'package:flutter_starter_kit/core/infrastructure/network/api_response_parser.dart';
+import 'package:flutter_starter_kit/core/infrastructure/network/dio_api_client.dart';
 import 'package:flutter_starter_kit/core/errors/failure.dart';
 import '../../../../helper/helper_test.mocks.dart';
 

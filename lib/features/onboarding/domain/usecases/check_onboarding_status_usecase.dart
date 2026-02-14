@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/domain/usecases/usecase.dart';
+import '../../../../core/infrastructure/usecases/usecase.dart';
 import '../repositories/onboarding_repository.dart';
 
 /// A use case that checks if the onboarding process has been completed.

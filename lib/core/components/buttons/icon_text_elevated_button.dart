@@ -44,6 +44,9 @@ class IconTextElevatedButton extends StatelessWidget {
   /// Optional title style override.
   final TextStyle? titleStyle;
 
+  /// Synchronizes the size of multiple [AutoSizeText]s.
+  final AutoSizeGroup? group;
+
   /// Optional subtitle style override.
   final TextStyle? subTitleStyle;
 
@@ -81,10 +84,11 @@ class IconTextElevatedButton extends StatelessWidget {
     this.buttonStyle,
     this.onPressed,
     this.padding,
+    this.group,
   }) : assert(
-          icon != null || svgIcon != null || assetImage != null,
-          'You must provide icon, svgIcon, or assetImage',
-        );
+         icon != null || svgIcon != null || assetImage != null,
+         'You must provide icon, svgIcon, or assetImage',
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +98,13 @@ class IconTextElevatedButton extends StatelessWidget {
 
     return ElevatedButton(
       onPressed: onPressed,
-      style: buttonStyle ??
+      style:
+          buttonStyle ??
           Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                backgroundColor: backgroundColor != null && isEnabled
-                    ? WidgetStateProperty.all(backgroundColor!)
-                    : null,
-              ),
+            backgroundColor: backgroundColor != null && isEnabled
+                ? WidgetStateProperty.all(backgroundColor!)
+                : null,
+          ),
       child: Padding(
         padding: padding ?? EdgeInsets.all(8.w),
         child: Row(
@@ -125,7 +130,6 @@ class IconTextElevatedButton extends StatelessWidget {
         ? (titleColor ?? AppColors.white)
         : Theme.of(context).disabledColor;
 
-    final group = AutoSizeGroup();
     return Flexible(
       child: Column(
         mainAxisSize: MainAxisSize.min,

@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/data/network/api_endpoint.dart';
+import '../../../../core/infrastructure/network/api_endpoint.dart';
 import 'requests/login_request.dart';
 import 'requests/register_request.dart';
 

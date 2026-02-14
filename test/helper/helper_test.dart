@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/network/api_response_parser.dart';
+import 'package:flutter_starter_kit/core/infrastructure/network/api_response_parser.dart';
 import 'package:flutter_starter_kit/core/utils/app_locale.dart';
 import 'package:flutter_starter_kit/features/auth/data/models/auth_endpoints.dart';
 import 'package:flutter_starter_kit/features/environments_dev/data/datasources/environment_local_data_source.dart';
@@ -13,13 +13,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter_starter_kit/features/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter_starter_kit/features/auth/data/models/user.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/storage/storage_service.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/storage/secure_storage_service.dart';
+import 'package:flutter_starter_kit/core/infrastructure/storage/storage_service.dart';
+import 'package:flutter_starter_kit/core/infrastructure/storage/secure_storage_service.dart';
 import 'package:flutter_starter_kit/features/environments_dev/data/storage/environment_config_service.dart';
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/api_config.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/network/api_endpoint.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/network/api_client.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/network/network_connectivity.dart';
+import 'package:flutter_starter_kit/core/infrastructure/network/api_endpoint.dart';
+import 'package:flutter_starter_kit/core/infrastructure/network/api_client.dart';
+import 'package:flutter_starter_kit/core/infrastructure/network/network_connectivity.dart';
 import 'package:flutter_starter_kit/core/utils/device_services.dart';
 import 'package:flutter_starter_kit/core/utils/platform_checker.dart';
 import 'package:flutter_starter_kit/features/auth/data/datasources/auth_local_datasource.dart';

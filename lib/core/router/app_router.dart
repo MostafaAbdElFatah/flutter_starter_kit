@@ -14,7 +14,6 @@ import '../../features/environments_dev/presentation/pages/environment_config_pa
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../di/injection.dart' as di;
-import '../infrastructure/presentation/screens/errors/error_page.dart';
 import '../utils/log.dart';
 
 part 'auth_routes.dart';
@@ -73,13 +72,16 @@ class AppRouter {
     initialLocation: HomeRoutes.splash,
     refreshListenable: _goRouterRefreshStream,
     // onException: (context, state, router) => ,
-    // errorBuilder: (context, state) => const SomethingWrongPage(),
-    errorPageBuilder: (context, state) {
-      return MaterialPage(
-        key: state.pageKey,
-        child: ErrorPage(exception: state.error),
-      );
-    },
+    // errorBuilder: (context, state) => ErrorStatePage(
+    //   type: ErrorStateType.somethingWrong,
+    //   onActionPressed: () => context.pop(),
+    // ),
+    // errorPageBuilder: (context, state) {
+    //   return MaterialPage(
+    //     key: state.pageKey,
+    //     child: ErrorPage(exception: state.error),
+    //   );
+    // },
     routes: [
       ...AuthRouter.routes,
       ...OnboardingRouter.routes,

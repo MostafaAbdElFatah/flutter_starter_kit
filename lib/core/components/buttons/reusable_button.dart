@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../../core.dart';
 
 class ReusableButton extends StatelessWidget {
@@ -20,7 +22,7 @@ class ReusableButton extends StatelessWidget {
       onTap: onPressed as VoidCallback,
       child: Container(
         height: 40,
-        width: MediaQuery.of(context).size.width / 2,
+        width: min(200, MediaQuery.of(context).size.width / 2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           color: buttonColor,
