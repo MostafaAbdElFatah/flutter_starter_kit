@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/utils/log.dart';
-import '../../../../core/errors/failure.dart';
+import '../../../../core/infrastructure/errors/failure.dart';
 import '../../../../core/utils/device_services.dart';
 import '../../domain/entities/login_credentials.dart';
 import '../../domain/entities/register_credentials.dart';

@@ -1,6 +1,5 @@
 part of 'failure.dart';
 
-
 /// An exception for unexpected errors that are not covered by other exception types.
 ///
 /// This can be used as a fallback for unknown errors.
@@ -11,7 +10,7 @@ class UnexpectedException extends Failure {
   List<Object?> get props => [message];
 
   @override
-  String toString() => "UnexpectedException: $message";
+  String toString() => message;
 }
 
 /// An exception that occurs when there is a problem with the server.
@@ -25,7 +24,7 @@ class ServerException extends Failure {
   List<Object?> get props => [message];
 
   @override
-  String toString() => "ServerException: $message";
+  String toString() => message;
 }
 
 /// An exception that occurs when there is a problem with the local cache.
@@ -39,5 +38,5 @@ class CacheException extends Failure {
   List<Object?> get props => [message];
 
   @override
-  String toString() => "CacheException: $message";
+  String toString() => message;
 }

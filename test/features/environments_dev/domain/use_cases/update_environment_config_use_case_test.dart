@@ -1,4 +1,4 @@
-import 'package:flutter_starter_kit/core/errors/failure.dart';
+import 'package:flutter_starter_kit/core/infrastructure/errors/failure.dart';
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/base_url_config.dart';
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/environment.dart';
 import 'package:flutter_starter_kit/features/environments_dev/domain/use_cases/update_environment_configuration_use_case.dart';

@@ -1,7 +1,7 @@
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_starter_kit/core/errors/failure.dart';
+import 'package:flutter_starter_kit/core/infrastructure/errors/failure.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/user.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/register_credentials.dart';
 import 'package:flutter_starter_kit/features/auth/domain/use_cases/register_usecase.dart';
