@@ -63,8 +63,8 @@ abstract class LocalizationKeys {
       ErrorKeys.pleaseMakeSureConnectedToInternet.tr();
 
   // ===========================================================================
-// Error States & Messages - Usage
-// ===========================================================================
+  // Error States & Messages - Usage
+  // ===========================================================================
 
   static String get deadEnd => "deadEnd".tr();
   static String get pageNotFoundMessage => "pageNotFoundMessage".tr();
