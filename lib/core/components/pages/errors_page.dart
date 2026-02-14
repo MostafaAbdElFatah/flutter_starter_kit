@@ -1,3 +1,5 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../core.dart';
 
 enum ErrorStateType {
@@ -33,6 +35,7 @@ class ErrorStatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final config = type.config;
     final size = MediaQuery.of(context).size;
+    final layoutMetrics = _ErrorLayoutMetrics(size);
 
     return Scaffold(
       body: Stack(
@@ -42,35 +45,37 @@ class ErrorStatePage extends StatelessWidget {
             fit: BoxFit.cover,
             height: size.height,
             width: size.width,
+            matchTextDirection: true,
           ),
-          Positioned(
-            bottom: config.titleBottom,
-            left: config.titleLeft,
+          PositionedDirectional(
+            bottom: layoutMetrics.vertical(config.titleBottom),
+            start: layoutMetrics.horizontal(config.titleStart),
             child: Text(
               config.title,
-              style: config.titleColor
-                  .medium(fontSize: config.titleFontSize)
-                  .copyWith(letterSpacing: 1),
+              style: config.titleColor.medium(fontSize: config.titleFontSize),
             ),
           ),
-          Positioned(
-            bottom: config.messageBottom,
-            left: config.messageLeft,
+          PositionedDirectional(
+            bottom: layoutMetrics.vertical(config.messageBottom),
+            start: layoutMetrics.horizontal(config.messageEnd),
             child: Text(
               config.message,
               textAlign: config.messageAlign,
-              style: config.messageColor
-                  .medium(fontSize: config.messageFontSize)
-                  .copyWith(),
+              style: config.messageColor.medium(
+                fontSize: config.messageFontSize,
+              ),
             ),
           ),
           if (config.showSearchField)
-            _SearchField(onActionPressed)
+            _SearchField(
+              onActionPressed: onActionPressed,
+              layoutMetrics: layoutMetrics,
+            )
           else
-            Positioned(
-              bottom: config.actionBottom!,
-              left: config.actionLeft!,
-              right: config.actionRight!,
+            PositionedDirectional(
+              bottom: layoutMetrics.vertical(config.actionBottom!),
+              start: layoutMetrics.horizontal(config.actionStart!),
+              end: layoutMetrics.horizontal(config.actionEnd!),
               child: ReusableButton(
                 label: config.actionLabel!,
                 buttonColor: config.actionColor!,
@@ -86,16 +91,18 @@ class ErrorStatePage extends StatelessWidget {
 
 class _SearchField extends StatelessWidget {
   final VoidCallback? onActionPressed;
-  const _SearchField(this.onActionPressed);
+  final _ErrorLayoutMetrics layoutMetrics;
+
+  const _SearchField({this.onActionPressed, required this.layoutMetrics});
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 100,
-      left: 30,
-      right: 30,
+      bottom: layoutMetrics.vertical(100),
+      left: layoutMetrics.horizontal(30),
+      right: layoutMetrics.horizontal(30),
       child: SizedBox(
-        height: 60,
+        height: layoutMetrics.vertical(60).clamp(52.0, 76.0).toDouble(),
         child: TextFormField(
           enabled: false,
           onTap: onActionPressed,
@@ -126,25 +133,49 @@ class _SearchField extends StatelessWidget {
   }
 }
 
+class _ErrorLayoutMetrics {
+  static const double _baseWidth = 390;
+  static const double _baseHeight = 844;
+
+  final Size size;
+
+  _ErrorLayoutMetrics(this.size);
+
+  bool get isTablet => size.shortestSide >= 600;
+
+  double get _horizontalScale {
+    final maxScale = isTablet ? 1.95 : 1.15;
+    return (size.width / _baseWidth).clamp(0.88, maxScale).toDouble();
+  }
+
+  double get _verticalScale {
+    final maxScale = isTablet ? 1.35 : 1.12;
+    return (size.height / _baseHeight).clamp(0.85, maxScale).toDouble();
+  }
+
+  double horizontal(double value) => (value * _horizontalScale).toDouble();
+  double vertical(double value) => (value * _verticalScale).toDouble();
+}
+
 class _ErrorStateConfig {
   final String imagePath;
   final String title;
   final Color titleColor;
   final double titleFontSize;
   final double titleBottom;
-  final double titleLeft;
+  final double titleStart;
   final String message;
   final Color messageColor;
   final double messageFontSize;
   final double messageBottom;
-  final double messageLeft;
+  final double messageEnd;
   final TextAlign messageAlign;
   final String? actionLabel;
   final Color? actionColor;
   final Color? actionTextColor;
   final double? actionBottom;
-  final double? actionLeft;
-  final double? actionRight;
+  final double? actionStart;
+  final double? actionEnd;
   final bool showSearchField;
 
   _ErrorStateConfig({
@@ -153,19 +184,19 @@ class _ErrorStateConfig {
     required this.titleColor,
     required this.titleFontSize,
     required this.titleBottom,
-    required this.titleLeft,
+    required this.titleStart,
     required this.message,
     required this.messageColor,
     required this.messageFontSize,
     required this.messageBottom,
-    required this.messageLeft,
+    required this.messageEnd,
     required this.messageAlign,
     this.actionLabel,
     this.actionColor,
     this.actionTextColor,
     this.actionBottom,
-    this.actionLeft,
-    this.actionRight,
+    this.actionStart,
+    this.actionEnd,
     this.showSearchField = false,
   });
 }
@@ -180,19 +211,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: Colors.white,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.pageNotFoundMessage,
           messageColor: Colors.white54,
           messageFontSize: 25,
           messageBottom: 170,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.homeTitle,
           actionColor: Colors.white,
           actionTextColor: Colors.black,
           actionBottom: 100,
-          actionLeft: 30,
-          actionRight: 250,
+          actionStart: 30,
+          actionEnd: 250,
         );
       case ErrorStateType.articleNotFound:
         return _ErrorStateConfig(
@@ -201,19 +232,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.black,
           titleFontSize: 25,
           titleBottom: 260,
-          titleLeft: 100,
+          titleStart: 100,
           message: LocalizationKeys.articleNotFoundMessage,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 190,
-          messageLeft: 50,
+          messageEnd: 50,
           messageAlign: TextAlign.center,
           actionLabel: LocalizationKeys.retry,
           actionColor: Colors.green,
           actionTextColor: Colors.white,
           actionBottom: 120,
-          actionLeft: 130,
-          actionRight: 130,
+          actionStart: 130,
+          actionEnd: 130,
         );
       case ErrorStateType.brokenLink:
         return _ErrorStateConfig(
@@ -222,19 +253,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: Colors.black,
           titleFontSize: 16,
           titleBottom: 230,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.brokenLinkMessage,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.goBack,
           actionColor: const Color(0xFF1565C0),
           actionTextColor: Colors.white,
           actionBottom: 60,
-          actionLeft: 40,
-          actionRight: 40,
+          actionStart: 40,
+          actionEnd: 40,
         );
       case ErrorStateType.connectionFailed:
         return _ErrorStateConfig(
@@ -243,19 +274,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.black,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 100,
+          titleStart: 100,
           message: LocalizationKeys.connectionFailedMessage,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 70,
+          messageEnd: 70,
           messageAlign: TextAlign.center,
           actionLabel: LocalizationKeys.retry,
           actionColor: Colors.green,
           actionTextColor: Colors.white,
           actionBottom: 100,
-          actionLeft: 130,
-          actionRight: 130,
+          actionStart: 130,
+          actionEnd: 130,
         );
       case ErrorStateType.noConnection:
         return _ErrorStateConfig(
@@ -264,19 +295,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.black,
           titleFontSize: 25,
           titleBottom: 200,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.noConnectionMessage,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 150,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.retry,
           actionColor: const Color(0xFF1565C0),
           actionTextColor: Colors.white,
           actionBottom: 50,
-          actionLeft: 40,
-          actionRight: 40,
+          actionStart: 40,
+          actionEnd: 40,
         );
       case ErrorStateType.wrongConnection:
         return _ErrorStateConfig(
@@ -285,19 +316,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.white,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.wrongNetwork,
           messageColor: Colors.white54,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.retry,
           actionColor: Colors.white,
           actionTextColor: Colors.black,
           actionBottom: 100,
-          actionLeft: 30,
-          actionRight: 250,
+          actionStart: 30,
+          actionEnd: 250,
         );
       case ErrorStateType.fileNotFound:
         return _ErrorStateConfig(
@@ -306,19 +337,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.white,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.noFilesMessage,
           messageColor: Colors.white54,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.homeTitle,
           actionColor: Colors.white,
           actionTextColor: Colors.black,
           actionBottom: 100,
-          actionLeft: 30,
-          actionRight: 250,
+          actionStart: 30,
+          actionEnd: 250,
         );
       case ErrorStateType.fileNotFoundDark:
         return _ErrorStateConfig(
@@ -327,19 +358,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.white,
           titleFontSize: 25,
           titleBottom: 200,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.fileNotFoundMessage,
           messageColor: Colors.white54,
           messageFontSize: 25,
           messageBottom: 140,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.homeTitle,
           actionColor: Colors.white,
           actionTextColor: Colors.black,
           actionBottom: 70,
-          actionLeft: 30,
-          actionRight: 250,
+          actionStart: 30,
+          actionEnd: 250,
         );
       case ErrorStateType.locationError:
         return _ErrorStateConfig(
@@ -348,19 +379,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.black,
           titleFontSize: 25,
           titleBottom: 260,
-          titleLeft: 120,
+          titleStart: 120,
           message: LocalizationKeys.locationAccessMessage,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 190,
-          messageLeft: 70,
+          messageEnd: 70,
           messageAlign: TextAlign.center,
           actionLabel: LocalizationKeys.enable,
           actionColor: Colors.green,
           actionTextColor: Colors.white,
           actionBottom: 120,
-          actionLeft: 130,
-          actionRight: 130,
+          actionStart: 130,
+          actionEnd: 130,
         );
       case ErrorStateType.locationErrorDark:
         return _ErrorStateConfig(
@@ -369,19 +400,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.white,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.locationAccessMessage,
           messageColor: Colors.white54,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.refresh,
           actionColor: Colors.white,
           actionTextColor: Colors.black,
           actionBottom: 100,
-          actionLeft: 30,
-          actionRight: 250,
+          actionStart: 30,
+          actionEnd: 250,
         );
       case ErrorStateType.noCameraAccess:
         return _ErrorStateConfig(
@@ -390,19 +421,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.black,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.noCameraAccessMessage,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.retry,
           actionColor: Colors.white,
           actionTextColor: Colors.black,
           actionBottom: 100,
-          actionLeft: 30,
-          actionRight: 250,
+          actionStart: 30,
+          actionEnd: 250,
         );
       case ErrorStateType.noSearchResult:
         return _ErrorStateConfig(
@@ -411,12 +442,12 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.white,
           titleFontSize: 35,
           titleBottom: 260,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.noResultsMessage,
           messageColor: Colors.white54,
           messageFontSize: 16,
           messageBottom: 200,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           showSearchField: true,
         );
@@ -427,19 +458,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.black,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.paymentFailedMessage,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.tryAgain,
           actionColor: const Color(0xFF00A2A5),
           actionTextColor: Colors.white,
           actionBottom: 100,
-          actionLeft: 30,
-          actionRight: 250,
+          actionStart: 30,
+          actionEnd: 250,
         );
       case ErrorStateType.routerOffline:
         return _ErrorStateConfig(
@@ -448,19 +479,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.black,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 120,
+          titleStart: 120,
           message: LocalizationKeys.routerOfflineMessage,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 70,
+          messageEnd: 70,
           messageAlign: TextAlign.center,
           actionLabel: LocalizationKeys.retry,
           actionColor: Colors.white,
           actionTextColor: Colors.black,
           actionBottom: 100,
-          actionLeft: 130,
-          actionRight: 130,
+          actionStart: 130,
+          actionEnd: 130,
         );
       case ErrorStateType.certainError:
         return _ErrorStateConfig(
@@ -469,19 +500,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.black,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 160,
+          titleStart: 160,
           message: LocalizationKeys.somethingWentWrong,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 100,
+          messageEnd: 100,
           messageAlign: TextAlign.center,
           actionLabel: LocalizationKeys.tryAgain,
           actionColor: Colors.green,
           actionTextColor: Colors.white,
           actionBottom: 100,
-          actionLeft: 130,
-          actionRight: 130,
+          actionStart: 130,
+          actionEnd: 130,
         );
       case ErrorStateType.fixingError:
         return _ErrorStateConfig(
@@ -490,19 +521,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.white,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.fixingIssue,
           messageColor: Colors.white54,
           messageFontSize: 25,
           messageBottom: 170,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.tryAgain,
           actionColor: Colors.white,
           actionTextColor: Colors.black,
           actionBottom: 100,
-          actionLeft: 30,
-          actionRight: 250,
+          actionStart: 30,
+          actionEnd: 250,
         );
       case ErrorStateType.somethingWentWrong:
         return _ErrorStateConfig(
@@ -511,19 +542,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.black,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 160,
+          titleStart: 160,
           message: LocalizationKeys.somethingWentWrong,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 100,
+          messageEnd: 100,
           messageAlign: TextAlign.center,
           actionLabel: LocalizationKeys.tryAgain,
           actionColor: Colors.green,
           actionTextColor: Colors.white,
           actionBottom: 100,
-          actionLeft: 130,
-          actionRight: 130,
+          actionStart: 130,
+          actionEnd: 130,
         );
       case ErrorStateType.somethingWrong:
         return _ErrorStateConfig(
@@ -532,19 +563,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.black,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 160,
+          titleStart: 160,
           message: LocalizationKeys.somethingWentWrong,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 100,
+          messageEnd: 100,
           messageAlign: TextAlign.center,
           actionLabel: LocalizationKeys.tryAgain,
           actionColor: Colors.green,
           actionTextColor: Colors.white,
           actionBottom: 100,
-          actionLeft: 130,
-          actionRight: 130,
+          actionStart: 130,
+          actionEnd: 130,
         );
       case ErrorStateType.storageNotEnough:
         return _ErrorStateConfig(
@@ -553,19 +584,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.purpleNavy,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.storageNotEnoughMessage,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.manage,
           actionColor: const Color.fromARGB(255, 131, 131, 180),
           actionTextColor: Colors.white,
           actionBottom: 100,
-          actionLeft: 30,
-          actionRight: 250,
+          actionStart: 30,
+          actionEnd: 250,
         );
       case ErrorStateType.timeError:
         return _ErrorStateConfig(
@@ -574,19 +605,19 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleColor: AppColors.black,
           titleFontSize: 25,
           titleBottom: 230,
-          titleLeft: 30,
+          titleStart: 30,
           message: LocalizationKeys.somethingNotRightMessage,
           messageColor: Colors.black38,
           messageFontSize: 16,
           messageBottom: 170,
-          messageLeft: 30,
+          messageEnd: 30,
           messageAlign: TextAlign.start,
           actionLabel: LocalizationKeys.retry,
           actionColor: AppColors.pastelIndigo,
           actionTextColor: Colors.white,
           actionBottom: 100,
-          actionLeft: 30,
-          actionRight: 250,
+          actionStart: 30,
+          actionEnd: 250,
         );
     }
   }

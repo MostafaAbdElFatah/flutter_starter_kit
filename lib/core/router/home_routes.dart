@@ -16,7 +16,9 @@ class HomeRouter {
     // Splash
     GoRoute(
       path: HomeRoutes.splash,
-      builder: (context, state) => const SplashPage(),
+      builder: (context, state) =>
+          ErrorStatePage(type: ErrorStateType.timeError),
+      //const SplashPage(),
     ),
 
     GoRoute(
@@ -25,7 +27,6 @@ class HomeRouter {
     ),
   ];
 }
-
 
 extension GoRouterHomeRoutesExtension on GoRouter {
   // Home Navigation
