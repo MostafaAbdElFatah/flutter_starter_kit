@@ -2,10 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 import '../../core.dart';
 
-class ErrorPage extends StatelessWidget {
+class AppErrorPage extends StatelessWidget {
   final Exception? exception;
   final FlutterErrorDetails? details;
-  const ErrorPage({super.key, this.details, this.exception});
+  const AppErrorPage({super.key, this.details, this.exception});
 
   @override
   Widget build(BuildContext context) {

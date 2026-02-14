@@ -58,7 +58,7 @@ export 'loading/custom_loading_indicator.dart';
 // ================================
 
 export 'pages/errors_page.dart';
-export 'pages/error_page.dart';
+export 'pages/app_error_page.dart';
 
 // ================================
 //            rating
