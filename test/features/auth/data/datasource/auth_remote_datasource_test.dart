@@ -48,7 +48,7 @@ void main() {
       );
       verify(connectivity.isConnected).called(1);
       verifyNever(
-        apiClient.fetch(target: endpoint, mapper: anyNamed("fromJson")),
+        apiClient.fetch(target: endpoint, mapper: anyNamed("mapper")),
       );
     });
   });
@@ -90,7 +90,7 @@ void main() {
       verify(
         apiClient.fetch<LoginResponse>(
           target: endpoint,
-          mapper: anyNamed("fromJson"),
+          mapper: anyNamed("mapper"),
         ),
       ).called(1);
     });
