@@ -31,7 +31,7 @@ class App extends StatelessWidget {
             context,
           ).copyWith(textScaler: TextScaler.noScaling),
           child: ResponsiveScope(
-            layout: ResponsiveLayout.fromContext(context),
+            layout: ResponsiveLayout(context),
             child: child!,
           ),
         );

@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 
-
 class ResponsiveScope extends InheritedWidget {
   final ResponsiveLayout layout;
 
@@ -18,28 +17,7 @@ class ResponsiveScope extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant ResponsiveScope oldWidget) {
-    return oldWidget.layout.screenSize != layout.screenSize;
-  }
-}
-
-extension ResponsiveNum on num {
-  double get w => ResponsiveScope.of(_context).width(toDouble());
-  double get h => ResponsiveScope.of(_context).height(toDouble());
-  double get sp => ResponsiveScope.of(_context).fontSize(toDouble());
-
-  EdgeInsets get padding => ResponsiveScope.of(_context).padding(toDouble());
-  EdgeInsets get paddingVertical => ResponsiveScope.of(_context).paddingVertical(toDouble());
-  EdgeInsets get paddingHorizontal => ResponsiveScope.of(_context).paddingHorizontal(toDouble());
-
-  SizedBox get spacingWidth => ResponsiveScope.of(_context).spacingWidth(toDouble());
-  SizedBox get spacingHeight => ResponsiveScope.of(_context).spacingHeight(toDouble());
-
-
-  /// Internal context resolver
-  BuildContext get _context {
-    final ctx = WidgetsBinding.instance.focusManager.primaryFocus?.context;
-    assert(ctx != null, 'No BuildContext available for responsive scaling');
-    return ctx!;
+    return oldWidget.layout._screenSize != layout._screenSize;
   }
 }
 
@@ -48,34 +26,34 @@ extension ResponsiveNum on num {
 /// Base dimensions: 390x844 (iPhone 12 Pro dimensions)
 /// Breakpoints: Tablet (600dp), Desktop (900dp)
 class ResponsiveLayout {
-  static const double _baseWidth = 390;
-  static const double _baseHeight = 844;
+  final Size _baseSize;
+  final Size _screenSize;
   static const double _tabletBreakpoint = 600;
   static const double _desktopBreakpoint = 900;
-  final Size screenSize;
-  const ResponsiveLayout(this.screenSize);
-  /// Creates a ResponsiveLayout from a BuildContext
-  factory ResponsiveLayout.fromContext(BuildContext context) {
-    return ResponsiveLayout(MediaQuery.of(context).size);
-  }
+  ResponsiveLayout(BuildContext context, {Size baseSize = const Size(390, 844)})
+    : _baseSize = baseSize,
+      _screenSize = MediaQuery.sizeOf(context);
+
   // Device type detection
-  bool get isTablet => screenSize.shortestSide >= _tabletBreakpoint;
-  bool get isDesktop => screenSize.shortestSide >= _desktopBreakpoint;
+  bool get isTablet => _screenSize.shortestSide >= _tabletBreakpoint;
+  bool get isDesktop => _screenSize.shortestSide >= _desktopBreakpoint;
   bool get isMobile => !isTablet && !isDesktop;
   // Private scale factors
   double get _widthScale {
     final maxScale = isTablet ? 1.95 : 1.15;
-    return (screenSize.width / _baseWidth).clamp(0.88, maxScale);
+    return (_screenSize.width / _baseSize.width).clamp(0.88, maxScale);
   }
+
   double get _heightScale {
     final maxScale = isTablet ? 1.35 : 1.12;
-    return (screenSize.height / _baseHeight).clamp(0.85, maxScale);
+    return (_screenSize.height / _baseSize.height).clamp(0.85, maxScale);
   }
+
   double get _textScale {
     if (isTablet) {
-      return (screenSize.shortestSide / _tabletBreakpoint).clamp(1.05, 1.25);
+      return (_screenSize.shortestSide / _tabletBreakpoint).clamp(1.05, 1.25);
     }
-    return (screenSize.width / _baseWidth).clamp(0.8, 1.0);
+    return (_screenSize.width / _baseSize.width).clamp(0.8, 1.0);
   }
   // Core scaling methods
 
@@ -105,13 +83,11 @@ class ResponsiveLayout {
       EdgeInsets.symmetric(vertical: height(value));
 
   /// Creates symmetric padding with separate horizontal and vertical values
-  EdgeInsets paddingSymmetric({
-    double horizontal = 0,
-    double vertical = 0,
-  }) => EdgeInsets.symmetric(
-    horizontal: width(horizontal),
-    vertical: height(vertical),
-  );
+  EdgeInsets paddingSymmetric({double horizontal = 0, double vertical = 0}) =>
+      EdgeInsets.symmetric(
+        horizontal: width(horizontal),
+        vertical: height(vertical),
+      );
   // Spacing helpers
 
   /// Creates a horizontal spacing box
@@ -127,6 +103,7 @@ class ResponsiveLayout {
   SizedBox get space24 => spacingHeight(24);
   SizedBox get space32 => spacingHeight(32);
 }
+
 /// Extension for convenient access to ResponsiveLayout from BuildContext
 extension ResponsiveLayoutExtension on BuildContext {
   /// Access responsive layout utilities
@@ -138,8 +115,37 @@ extension ResponsiveLayoutExtension on BuildContext {
   ///   style: TextStyle(fontSize: context.responsive.sp(16)),
   /// )
   /// ```
-  ResponsiveLayout get responsive => ResponsiveLayout.fromContext(this);
+  ResponsiveLayout get responsive => ResponsiveScope.of(this);
 
   /// Shorter alias for responsive
   ResponsiveLayout get r => responsive;
+
+  bool get isMobile => ResponsiveScope.of(this).isMobile;
+  bool get isTablet => ResponsiveScope.of(this).isTablet;
+  bool get isDesktop => ResponsiveScope.of(this).isDesktop;
+}
+
+
+extension ResponsiveNum on num {
+  double get w => ResponsiveScope.of(_context).width(toDouble());
+  double get h => ResponsiveScope.of(_context).height(toDouble());
+  double get sp => ResponsiveScope.of(_context).fontSize(toDouble());
+
+  EdgeInsets get padding => ResponsiveScope.of(_context).padding(toDouble());
+  EdgeInsets get paddingVertical =>
+      ResponsiveScope.of(_context).paddingVertical(toDouble());
+  EdgeInsets get paddingHorizontal =>
+      ResponsiveScope.of(_context).paddingHorizontal(toDouble());
+
+  SizedBox get spacingWidth =>
+      ResponsiveScope.of(_context).spacingWidth(toDouble());
+  SizedBox get spacingHeight =>
+      ResponsiveScope.of(_context).spacingHeight(toDouble());
+
+  /// Internal context resolver
+  BuildContext get _context {
+    final ctx = WidgetsBinding.instance.focusManager.primaryFocus?.context;
+    assert(ctx != null, 'No BuildContext available for responsive scaling');
+    return ctx!;
+  }
 }
