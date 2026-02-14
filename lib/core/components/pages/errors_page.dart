@@ -29,7 +29,9 @@ enum ErrorStateType {
 }
 
 class ErrorStatePage extends StatelessWidget {
-  static const double _compactControlWidth = 100;
+  static const double _compactSearchControlWidth = 100;
+  static const double _defaultActionFontSize = 16;
+  static const double _actionHorizontalPadding = 24;
 
   final ErrorStateType type;
   final VoidCallback? onActionPressed;
@@ -63,6 +65,10 @@ class ErrorStatePage extends StatelessWidget {
     final actionHeight = config.showSearchField
         ? layoutMetrics.vertical(60).clamp(52.0, 76.0).toDouble()
         : 40.0;
+    final actionFontSize = layoutMetrics
+        .font(_defaultActionFontSize)
+        .clamp(14.0, 20.0)
+        .toDouble();
 
     final crossAxisAlignment = centerTextsAndActions
         ? CrossAxisAlignment.center
@@ -110,7 +116,7 @@ class ErrorStatePage extends StatelessWidget {
                       onActionPressed: onActionPressed,
                       centerContent: centerTextsAndActions,
                       compactWidth: compactAction,
-                      layoutMetrics: layoutMetrics,
+                      actionFontSize: actionFontSize,
                     ),
               20.verticalSpace,
             ],
@@ -122,28 +128,42 @@ class ErrorStatePage extends StatelessWidget {
 }
 
 class _ActionButton extends StatelessWidget {
+  // Font-size suitability table for compact action button widths.
+  static const List<_ActionWidthRule> _widthSuitabilityTable = [
+    _ActionWidthRule(maxFontSize: 14, compactWidth: 96),
+    _ActionWidthRule(maxFontSize: 16, compactWidth: 108),
+    _ActionWidthRule(maxFontSize: 18, compactWidth: 122),
+    _ActionWidthRule(maxFontSize: 20, compactWidth: 136),
+    _ActionWidthRule(maxFontSize: double.infinity, compactWidth: 150),
+  ];
+
   final _ErrorStateConfig config;
-  final _ErrorLayoutMetrics layoutMetrics;
   final VoidCallback? onActionPressed;
   final bool centerContent;
   final bool compactWidth;
+  final double actionFontSize;
 
   const _ActionButton({
     required this.config,
     this.onActionPressed,
     required this.centerContent,
     required this.compactWidth,
-    required this.layoutMetrics,
+    required this.actionFontSize,
   });
 
   @override
   Widget build(BuildContext context) {
+    final compactActionWidth = compactWidth
+        ? _resolveCompactWidth(context)
+        : null;
     final button = SizedBox(
-      width: compactWidth ? ErrorStatePage._compactControlWidth : null,
+      width: compactActionWidth,
       child: ReusableButton(
         label: config.actionLabel!,
         buttonColor: config.actionColor!,
         childTextColor: config.actionTextColor!,
+        fontSize: actionFontSize,
+        width: compactActionWidth,
         onPressed: onActionPressed ?? () {},
       ),
     );
@@ -155,6 +175,47 @@ class _ActionButton extends StatelessWidget {
       child: button,
     );
   }
+
+  double _resolveCompactWidth(BuildContext context) {
+    final baseWidth = _baseWidthForFontSize(actionFontSize);
+    final labelWidth = _measureActionLabelWidth(context);
+    final targetWidth = math.max(
+      baseWidth,
+      labelWidth + (ErrorStatePage._actionHorizontalPadding * 2),
+    );
+    final maxWidth = math.min(200.0, MediaQuery.of(context).size.width / 2);
+    return targetWidth.clamp(baseWidth, maxWidth).toDouble();
+  }
+
+  double _baseWidthForFontSize(double fontSize) {
+    for (final rule in _widthSuitabilityTable) {
+      if (fontSize <= rule.maxFontSize) return rule.compactWidth;
+    }
+    return _widthSuitabilityTable.last.compactWidth;
+  }
+
+  double _measureActionLabelWidth(BuildContext context) {
+    final painter = TextPainter(
+      text: TextSpan(
+        text: config.actionLabel!.toUpperCase(),
+        style: config.actionTextColor!.regular(fontSize: actionFontSize),
+      ),
+      textDirection: Directionality.of(context),
+      maxLines: 1,
+      textScaler: MediaQuery.textScalerOf(context),
+    )..layout();
+    return painter.width;
+  }
+}
+
+class _ActionWidthRule {
+  final double maxFontSize;
+  final double compactWidth;
+
+  const _ActionWidthRule({
+    required this.maxFontSize,
+    required this.compactWidth,
+  });
 }
 
 class _SearchField extends StatelessWidget {
@@ -175,7 +236,7 @@ class _SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final searchField = SizedBox(
-      width: compactWidth ? ErrorStatePage._compactControlWidth : null,
+      width: compactWidth ? ErrorStatePage._compactSearchControlWidth : null,
       height: height,
       child: SizedBox(
         child: TextFormField(

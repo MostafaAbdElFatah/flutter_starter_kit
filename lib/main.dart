@@ -24,8 +24,7 @@ void main() async {
         child: ScreenUtilInit(
           minTextAdapt: true,
           splitScreenMode: true,
-          //fontSizeResolver:,
-          //designSize: context.defaultSize,
+          //designSize: context.defaultSize, //TODO:-
           builder: (context, child) => App(),
         ),
       ),
