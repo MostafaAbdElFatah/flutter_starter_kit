@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core.dart';
@@ -27,6 +28,9 @@ class IconTextElevatedButton extends StatelessWidget {
 
   /// Image asset path to display.
   final String? assetImage;
+
+  /// Optional title color override.
+  final Color? iconColor;
 
   /// Icon placement relative to the text.
   final ButtonIconPosition iconPosition;
@@ -67,6 +71,7 @@ class IconTextElevatedButton extends StatelessWidget {
     this.icon,
     this.svgIcon,
     this.assetImage,
+    this.iconColor,
     this.iconPosition = ButtonIconPosition.leading,
     this.iconSize,
     this.titleColor,
@@ -120,25 +125,30 @@ class IconTextElevatedButton extends StatelessWidget {
         ? (titleColor ?? AppColors.white)
         : Theme.of(context).disabledColor;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: titleStyle ?? baseColor.bold(fontSize: 16),
-        ),
-        if (subTitle != null) ...[
-          SizedBox(height: 2.h),
-          Text(
-            subTitle!,
+    final group = AutoSizeGroup();
+    return Flexible(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AutoSizeText(
+            title,
             maxLines: 1,
+            group: group,
             overflow: TextOverflow.ellipsis,
-            style: subTitleStyle ?? baseColor.regular(fontSize: 12),
+            style: titleStyle ?? baseColor.bold(fontSize: 16),
           ),
+          if (subTitle != null) ...[
+            SizedBox(height: 2.h),
+            AutoSizeText(
+              subTitle!,
+              maxLines: 1,
+              group: group,
+              overflow: TextOverflow.ellipsis,
+              style: subTitleStyle ?? baseColor.regular(fontSize: 12),
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 
@@ -148,6 +158,7 @@ class IconTextElevatedButton extends StatelessWidget {
     if (svgIcon != null) {
       return SvgIcon(
         size: size,
+        color: iconColor,
         isEnabled: isEnabled,
         svgAssetPath: svgIcon!,
       );
@@ -159,7 +170,7 @@ class IconTextElevatedButton extends StatelessWidget {
         width: size,
         height: size,
         fit: BoxFit.contain,
-        color: isEnabled ? null : Theme.of(context).disabledColor,
+        color: isEnabled ? iconColor : Theme.of(context).disabledColor,
       );
     }
 
@@ -167,7 +178,7 @@ class IconTextElevatedButton extends StatelessWidget {
       icon!,
       size: size,
       color: isEnabled
-          ? titleColor ?? AppColors.white
+          ? iconColor ?? titleColor ?? AppColors.white
           : Theme.of(context).disabledColor,
     );
   }

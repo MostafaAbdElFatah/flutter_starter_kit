@@ -14,15 +14,13 @@ import '../../features/environments_dev/presentation/pages/environment_config_pa
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../di/injection.dart' as di;
+import '../infrastructure/presentation/screens/errors/error_page.dart';
 import '../utils/log.dart';
-
-
 
 part 'auth_routes.dart';
 part 'home_routes.dart';
 part 'settings_routes.dart';
 part 'onboarding_routes.dart';
-
 
 @lazySingleton
 class AuthGuard {
@@ -37,10 +35,7 @@ class AuthGuard {
     OnboardingRoutes.onboarding,
   ];
 
-  final authRoutes = <String>[
-    AuthRoutes.login,
-    AuthRoutes.register,
-  ];
+  final authRoutes = <String>[AuthRoutes.login, AuthRoutes.register];
 
   Future<String?>? redirect(BuildContext context, GoRouterState state) async {
     final location = state.matchedLocation;
@@ -68,14 +63,23 @@ class AppRouter {
   final AuthGuard authGuard;
   final GoRouterRefreshStream _goRouterRefreshStream;
   AppRouter(this.authGuard)
-      : _goRouterRefreshStream =
-  GoRouterRefreshStream(authGuard.authCubit.stream);
+    : _goRouterRefreshStream = GoRouterRefreshStream(
+        authGuard.authCubit.stream,
+      );
   GoRouter get router => _router;
 
   late final GoRouter _router = GoRouter(
     redirect: authGuard.redirect,
     initialLocation: HomeRoutes.splash,
     refreshListenable: _goRouterRefreshStream,
+    // onException: (context, state, router) => ,
+    // errorBuilder: (context, state) => const SomethingWrongPage(),
+    errorPageBuilder: (context, state) {
+      return MaterialPage(
+        key: state.pageKey,
+        child: ErrorPage(exception: state.error),
+      );
+    },
     routes: [
       ...AuthRouter.routes,
       ...OnboardingRouter.routes,
@@ -91,7 +95,7 @@ class GoRouterRefreshStream extends ChangeNotifier {
   GoRouterRefreshStream(Stream<AuthState> stream) {
     notifyListeners(); // trigger first check
     _subscription = stream.asBroadcastStream().distinct().listen(
-          (state) {
+      (state) {
         switch (state) {
           case AuthAuthenticated():
           case AuthUnauthenticated():

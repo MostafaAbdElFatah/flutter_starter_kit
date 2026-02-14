@@ -12,18 +12,24 @@ abstract class SvgIcons {
   SvgIcons._();
 
   // ===========================================================================
+  // Base paths
+  // ===========================================================================
+
+  static const String _iconsBasePath = 'assets/icons';
+  static const String _commonPath = '$_iconsBasePath/common';
+
+  // ===========================================================================
   // common
   // ===========================================================================
 
-  static const critical = "assets/icons/common/critical.svg";
-  static const shieldFail = "assets/icons/common/shield-fail.svg";
-  static const shieldFailBorder = "assets/icons/common/shield-fail-border.svg";
-  static const success = "assets/icons/common/success.svg";
-  static const success2 = "assets/icons/common/success2.svg";
-  static const warning = "assets/icons/common/warning.svg";
-
-  static const halfStar = "assets/icons/common/half_star.svg";
-  static const starBorder = "assets/icons/common/star_border.svg";
-  static const whiteStar = "assets/icons/common/white-star.svg";
-  static const yellowStar = "assets/icons/common/yellow-star.svg";
+  static const critical = "$_commonPath/critical.svg";
+  static const shieldFail = "$_commonPath/shield-fail.svg";
+  static const shieldFailBorder = "$_commonPath/shield-fail-border.svg";
+  static const success = "$_commonPath/success.svg";
+  static const success2 = "$_commonPath/success2.svg";
+  static const warning = "$_commonPath/warning.svg";
+  static const halfStar = "$_commonPath/half_star.svg";
+  static const starBorder = "$_commonPath/star_border.svg";
+  static const whiteStar = "$_commonPath/white-star.svg";
+  static const yellowStar = "$_commonPath/yellow-star.svg";
 }

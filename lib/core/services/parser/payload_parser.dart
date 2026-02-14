@@ -15,6 +15,7 @@ abstract class PayloadParser {
 
 @LazySingleton(as: PayloadParser)
 class IsolatePayloadParser implements PayloadParser {
+  static const int _largeStringThreshold = 200 * 1024;
   static const int _largeCollectionThreshold = 500;
   static const String _parserKey = 'parser';
   static const String _inputKey = 'input';
@@ -46,31 +47,20 @@ class IsolatePayloadParser implements PayloadParser {
   }
 
   bool _shouldParseInIsolate(Object? input) {
-    if (input is List) {
-      if (input.length >= _largeCollectionThreshold) {
-        return true;
-      }
+    return switch (input) {
+      String s => s.length < _largeStringThreshold,
+      List list => _shouldParseCollection(list),
+      Map map => _shouldParseCollection(map.values),
+      _ => false,
+    };
+  }
 
-      for (final item in input) {
-        if (_shouldParseInIsolate(item)) {
-          return true;
-        }
-      }
+  bool _shouldParseCollection(Iterable collection) {
+    if (collection.length >= _largeCollectionThreshold) {
+      return true;
     }
 
-    if (input is Map) {
-      if (input.length >= _largeCollectionThreshold) {
-        return true;
-      }
-
-      for (final value in input.values) {
-        if (_shouldParseInIsolate(value)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
+    return collection.any(_shouldParseInIsolate);
   }
 
   static dynamic _parseInIsolate(Map<String, dynamic> args) {

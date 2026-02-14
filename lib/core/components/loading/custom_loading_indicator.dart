@@ -64,7 +64,7 @@ class CustomLoadingIndicator extends StatelessWidget {
 
   /// Creates a [FlexibleElevatedButton] with the given parameters.
   ///
-  /// - [label]: The label (text) displayed on the button. If provided, `child` will be ignored.
+  /// - [title]: The label (text) displayed on the button. If provided, `child` will be ignored.
   /// - [child]: The child widget to display inside the button. If `label` is provided, this will be ignored.
   /// - [isLoading]: Whether the button is in a loading state (default: `false`).
   /// - [maxLines]: The maximum number of lines for the button's label text (only applicable if `label` is provided).

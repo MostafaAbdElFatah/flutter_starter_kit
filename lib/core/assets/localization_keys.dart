@@ -63,6 +63,60 @@ abstract class LocalizationKeys {
       ErrorKeys.pleaseMakeSureConnectedToInternet.tr();
 
   // ===========================================================================
+// Error States & Messages - Usage
+// ===========================================================================
+
+  static String get deadEnd => "deadEnd".tr();
+  static String get pageNotFoundMessage => "pageNotFoundMessage".tr();
+  static String get articleNotFound => "articleNotFound".tr();
+  static String get articleNotFoundMessage => "articleNotFoundMessage".tr();
+  static String get retry => "retry".tr();
+  static String get brokenLink => "brokenLink".tr();
+  static String get brokenLinkMessage => "brokenLinkMessage".tr();
+  static String get goBack => "goBack".tr();
+  static String get connectionFailed => "connectionFailed".tr();
+  static String get connectionFailedMessage => "connectionFailedMessage".tr();
+  static String get noConnection => "noConnection".tr();
+  static String get noConnectionMessage => "noConnectionMessage".tr();
+  static String get oops => "oops".tr();
+  static String get wrongNetwork => "wrongNetwork".tr();
+  static String get noFiles => "noFiles".tr();
+  static String get noFilesMessage => "noFilesMessage".tr();
+  static String get fileNotFound => "fileNotFound".tr();
+  static String get fileNotFoundMessage => "fileNotFoundMessage".tr();
+  static String get locationAccess => "locationAccess".tr();
+  static String get locationAccessMessage => "locationAccessMessage".tr();
+  static String get enable => "enable".tr();
+  static String get hangOn => "hangOn".tr();
+  static String get middleOfOcean => "middleOfOcean".tr();
+  static String get refresh => "refresh".tr();
+  static String get noCameraAccess => "noCameraAccess".tr();
+  static String get noCameraAccessMessage => "noCameraAccessMessage".tr();
+  static String get noResults => "noResults".tr();
+  static String get noResultsMessage => "noResultsMessage".tr();
+  static String get search => "search".tr();
+  static String get paymentSuccess => "paymentSuccess".tr();
+  static String get paymentSuccessMessage => "paymentSuccessMessage".tr();
+  static String get paymentFailed => "paymentFailed".tr();
+  static String get paymentFailedMessage => "paymentFailedMessage".tr();
+  static String get tryAgain => "tryAgain".tr();
+  static String get routerOffline => "routerOffline".tr();
+  static String get routerOfflineMessage => "routerOfflineMessage".tr();
+  static String get uhOh => "uhOh".tr();
+  static String get somethingWentWrong => "somethingWentWrong".tr();
+  static String get hmmm => "hmmm".tr();
+  static String get fixingIssue => "fixingIssue".tr();
+  static String get ohNo => "ohNo".tr();
+  static String get storageNotEnough => "storageNotEnough".tr();
+  static String get storageNotEnoughMessage => "storageNotEnoughMessage".tr();
+  static String get manage => "manage".tr();
+  static String get somethingNotRight => "somethingNotRight".tr();
+  static String get somethingNotRightMessage => "somethingNotRightMessage".tr();
+  static String get oopsSomethingWrong => "oopsSomethingWrong".tr();
+  static String get close => "close".tr();
+  static String get technicalSupport => "technicalSupport".tr();
+
+  // ===========================================================================
   // Validation Messages
   // ===========================================================================
 

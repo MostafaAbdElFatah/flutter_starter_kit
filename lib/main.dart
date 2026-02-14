@@ -11,9 +11,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await injection.configureDependencies();
-  // ErrorWidget.builder = (FlutterErrorDetails details) {
-  //   return ErrorPage(details: details);
-  // };
+  // ErrorWidget.builder = (FlutterErrorDetails details) =>
+  //     ErrorPage(details: details);
 
   runApp(
     EasyLocalization(

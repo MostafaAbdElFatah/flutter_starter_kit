@@ -95,6 +95,7 @@ flutter:
     - assets/icons/
     - assets/icons/common/
     - assets/images/
+    - assets/images/errors/
     - assets/translations/
 
 #  fonts:

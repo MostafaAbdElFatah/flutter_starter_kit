@@ -79,6 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 24),
                   TextButton(
+                    //onPressed: () => context.push('/this-route-does-not-exist'),
                     onPressed: () => GoRouter.of(context).pushRegister(),
                     child: const Text('Go to Register'),
                   ),

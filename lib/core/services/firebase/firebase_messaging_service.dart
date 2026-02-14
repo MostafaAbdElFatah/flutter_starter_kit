@@ -60,7 +60,7 @@ class FirebaseMessageService {
   final FirebaseAnalyticsService _analyticsService;
   final FirebaseCrashlyticsService _crashlyticsService;
 
-  bool _initialized = false;
+  bool _initialized = true;
   StreamSubscription<RemoteMessage>? _foregroundSubscription;
   StreamSubscription<RemoteMessage>? _openedAppSubscription;
   StreamSubscription<String>? _tokenRefreshSubscription;

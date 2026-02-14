@@ -38,6 +38,9 @@ class AppColors{
 
 
   static const dodgerBlue  = Color(0xff1877F2);
+  static const purpleNavy  = Color(0xff4B4E85);
+  static const pastelIndigo  = Color(0xff8385B2);
+
 
   static const red = Color(0xffEE0000);
   static const alizarin = Color(0xffE52222);
