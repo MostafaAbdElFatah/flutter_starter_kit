@@ -17,7 +17,7 @@ class HomeRouter {
     GoRoute(
       path: HomeRoutes.splash,
       builder: (context, state) =>
-          ErrorStatePage(type: ErrorStateType.notFound404),
+          ErrorStatePage(type: ErrorStateType.noSearchResult),
       //const SplashPage(),
     ),
 

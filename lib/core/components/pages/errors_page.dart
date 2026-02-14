@@ -81,7 +81,7 @@ class ErrorStatePage extends StatelessWidget {
           image: DecorationImage(
             image: AssetImage(config.imagePath),
             fit: BoxFit.cover,
-            matchTextDirection: true,
+            matchTextDirection: type != ErrorStateType.timeError,
           ),
         ),
         child: Padding(
@@ -118,7 +118,12 @@ class ErrorStatePage extends StatelessWidget {
                       compactWidth: compactAction,
                       actionFontSize: actionFontSize,
                     ),
-              20.verticalSpace,
+              if (type == ErrorStateType.wrongConnection)
+                150.verticalSpace
+              else if (type == ErrorStateType.locationErrorDark)
+                75.verticalSpace
+              else
+                40.verticalSpace,
             ],
           ),
         ),
@@ -298,7 +303,7 @@ class _ErrorLayoutMetrics {
     if (isTablet) {
       return (size.shortestSide / 600).clamp(1.05, 1.25).toDouble();
     }
-    return (size.width / _baseWidth).clamp(0.9, 1.08).toDouble();
+    return (size.width / _baseWidth).clamp(0.9, 1.0).toDouble();
   }
 
   double horizontal(double value) => (value * _horizontalScale).toDouble();
