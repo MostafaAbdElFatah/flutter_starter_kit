@@ -26,13 +26,12 @@ class App extends StatelessWidget {
         return context.locale;
       },
       builder: (context, child) {
+        final mediaQuery = MediaQuery.of(context);
         return MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: TextScaler.noScaling),
+          data: mediaQuery.copyWith(textScaler: TextScaler.noScaling),
           child: ResponsiveScope(
-            layout: ResponsiveLayout(context),
-            child: child!,
+            layout: ResponsiveLayout.fromSize(screenSize: mediaQuery.size),
+            child: child ?? const SizedBox.shrink(),
           ),
         );
       },
