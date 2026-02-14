@@ -53,7 +53,7 @@ dependencies:
   in_app_review: ^2.0.8
   flutter_local_notifications: ^20.0.0
   flutter_web_browser: ^0.17.1
-  flutter_screenutil: ^5.9.3
+#  flutter_screenutil: ^5.9.3
   device_info_plus: ^12.3.0
   sensors_plus: ^7.0.0
 

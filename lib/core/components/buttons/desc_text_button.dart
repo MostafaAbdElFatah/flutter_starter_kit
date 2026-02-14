@@ -1,7 +1,3 @@
-
-
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../core.dart';
 
 /// A compact row with descriptive text followed by a tappable action.

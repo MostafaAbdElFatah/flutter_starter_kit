@@ -29,6 +29,14 @@ export 'extensions/datetime/datetime_extension.dart';
 export 'extensions/text_styles/color_text_style_extensions.dart';
 
 // ================================
-//            extensions
+//            router
 // ================================
+
 export 'router/app_router.dart';
+
+
+// ================================
+//            utils
+// ================================
+
+export 'utils/responsive_layout.dart';

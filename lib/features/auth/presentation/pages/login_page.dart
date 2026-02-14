@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/components/text_fields/text_fields.dart';
 import '../../../../core/assets/localization_keys.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../../core/utils/validators/password_validator.dart';
 import '../cubit/auth_cubit.dart';
 
@@ -78,8 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 24),
                   TextButton(
-                    onPressed: () => context.push('/this-route-does-not-exist'),
-                    //onPressed: () => GoRouter.of(context).pushRegister(),
+                    onPressed: () => GoRouter.of(context).pushRegister(),
                     child: const Text('Go to Register'),
                   ),
                 ],

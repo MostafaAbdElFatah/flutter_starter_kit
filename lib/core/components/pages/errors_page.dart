@@ -1,7 +1,5 @@
 import 'dart:math' as math;
-
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core.dart';
 
@@ -93,13 +91,13 @@ class ErrorStatePage extends StatelessWidget {
             children: [
               Expanded(child: SizedBox()),
               Text(config.title, textAlign: titleAlign, style: titleStyle),
-              10.verticalSpace,
+              10.spacingHeight,
               AutoSizeText(
                 config.message,
                 textAlign: messageAlign,
                 style: messageStyle,
               ),
-              40.verticalSpace,
+              40.spacingHeight,
               config.showSearchField
                   ? _SearchField(
                       onActionPressed: onActionPressed,
@@ -117,7 +115,7 @@ class ErrorStatePage extends StatelessWidget {
                       compactWidth: compactAction,
                       actionFontSize: actionFontSize,
                     ),
-              type.bottomSpacing.verticalSpace,
+              type.bottomSpacing.spacingHeight,
             ],
           ),
         ),
