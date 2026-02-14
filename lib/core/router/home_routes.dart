@@ -16,7 +16,9 @@ class HomeRouter {
     // Splash
     GoRoute(
       path: HomeRoutes.splash,
-      builder: (context, state) => const SplashPage(),
+      builder: (context, state) =>
+          ErrorStatePage(type: ErrorStateType.notFound404),
+      //const SplashPage(),
     ),
 
     GoRoute(

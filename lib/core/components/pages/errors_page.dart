@@ -361,7 +361,7 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleStart: 30,
           message: LocalizationKeys.pageNotFoundMessage,
           messageColor: Colors.white54,
-          messageFontSize: 25,
+          messageFontSize: 16,
           messageBottom: 170,
           messageEnd: 30,
           messageAlign: TextAlign.start,
@@ -508,7 +508,7 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleStart: 30,
           message: LocalizationKeys.fileNotFoundMessage,
           messageColor: Colors.white54,
-          messageFontSize: 25,
+          messageFontSize: 16,
           messageBottom: 140,
           messageEnd: 30,
           messageAlign: TextAlign.start,
@@ -671,7 +671,7 @@ extension _ErrorStateTypeX on ErrorStateType {
           titleStart: 30,
           message: LocalizationKeys.fixingIssue,
           messageColor: Colors.white54,
-          messageFontSize: 25,
+          messageFontSize: 16,
           messageBottom: 170,
           messageEnd: 30,
           messageAlign: TextAlign.start,
@@ -813,7 +813,7 @@ extension _ErrorStateTypeLayoutX on ErrorStateType {
       case ErrorStateType.wrongConnection:
         return 150;
       case ErrorStateType.locationErrorDark:
-        return 75;
+        return 100;
       default:
         return 40;
     }

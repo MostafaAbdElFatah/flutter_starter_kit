@@ -15,6 +15,7 @@ import '../../features/environments_dev/presentation/pages/environment_config_pa
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../components/pages/app_error_page.dart';
+import '../components/pages/errors_page.dart';
 import '../di/injection.dart' as di;
 import '../infrastructure/usecases/usecase.dart';
 import '../utils/log.dart';
@@ -72,7 +73,7 @@ class AppRouter {
   GoRouter get router => _router;
 
   late final GoRouter _router = GoRouter(
-    redirect: authGuard.redirect,
+    //redirect: authGuard.redirect,
     initialLocation: HomeRoutes.splash,
     refreshListenable: _goRouterRefreshStream,
     //onException: (context, state, router) => ,
