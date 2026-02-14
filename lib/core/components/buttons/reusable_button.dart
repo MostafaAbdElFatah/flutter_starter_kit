@@ -30,11 +30,7 @@ class ReusableButton extends StatelessWidget {
         child: Center(
           child: Text(
             label.toUpperCase(),
-            style: TextStyle(
-              fontSize: 16,
-              color: childTextColor,
-              fontWeight: FontWeight.w600,
-            ),
+            style: childTextColor.regular(fontSize: 16),
           ),
         ),
       ),

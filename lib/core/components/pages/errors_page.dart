@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core.dart';
@@ -26,6 +29,8 @@ enum ErrorStateType {
 }
 
 class ErrorStatePage extends StatelessWidget {
+  static const double _compactControlWidth = 100;
+
   final ErrorStateType type;
   final VoidCallback? onActionPressed;
 
@@ -36,81 +41,149 @@ class ErrorStatePage extends StatelessWidget {
     final config = type.config;
     final size = MediaQuery.of(context).size;
     final layoutMetrics = _ErrorLayoutMetrics(size);
+    final centerTextsAndActions = type.centerTextsAndActions;
+    final compactAction = type.compactActionButton;
+    final compactSearchField = type.compactSearchField;
+    final contentPaddingValue = centerTextsAndActions
+        ? 30.0
+        : math.min(config.titleStart, config.messageEnd);
+    final contentPadding = layoutMetrics.horizontal(contentPaddingValue);
+    final titleAlign = centerTextsAndActions
+        ? TextAlign.center
+        : TextAlign.start;
+    final messageAlign = centerTextsAndActions
+        ? TextAlign.center
+        : config.messageAlign;
+    final titleStyle = config.titleColor.medium(
+      fontSize: layoutMetrics.font(config.titleFontSize),
+    );
+    final messageStyle = config.messageColor.medium(
+      fontSize: layoutMetrics.font(config.messageFontSize),
+    );
+    final actionHeight = config.showSearchField
+        ? layoutMetrics.vertical(60).clamp(52.0, 76.0).toDouble()
+        : 40.0;
 
+    final crossAxisAlignment = centerTextsAndActions
+        ? CrossAxisAlignment.center
+        : CrossAxisAlignment.stretch;
     return Scaffold(
-      body: Stack(
-        children: [
-          Image.asset(
-            config.imagePath,
+      body: Container(
+        width: size.width,
+        height: size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(config.imagePath),
             fit: BoxFit.cover,
-            height: size.height,
-            width: size.width,
             matchTextDirection: true,
           ),
-          PositionedDirectional(
-            bottom: layoutMetrics.vertical(config.titleBottom),
-            start: layoutMetrics.horizontal(config.titleStart),
-            child: Text(
-              config.title,
-              style: config.titleColor.medium(fontSize: config.titleFontSize),
-            ),
+        ),
+        child: Padding(
+          padding: EdgeInsetsDirectional.only(
+            start: contentPadding,
+            end: contentPadding,
           ),
-          PositionedDirectional(
-            bottom: layoutMetrics.vertical(config.messageBottom),
-            start: layoutMetrics.horizontal(config.messageEnd),
-            child: Text(
-              config.message,
-              textAlign: config.messageAlign,
-              style: config.messageColor.medium(
-                fontSize: config.messageFontSize,
+          child: Column(
+            crossAxisAlignment: crossAxisAlignment,
+            children: [
+              Expanded(child: SizedBox()),
+              Text(config.title, textAlign: titleAlign, style: titleStyle),
+              10.verticalSpace,
+              AutoSizeText(
+                config.message,
+                textAlign: messageAlign,
+                style: messageStyle,
               ),
-            ),
+              40.verticalSpace,
+              config.showSearchField
+                  ? _SearchField(
+                      onActionPressed: onActionPressed,
+                      height: actionHeight,
+                      compactWidth: compactSearchField,
+                      centerContent: centerTextsAndActions,
+                      hintStyle: Colors.black45.medium(
+                        fontSize: layoutMetrics.font(16),
+                      ),
+                    )
+                  : _ActionButton(
+                      config: config,
+                      onActionPressed: onActionPressed,
+                      centerContent: centerTextsAndActions,
+                      compactWidth: compactAction,
+                      layoutMetrics: layoutMetrics,
+                    ),
+              20.verticalSpace,
+            ],
           ),
-          if (config.showSearchField)
-            _SearchField(
-              onActionPressed: onActionPressed,
-              layoutMetrics: layoutMetrics,
-            )
-          else
-            PositionedDirectional(
-              bottom: layoutMetrics.vertical(config.actionBottom!),
-              start: layoutMetrics.horizontal(config.actionStart!),
-              end: layoutMetrics.horizontal(config.actionEnd!),
-              child: ReusableButton(
-                label: config.actionLabel!,
-                buttonColor: config.actionColor!,
-                childTextColor: config.actionTextColor!,
-                onPressed: onActionPressed ?? () {},
-              ),
-            ),
-        ],
+        ),
       ),
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  final _ErrorStateConfig config;
+  final _ErrorLayoutMetrics layoutMetrics;
+  final VoidCallback? onActionPressed;
+  final bool centerContent;
+  final bool compactWidth;
+
+  const _ActionButton({
+    required this.config,
+    this.onActionPressed,
+    required this.centerContent,
+    required this.compactWidth,
+    required this.layoutMetrics,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final button = SizedBox(
+      width: compactWidth ? ErrorStatePage._compactControlWidth : null,
+      child: ReusableButton(
+        label: config.actionLabel!,
+        buttonColor: config.actionColor!,
+        childTextColor: config.actionTextColor!,
+        onPressed: onActionPressed ?? () {},
+      ),
+    );
+
+    return Align(
+      alignment: centerContent
+          ? AlignmentDirectional.center
+          : AlignmentDirectional.centerStart,
+      child: button,
     );
   }
 }
 
 class _SearchField extends StatelessWidget {
   final VoidCallback? onActionPressed;
-  final _ErrorLayoutMetrics layoutMetrics;
+  final double height;
+  final bool compactWidth;
+  final bool centerContent;
+  final TextStyle hintStyle;
 
-  const _SearchField({this.onActionPressed, required this.layoutMetrics});
+  const _SearchField({
+    this.onActionPressed,
+    required this.height,
+    required this.compactWidth,
+    required this.centerContent,
+    required this.hintStyle,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: layoutMetrics.vertical(100),
-      left: layoutMetrics.horizontal(30),
-      right: layoutMetrics.horizontal(30),
+    final searchField = SizedBox(
+      width: compactWidth ? ErrorStatePage._compactControlWidth : null,
+      height: height,
       child: SizedBox(
-        height: layoutMetrics.vertical(60).clamp(52.0, 76.0).toDouble(),
         child: TextFormField(
           enabled: false,
           onTap: onActionPressed,
           decoration: InputDecoration(
             hintText: LocalizationKeys.search,
-            hintStyle: Colors.black45
-                .medium(fontSize: 16)
-                .copyWith(letterSpacing: 1),
+            hintStyle: hintStyle,
             suffixIcon: const Icon(Icons.search, color: Colors.black45),
             contentPadding: const EdgeInsets.symmetric(
               vertical: 15,
@@ -129,6 +202,13 @@ class _SearchField extends StatelessWidget {
           ),
         ),
       ),
+    );
+
+    return Align(
+      alignment: centerContent
+          ? AlignmentDirectional.center
+          : AlignmentDirectional.centerStart,
+      child: searchField,
     );
   }
 }
@@ -153,8 +233,16 @@ class _ErrorLayoutMetrics {
     return (size.height / _baseHeight).clamp(0.85, maxScale).toDouble();
   }
 
+  double get _fontScale {
+    if (isTablet) {
+      return (size.shortestSide / 600).clamp(1.05, 1.25).toDouble();
+    }
+    return (size.width / _baseWidth).clamp(0.9, 1.08).toDouble();
+  }
+
   double horizontal(double value) => (value * _horizontalScale).toDouble();
   double vertical(double value) => (value * _verticalScale).toDouble();
+  double font(double value) => (value * _fontScale).toDouble();
 }
 
 class _ErrorStateConfig {
@@ -621,6 +709,45 @@ extension _ErrorStateTypeX on ErrorStateType {
         );
     }
   }
+}
+
+extension _ErrorStateTypeLayoutX on ErrorStateType {
+  bool get centerTextsAndActions {
+    switch (this) {
+      case ErrorStateType.articleNotFound:
+      case ErrorStateType.connectionFailed:
+      case ErrorStateType.locationError:
+      case ErrorStateType.routerOffline:
+      case ErrorStateType.certainError:
+      case ErrorStateType.somethingWentWrong:
+      case ErrorStateType.somethingWrong:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  bool get compactActionButton {
+    switch (this) {
+      case ErrorStateType.notFound404:
+      case ErrorStateType.brokenLink:
+      case ErrorStateType.noConnection:
+      case ErrorStateType.wrongConnection:
+      case ErrorStateType.fileNotFound:
+      case ErrorStateType.fileNotFoundDark:
+      case ErrorStateType.locationErrorDark:
+      case ErrorStateType.noCameraAccess:
+      case ErrorStateType.paymentFailed:
+      case ErrorStateType.fixingError:
+      case ErrorStateType.storageNotEnough:
+      case ErrorStateType.timeError:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  bool get compactSearchField => this == ErrorStateType.noSearchResult;
 }
 
 @Deprecated('Use ErrorStatePage(type: ErrorStateType.notFound404)')
