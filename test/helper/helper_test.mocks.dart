@@ -40,14 +40,14 @@ import 'package:flutter_starter_kit/core/infrastructure/storage/secure_storage_s
     as _i39;
 import 'package:flutter_starter_kit/core/infrastructure/storage/storage_service.dart'
     as _i38;
-import 'package:flutter_starter_kit/core/infrastructure/usecases/usecase.dart'
+import 'package:flutter_starter_kit/core/infrastructure/use_cases/usecase.dart'
     as _i55;
 import 'package:flutter_starter_kit/core/utils/app_locale.dart' as _i31;
 import 'package:flutter_starter_kit/core/utils/device_services.dart' as _i44;
 import 'package:flutter_starter_kit/core/utils/platform_checker.dart' as _i43;
-import 'package:flutter_starter_kit/features/auth/data/datasources/auth_local_datasource.dart'
+import 'package:flutter_starter_kit/features/auth/data/data_sources/auth_local_datasource.dart'
     as _i48;
-import 'package:flutter_starter_kit/features/auth/data/datasources/auth_remote_datasource.dart'
+import 'package:flutter_starter_kit/features/auth/data/data_sources/auth_remote_datasource.dart'
     as _i49;
 import 'package:flutter_starter_kit/features/auth/data/models/auth_endpoints.dart'
     as _i45;
@@ -67,17 +67,17 @@ import 'package:flutter_starter_kit/features/auth/domain/entities/user.dart'
     as _i12;
 import 'package:flutter_starter_kit/features/auth/domain/repositories/auth_repository.dart'
     as _i24;
-import 'package:flutter_starter_kit/features/auth/domain/usecases/delete_account_usecase.dart'
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/delete_account_usecase.dart'
     as _i56;
-import 'package:flutter_starter_kit/features/auth/domain/usecases/get_authenticated_user_usecase.dart'
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/get_authenticated_user_usecase.dart'
     as _i57;
-import 'package:flutter_starter_kit/features/auth/domain/usecases/login_usecase.dart'
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/login_usecase.dart'
     as _i52;
-import 'package:flutter_starter_kit/features/auth/domain/usecases/logout_usecase.dart'
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/logout_usecase.dart'
     as _i54;
-import 'package:flutter_starter_kit/features/auth/domain/usecases/register_usecase.dart'
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/register_usecase.dart'
     as _i53;
-import 'package:flutter_starter_kit/features/environments_dev/data/datasources/environment_local_data_source.dart'
+import 'package:flutter_starter_kit/features/environments_dev/data/data_sources/environment_local_data_source.dart'
     as _i58;
 import 'package:flutter_starter_kit/features/environments_dev/data/models/auth_config.dart'
     as _i14;
@@ -93,15 +93,15 @@ import 'package:flutter_starter_kit/features/environments_dev/domain/entities/ba
     as _i28;
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/environment.dart'
     as _i27;
-import 'package:flutter_starter_kit/features/environments_dev/domain/repositories/environment_repository.dart'
+import 'package:flutter_starter_kit/features/environments_dev/domain/repository/environment_repository.dart'
     as _i59;
-import 'package:flutter_starter_kit/features/environments_dev/domain/usecases/developer_login_usecase.dart'
+import 'package:flutter_starter_kit/features/environments_dev/domain/use_cases/developer_login_usecase.dart'
     as _i62;
-import 'package:flutter_starter_kit/features/environments_dev/domain/usecases/get_environment_config_use_case.dart'
+import 'package:flutter_starter_kit/features/environments_dev/domain/use_cases/get_environment_config_use_case.dart'
     as _i60;
-import 'package:flutter_starter_kit/features/environments_dev/domain/usecases/update_environment_configuration_use_case.dart'
+import 'package:flutter_starter_kit/features/environments_dev/domain/use_cases/update_environment_configuration_use_case.dart'
     as _i61;
-import 'package:flutter_starter_kit/features/onboarding/data/datasources/onboarding_local_datasource.dart'
+import 'package:flutter_starter_kit/features/onboarding/data/data_sources/onboarding_local_datasource.dart'
     as _i63;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i26;

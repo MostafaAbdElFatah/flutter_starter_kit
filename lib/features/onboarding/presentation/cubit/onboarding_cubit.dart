@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/usecases/usecase.dart';
+import '../../../../core/infrastructure/use_cases/usecase.dart';
 import '../../../../core/infrastructure/cubits/base_cubit.dart';
-import '../../domain/usecases/complete_onboarding_usecase.dart';
+import '../../domain/use_cases/complete_onboarding_usecase.dart';
 
 /// The concrete implementation of the [OnboardingCubit].
 ///

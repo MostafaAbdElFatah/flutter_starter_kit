@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/usecases/usecase.dart';
+import '../../../../core/infrastructure/use_cases/usecase.dart';
 import '../../../../core/infrastructure/cubits/base_cubit.dart';
 import '../../domain/entities/login_credentials.dart';
 import '../../domain/entities/register_credentials.dart';
 import '../../domain/entities/user.dart';
-import '../../domain/usecases/delete_account_usecase.dart';
-import '../../domain/usecases/get_authenticated_user_usecase.dart';
-import '../../domain/usecases/is_logged_in_usecase.dart';
-import '../../domain/usecases/login_usecase.dart';
-import '../../domain/usecases/logout_usecase.dart';
-import '../../domain/usecases/register_usecase.dart';
+import '../../domain/use_cases/delete_account_usecase.dart';
+import '../../domain/use_cases/get_authenticated_user_usecase.dart';
+import '../../domain/use_cases/is_logged_in_usecase.dart';
+import '../../domain/use_cases/login_usecase.dart';
+import '../../domain/use_cases/logout_usecase.dart';
+import '../../domain/use_cases/register_usecase.dart';
 
 part 'auth_state.dart';
 

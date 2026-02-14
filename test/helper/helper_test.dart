@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_starter_kit/core/infrastructure/network/api_response_parser.dart';
 import 'package:flutter_starter_kit/core/utils/app_locale.dart';
 import 'package:flutter_starter_kit/features/auth/data/models/auth_endpoints.dart';
-import 'package:flutter_starter_kit/features/environments_dev/data/datasources/environment_local_data_source.dart';
-import 'package:flutter_starter_kit/features/environments_dev/domain/repositories/environment_repository.dart';
-import 'package:flutter_starter_kit/features/onboarding/data/datasources/onboarding_local_datasource.dart';
+import 'package:flutter_starter_kit/features/environments_dev/data/data_sources/environment_local_data_source.dart';
+import 'package:flutter_starter_kit/features/environments_dev/domain/repository/environment_repository.dart';
+import 'package:flutter_starter_kit/features/onboarding/data/data_sources/onboarding_local_datasource.dart';
 import 'package:mockito/annotations.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -22,13 +22,13 @@ import 'package:flutter_starter_kit/core/infrastructure/network/api_client.dart'
 import 'package:flutter_starter_kit/core/infrastructure/network/network_connectivity.dart';
 import 'package:flutter_starter_kit/core/utils/device_services.dart';
 import 'package:flutter_starter_kit/core/utils/platform_checker.dart';
-import 'package:flutter_starter_kit/features/auth/data/datasources/auth_local_datasource.dart';
-import 'package:flutter_starter_kit/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:flutter_starter_kit/features/auth/domain/usecases/delete_account_usecase.dart';
-import 'package:flutter_starter_kit/features/auth/domain/usecases/get_authenticated_user_usecase.dart';
-import 'package:flutter_starter_kit/features/auth/domain/usecases/login_usecase.dart';
-import 'package:flutter_starter_kit/features/auth/domain/usecases/logout_usecase.dart';
-import 'package:flutter_starter_kit/features/auth/domain/usecases/register_usecase.dart';
+import 'package:flutter_starter_kit/features/auth/data/data_sources/auth_local_datasource.dart';
+import 'package:flutter_starter_kit/features/auth/data/data_sources/auth_remote_datasource.dart';
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/delete_account_usecase.dart';
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/get_authenticated_user_usecase.dart';
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/login_usecase.dart';
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/logout_usecase.dart';
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/register_usecase.dart';
 
 @GenerateMocks([
   // Network

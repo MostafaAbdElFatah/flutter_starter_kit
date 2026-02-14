@@ -3,9 +3,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injection.dart' as di;
 import '../../../../core/assets/localization_keys.dart';
-import '../../../../core/infrastructure/usecases/usecase.dart';
+import '../../../../core/infrastructure/use_cases/usecase.dart';
 import '../../../../core/router/app_router.dart';
-import '../../../environments_dev/domain/usecases/get_current_environment_use_case.dart';
+import '../../../environments_dev/domain/use_cases/get_current_environment_use_case.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

@@ -2,17 +2,17 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart' hide Environment;
 
-import '../../../../core/infrastructure/usecases/usecase.dart';
+import '../../../../core/infrastructure/use_cases/usecase.dart';
 import '../../../../core/infrastructure/cubits/base_cubit.dart';
 import '../../domain/entities/api_config.dart';
 import '../../domain/entities/base_url_config.dart';
 import '../../domain/entities/base_url_type.dart';
 import '../../domain/entities/environment.dart';
-import '../../domain/usecases/developer_login_usecase.dart';
-import '../../domain/usecases/get_current_config_use_case.dart';
-import '../../domain/usecases/get_current_environment_use_case.dart';
-import '../../domain/usecases/get_environment_config_use_case.dart';
-import '../../domain/usecases/update_environment_configuration_use_case.dart';
+import '../../domain/use_cases/developer_login_usecase.dart';
+import '../../domain/use_cases/get_current_config_use_case.dart';
+import '../../domain/use_cases/get_current_environment_use_case.dart';
+import '../../domain/use_cases/get_environment_config_use_case.dart';
+import '../../domain/use_cases/update_environment_configuration_use_case.dart';
 
 part 'environment_state.dart';
 /// '';

@@ -8,16 +8,15 @@ import '../../features/auth/presentation/cubit/auth_cubit.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
-import '../../features/onboarding/domain/usecases/check_onboarding_status_usecase.dart';
+import '../../features/onboarding/domain/use_cases/check_onboarding_status_usecase.dart';
 import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/environments_dev/presentation/pages/environment_config_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../components/pages/app_error_page.dart';
-import '../components/pages/errors_page.dart';
 import '../di/injection.dart' as di;
-import '../infrastructure/usecases/usecase.dart';
+import '../infrastructure/use_cases/usecase.dart';
 import '../utils/log.dart';
 
 part 'auth_routes.dart';

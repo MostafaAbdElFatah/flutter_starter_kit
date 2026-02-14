@@ -2,13 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/usecases/usecase.dart';
+import '../../../../core/infrastructure/use_cases/usecase.dart';
 import '../../../../core/infrastructure/cubits/base_cubit.dart';
 import '../../domain/entities/notification_entity.dart';
-import '../../domain/usecases/cancel_all_notifications.dart';
-import '../../domain/usecases/cancel_notification.dart';
-import '../../domain/usecases/schedule_notification.dart';
-import '../../domain/usecases/show_notification.dart';
+import '../../domain/use_cases/cancel_all_notifications.dart';
+import '../../domain/use_cases/cancel_notification.dart';
+import '../../domain/use_cases/schedule_notification.dart';
+import '../../domain/use_cases/show_notification.dart';
 
 part 'notification_state.dart';
 
