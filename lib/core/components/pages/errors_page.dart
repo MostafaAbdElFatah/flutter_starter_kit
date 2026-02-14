@@ -38,15 +38,15 @@ class ErrorStatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final config = type.config;
-    final size = MediaQuery.of(context).size;
-    final layoutMetrics = _ErrorLayoutMetrics(size);
+    final responsive = context.responsive;
+    final size = MediaQuery.sizeOf(context);
     final centerTextsAndActions = type.centerTextsAndActions;
     final compactAction = type.compactActionButton;
     final compactSearchField = type.compactSearchField;
     final contentPaddingValue = centerTextsAndActions
         ? 30.0
         : math.min(config.titleStart, config.messageEnd);
-    final contentPadding = layoutMetrics.horizontal(contentPaddingValue);
+    final contentPadding = responsive.w(contentPaddingValue);
     final titleAlign = centerTextsAndActions
         ? TextAlign.center
         : TextAlign.start;
@@ -54,16 +54,16 @@ class ErrorStatePage extends StatelessWidget {
         ? TextAlign.center
         : config.messageAlign;
     final titleStyle = config.titleColor.medium(
-      fontSize: layoutMetrics.font(config.titleFontSize),
+      fontSize: responsive.sp(config.titleFontSize),
     );
     final messageStyle = config.messageColor.medium(
-      fontSize: layoutMetrics.font(config.messageFontSize),
+      fontSize: responsive.sp(config.messageFontSize),
     );
     final actionHeight = config.showSearchField
-        ? layoutMetrics.vertical(60).clamp(52.0, 76.0).toDouble()
+        ? responsive.h(60).clamp(52.0, 76.0).toDouble()
         : 40.0;
-    final actionFontSize = layoutMetrics
-        .font(_defaultActionFontSize)
+    final actionFontSize = responsive
+        .sp(_defaultActionFontSize)
         .clamp(14.0, 20.0)
         .toDouble();
 
@@ -105,7 +105,7 @@ class ErrorStatePage extends StatelessWidget {
                       compactWidth: compactSearchField,
                       centerContent: centerTextsAndActions,
                       hintStyle: Colors.black45.medium(
-                        fontSize: layoutMetrics.font(16),
+                        fontSize: responsive.sp(16),
                       ),
                     )
                   : _ActionButton(
@@ -174,13 +174,14 @@ class _ActionButton extends StatelessWidget {
   }
 
   double _resolveCompactWidth(BuildContext context) {
+    final responsive = context.responsive;
     final baseWidth = _baseWidthForFontSize(actionFontSize);
     final labelWidth = _measureActionLabelWidth(context);
     final targetWidth = math.max(
       baseWidth,
       labelWidth + (ErrorStatePage._actionHorizontalPadding * 2),
     );
-    final maxWidth = math.min(200.0, MediaQuery.of(context).size.width / 2);
+    final maxWidth = math.min(200.0, responsive.screenSize.width / 2);
     return targetWidth.clamp(baseWidth, maxWidth).toDouble();
   }
 
@@ -232,7 +233,7 @@ class _SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
+    final isTablet = context.responsive.isTablet;
     final searchField = SizedBox(
       width: compactWidth ? (isTablet ? 250 : double.infinity) : null,
       height: height,
@@ -270,38 +271,6 @@ class _SearchField extends StatelessWidget {
       child: searchField,
     );
   }
-}
-
-class _ErrorLayoutMetrics {
-  static const double _baseWidth = 390;
-  static const double _baseHeight = 844;
-
-  final Size size;
-
-  _ErrorLayoutMetrics(this.size);
-
-  bool get isTablet => size.shortestSide >= 600;
-
-  double get _horizontalScale {
-    final maxScale = isTablet ? 1.95 : 1.15;
-    return (size.width / _baseWidth).clamp(0.88, maxScale).toDouble();
-  }
-
-  double get _verticalScale {
-    final maxScale = isTablet ? 1.35 : 1.12;
-    return (size.height / _baseHeight).clamp(0.85, maxScale).toDouble();
-  }
-
-  double get _fontScale {
-    if (isTablet) {
-      return (size.shortestSide / 600).clamp(1.05, 1.25).toDouble();
-    }
-    return (size.width / _baseWidth).clamp(0.9, 1.0).toDouble();
-  }
-
-  double horizontal(double value) => (value * _horizontalScale).toDouble();
-  double vertical(double value) => (value * _verticalScale).toDouble();
-  double font(double value) => (value * _fontScale).toDouble();
 }
 
 class _ErrorStateConfig {
