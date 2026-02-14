@@ -69,7 +69,9 @@ class AppErrorPage extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         maxLines: 4,
-                        exception?.toString() ?? details?.exceptionAsString() ?? LocalizationKeys.oopsSomethingWrong,
+                        exception?.toString() ??
+                            details?.exceptionAsString() ??
+                            LocalizationKeys.oopsSomethingWrong,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                         style: Colors.white70
@@ -82,19 +84,21 @@ class AppErrorPage extends StatelessWidget {
                 const SizedBox(height: 32),
                 Row(
                   children: [
-                    // if (Navigator.of(context).canPop())
-                    Expanded(
-                      child: IconTextElevatedButton(
-                        iconSize: 20,
-                        group: group,
-                        title: LocalizationKeys.close,
-                        icon: Icons.exit_to_app,
-                        iconColor: Colors.amber,
-                        titleStyle: AppColors.blackRussian.medium(fontSize: 14),
-                        backgroundColor: Colors.white.withValues(alpha: 0.1),
-                        onPressed: () => Navigator.of(context).pop(),
+                    if (context.canPop())
+                      Expanded(
+                        child: IconTextElevatedButton(
+                          iconSize: 20,
+                          group: group,
+                          title: LocalizationKeys.close,
+                          icon: Icons.exit_to_app,
+                          iconColor: Colors.amber,
+                          titleStyle: AppColors.blackRussian.medium(
+                            fontSize: 14,
+                          ),
+                          backgroundColor: Colors.white.withValues(alpha: 0.1),
+                          onPressed: () => context.pop(),
+                        ),
                       ),
-                    ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: IconTextElevatedButton(

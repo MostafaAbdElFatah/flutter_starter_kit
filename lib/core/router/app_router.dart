@@ -14,7 +14,7 @@ import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/environments_dev/presentation/pages/environment_config_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
-import '../components/pages/errors_page.dart';
+import '../components/pages/app_error_page.dart';
 import '../di/injection.dart' as di;
 import '../infrastructure/usecases/usecase.dart';
 import '../utils/log.dart';
@@ -43,8 +43,9 @@ class AuthGuard {
     final location = state.matchedLocation;
 
     final isGoingToOnboarding = location == OnboardingRoutes.onboarding;
-    final isOnboardingCompleted =
-    di.get<CheckOnboardingStatusUseCase>()(const NoParams());
+    final isOnboardingCompleted = di.get<CheckOnboardingStatusUseCase>()(
+      const NoParams(),
+    );
     if (!isOnboardingCompleted) {
       return isGoingToOnboarding ? null : OnboardingRoutes.onboarding;
     }
@@ -71,14 +72,11 @@ class AppRouter {
   GoRouter get router => _router;
 
   late final GoRouter _router = GoRouter(
-    //redirect: authGuard.redirect,
+    redirect: authGuard.redirect,
     initialLocation: HomeRoutes.splash,
     refreshListenable: _goRouterRefreshStream,
-    // onException: (context, state, router) => ,
-    errorBuilder: (context, state) => ErrorStatePage(
-      type: ErrorStateType.somethingWrong,
-      onActionPressed: () => context.pop(),
-    ),
+    //onException: (context, state, router) => ,
+    errorBuilder: (context, state) => AppErrorPage(exception: state.error),
     // errorPageBuilder: (context, state) {
     //   return MaterialPage(
     //     key: state.pageKey,

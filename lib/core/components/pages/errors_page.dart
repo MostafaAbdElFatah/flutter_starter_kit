@@ -29,7 +29,6 @@ enum ErrorStateType {
 }
 
 class ErrorStatePage extends StatelessWidget {
-  static const double _compactSearchControlWidth = 100;
   static const double _defaultActionFontSize = 16;
   static const double _actionHorizontalPadding = 24;
 
@@ -118,12 +117,7 @@ class ErrorStatePage extends StatelessWidget {
                       compactWidth: compactAction,
                       actionFontSize: actionFontSize,
                     ),
-              if (type == ErrorStateType.wrongConnection)
-                150.verticalSpace
-              else if (type == ErrorStateType.locationErrorDark)
-                75.verticalSpace
-              else
-                40.verticalSpace,
+              type.bottomSpacing.verticalSpace,
             ],
           ),
         ),
@@ -240,8 +234,9 @@ class _SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
     final searchField = SizedBox(
-      width: compactWidth ? ErrorStatePage._compactSearchControlWidth : null,
+      width: compactWidth ? (isTablet ? 250 : double.infinity) : null,
       height: height,
       child: SizedBox(
         child: TextFormField(
@@ -814,6 +809,17 @@ extension _ErrorStateTypeLayoutX on ErrorStateType {
   }
 
   bool get compactSearchField => this == ErrorStateType.noSearchResult;
+
+  double get bottomSpacing {
+    switch (this) {
+      case ErrorStateType.wrongConnection:
+        return 150;
+      case ErrorStateType.locationErrorDark:
+        return 75;
+      default:
+        return 40;
+    }
+  }
 }
 
 @Deprecated('Use ErrorStatePage(type: ErrorStateType.notFound404)')
