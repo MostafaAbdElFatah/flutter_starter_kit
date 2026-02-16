@@ -79,56 +79,56 @@ class Failure extends Equatable implements Exception {
 /// standard exceptions. The implementation of [Equatable] allows for value-based comparison.
 enum FailureType implements Equatable, Failure {
   /// Represents a 422 Unprocessable Content error from the server.
-  unprocessableContent(ErrorKeys.invalidDataError),
+  unprocessableContent(LocalizationKeys.invalidDataError),
 
   /// Represents a 204 No Content success status, which may be treated as a
   /// failure when content was expected.
-  noContent(ErrorKeys.noContent),
+  noContent(LocalizationKeys.noContent),
 
   /// Represents a 400 Bad Request error.
-  badRequest(ErrorKeys.badRequestError),
+  badRequest(LocalizationKeys.badRequestError),
 
   /// Represents a 403 Forbidden error, indicating the user lacks permission.
-  forbidden(ErrorKeys.forbiddenError),
+  forbidden(LocalizationKeys.forbiddenError),
 
   /// Represents a 401 Unauthorized error, indicating missing or invalid authentication.
-  unauthorized(ErrorKeys.unauthorizedError),
+  unauthorized(LocalizationKeys.unauthorizedError),
 
   /// Represents a 404 Not Found error for a requested resource.
-  notFound(ErrorKeys.notFoundError),
+  notFound(LocalizationKeys.notFoundError),
 
   /// Represents a failure due to invalid data format.
-  invalidData(ErrorKeys.invalidDataError),
+  invalidData(LocalizationKeys.invalidDataError),
 
   /// Represents a 5xx Internal Server Error.
-  internetServerError(ErrorKeys.internalServerError),
+  internetServerError(LocalizationKeys.internalServerError),
 
   /// Represents a user-cancelled request.
-  cancel(ErrorKeys.cancelError),
+  cancel(LocalizationKeys.cancelError),
 
   /// Represents a connection timeout error.
-  connectTimeout(ErrorKeys.timeoutError),
+  connectTimeout(LocalizationKeys.timeoutError),
 
   /// Represents a receive timeout error while waiting for data.
-  receiveTimeout(ErrorKeys.timeoutError),
+  receiveTimeout(LocalizationKeys.timeoutError),
 
   /// Represents a send timeout error while sending data.
-  sendTimeout(ErrorKeys.timeoutError),
+  sendTimeout(LocalizationKeys.timeoutError),
 
   /// Represents a failure related to local data caching.
-  cacheError(ErrorKeys.cacheError),
+  cacheError(LocalizationKeys.cacheError),
 
   /// Represents a 409 Conflict error, e.g., creating a resource that already exists.
-  conflict(ErrorKeys.conflictError),
+  conflict(LocalizationKeys.conflictError),
 
   /// Represents a failure due to a device connection issue (e.g., DNS, TCP handshake).
-  noConnectionError(ErrorKeys.noConnectionError),
+  noConnectionError(LocalizationKeys.noConnectionError),
 
   /// Represents a failure due to no internet connectivity.
-  noInternetConnection(ErrorKeys.noInternetError),
+  noInternetConnection(LocalizationKeys.noInternetError),
 
   /// Represents an unknown or unexpected error.
-  errorOccurred(ErrorKeys.unknownError);
+  errorOccurred(LocalizationKeys.unknownError);
 
   /// The localization key for the user-facing error message.
   @override

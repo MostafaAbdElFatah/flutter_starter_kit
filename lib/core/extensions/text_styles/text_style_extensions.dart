@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../../assets/fonts.dart';
-// Import any other necessary packages, such as for responsive sizing
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Extension on [TextStyle] to provide convenient methods for modifying [TextStyle]s
 /// with various font weights.
 ///
 /// This extension allows you to easily change the font weight, color, size, and font family
 /// of existing [TextStyle] instances.
+///TODO:- REFACTORING
 extension AppTextStyle on TextStyle {
   /// Makes the [TextStyle] thin.
   ///
   /// Thin is the least thick font weight.
-  static TextStyle get defaultTextStyle => TextStyle();
+  static const TextStyle defaultTextStyle = TextStyle();
 
   /// Creates a [TextStyle] with the specified parameters.
   ///
@@ -30,7 +29,7 @@ extension AppTextStyle on TextStyle {
     bool setSp = false,
     FontFamily? fontFamily,
   }) {
-    return defaultTextStyle.copyWith(
+    return  defaultTextStyle.copyWith(
       // Uses the [Color] instance on which this extension is called
       color: color,
       fontWeight: fontWeight?.weight,

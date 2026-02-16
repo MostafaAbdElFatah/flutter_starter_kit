@@ -1,10 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
+import '../../../../core/core.dart';
 import '../../../../core/di/injection.dart' as di;
-import '../../../../core/assets/localization_keys.dart';
 import '../../../../core/infrastructure/use_cases/usecase.dart';
-import '../../../../core/router/app_router.dart';
 import '../../../environments_dev/domain/use_cases/get_current_environment_use_case.dart';
 
 class HomePage extends StatelessWidget {
@@ -16,7 +12,7 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(LocalizationKeys.homeTitle),
+        title: Text(LocalizationKeys.homeTitle).tr(),
         actions: [
           IconButton(
             onPressed: () => GoRouter.of(context).pushSettings(),
@@ -33,7 +29,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(LocalizationKeys.welcomeFlutterStarterKit),
+            Text(LocalizationKeys.welcomeFlutterStarterKit).tr(),
             SizedBox(height: 10),
             Text('Environment ${currentEnv.name.toUpperCase()}'),
           ],

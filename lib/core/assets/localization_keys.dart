@@ -9,7 +9,7 @@ import 'package:easy_localization/easy_localization.dart';
 ///
 /// ## Usage
 ///
-/// Simply access the desired string via a static getter:
+/// Simply access the desired string via a constgetter:
 ///
 /// ```dart
 /// Text(LocalizationKeys.welcome)
@@ -30,91 +30,92 @@ abstract class LocalizationKeys {
   // Common
   // ===========================================================================
 
-  static String get ok => 'ok'.tr();
-  static String get yes => 'yes'.tr();
-  static String get no => 'no'.tr();
-  static String get save => 'save'.tr();
-  static String get confirm => 'confirm'.tr();
-  static String get cancel => 'cancel'.tr();
-  static String get delete => 'delete'.tr();
-  static String get next => 'next'.tr();
-  static String get skip => 'skip'.tr();
+  static const String ok = 'ok';
+  static const String yes = 'yes';
+  static const String no = 'no';
+  static const String save = 'save';
+  static const String confirm = 'confirm';
+  static const String cancel = 'cancel';
+  static const String delete = 'delete';
+  static const String next = 'next';
+  static const String skip = 'skip';
 
   // ===========================================================================
   // Errors
   // ===========================================================================
 
-  static String get error => ErrorKeys.error.tr();
-  static String get cancelError => ErrorKeys.cancelError.tr();
-  static String get invalidDataError => ErrorKeys.invalidDataError.tr();
-  static String get badRequestError => ErrorKeys.badRequestError.tr();
-  static String get noContent => ErrorKeys.noContent.tr();
-  static String get forbiddenError => ErrorKeys.forbiddenError.tr();
-  static String get internalServerError => ErrorKeys.internalServerError.tr();
-  static String get unauthorizedError => ErrorKeys.unauthorizedError.tr();
-  static String get notFoundError => ErrorKeys.notFoundError.tr();
-  static String get conflictError => ErrorKeys.conflictError.tr();
-  static String get unknownError => ErrorKeys.unknownError.tr();
-  static String get timeoutError => ErrorKeys.timeoutError.tr();
-  static String get cacheError => ErrorKeys.cacheError.tr();
-  static String get noInternetError => ErrorKeys.noInternetError.tr();
-  static String get noConnectionError => ErrorKeys.noConnectionError.tr();
-  static String get pleaseMakeSureConnectedToInInternet =>
-      ErrorKeys.pleaseMakeSureConnectedToInternet.tr();
+  static const String error = 'error';
+  static const String cancelError = 'cancelError';
+  static const String invalidDataError = 'invalidDataError';
+  static const String badRequestError = 'badRequestError';
+  static const String noContent = 'noContent';
+  static const String forbiddenError = 'forbiddenError';
+  static const String internalServerError = 'internalServerError';
+  static const String unauthorizedError = 'unauthorizedError';
+  static const String unauthorizedServerError = 'unauthorizedServerError';
+  static const String notFoundError = 'notFoundError';
+  static const String conflictError = 'conflictError';
+  static const String unknownError = 'unknownError';
+  static const String timeoutError = 'timeoutError';
+  static const String cacheError = 'cacheError';
+  static const String noInternetError = 'noInternetError';
+  static const String noConnectionError = 'noConnectionError';
+  static const String pleaseMakeSureConnectedToInternet =
+      'pleaseMakeSureConnectedToInternet';
 
   // ===========================================================================
   // Error States & Messages - Usage
   // ===========================================================================
 
-  static String get deadEnd => "deadEnd".tr();
-  static String get pageNotFoundMessage => "pageNotFoundMessage".tr();
-  static String get articleNotFound => "articleNotFound".tr();
-  static String get articleNotFoundMessage => "articleNotFoundMessage".tr();
-  static String get retry => "retry".tr();
-  static String get brokenLink => "brokenLink".tr();
-  static String get brokenLinkMessage => "brokenLinkMessage".tr();
-  static String get goBack => "goBack".tr();
-  static String get connectionFailed => "connectionFailed".tr();
-  static String get connectionFailedMessage => "connectionFailedMessage".tr();
-  static String get noConnection => "noConnection".tr();
-  static String get noConnectionMessage => "noConnectionMessage".tr();
-  static String get oops => "oops".tr();
-  static String get wrongNetwork => "wrongNetwork".tr();
-  static String get noFiles => "noFiles".tr();
-  static String get noFilesMessage => "noFilesMessage".tr();
-  static String get fileNotFound => "fileNotFound".tr();
-  static String get fileNotFoundMessage => "fileNotFoundMessage".tr();
-  static String get locationAccess => "locationAccess".tr();
-  static String get locationAccessMessage => "locationAccessMessage".tr();
-  static String get enable => "enable".tr();
-  static String get hangOn => "hangOn".tr();
-  static String get middleOfOcean => "middleOfOcean".tr();
-  static String get refresh => "refresh".tr();
-  static String get noCameraAccess => "noCameraAccess".tr();
-  static String get noCameraAccessMessage => "noCameraAccessMessage".tr();
-  static String get noResults => "noResults".tr();
-  static String get noResultsMessage => "noResultsMessage".tr();
-  static String get search => "search".tr();
-  static String get paymentSuccess => "paymentSuccess".tr();
-  static String get paymentSuccessMessage => "paymentSuccessMessage".tr();
-  static String get paymentFailed => "paymentFailed".tr();
-  static String get paymentFailedMessage => "paymentFailedMessage".tr();
-  static String get tryAgain => "tryAgain".tr();
-  static String get routerOffline => "routerOffline".tr();
-  static String get routerOfflineMessage => "routerOfflineMessage".tr();
-  static String get uhOh => "uhOh".tr();
-  static String get somethingWentWrong => "somethingWentWrong".tr();
-  static String get hmmm => "hmmm".tr();
-  static String get fixingIssue => "fixingIssue".tr();
-  static String get ohNo => "ohNo".tr();
-  static String get storageNotEnough => "storageNotEnough".tr();
-  static String get storageNotEnoughMessage => "storageNotEnoughMessage".tr();
-  static String get manage => "manage".tr();
-  static String get somethingNotRight => "somethingNotRight".tr();
-  static String get somethingNotRightMessage => "somethingNotRightMessage".tr();
-  static String get oopsSomethingWrong => "oopsSomethingWrong".tr();
-  static String get close => "close".tr();
-  static String get technicalSupport => "technicalSupport".tr();
+  static const String deadEnd = "deadEnd";
+  static const String pageNotFoundMessage = "pageNotFoundMessage";
+  static const String articleNotFound = "articleNotFound";
+  static const String articleNotFoundMessage = "articleNotFoundMessage";
+  static const String retry = "retry";
+  static const String brokenLink = "brokenLink";
+  static const String brokenLinkMessage = "brokenLinkMessage";
+  static const String goBack = "goBack";
+  static const String connectionFailed = "connectionFailed";
+  static const String connectionFailedMessage = "connectionFailedMessage";
+  static const String noConnection = "noConnection";
+  static const String noConnectionMessage = "noConnectionMessage";
+  static const String oops = "oops";
+  static const String wrongNetwork = "wrongNetwork";
+  static const String noFiles = "noFiles";
+  static const String noFilesMessage = "noFilesMessage";
+  static const String fileNotFound = "fileNotFound";
+  static const String fileNotFoundMessage = "fileNotFoundMessage";
+  static const String locationAccess = "locationAccess";
+  static const String locationAccessMessage = "locationAccessMessage";
+  static const String enable = "enable";
+  static const String hangOn = "hangOn";
+  static const String middleOfOcean = "middleOfOcean";
+  static const String refresh = "refresh";
+  static const String noCameraAccess = "noCameraAccess";
+  static const String noCameraAccessMessage = "noCameraAccessMessage";
+  static const String noResults = "noResults";
+  static const String noResultsMessage = "noResultsMessage";
+  static const String search = "search";
+  static const String paymentSuccess = "paymentSuccess";
+  static const String paymentSuccessMessage = "paymentSuccessMessage";
+  static const String paymentFailed = "paymentFailed";
+  static const String paymentFailedMessage = "paymentFailedMessage";
+  static const String tryAgain = "tryAgain";
+  static const String routerOffline = "routerOffline";
+  static const String routerOfflineMessage = "routerOfflineMessage";
+  static const String uhOh = "uhOh";
+  static const String somethingWentWrong = "somethingWentWrong";
+  static const String hmmm = "hmmm";
+  static const String fixingIssue = "fixingIssue";
+  static const String ohNo = "ohNo";
+  static const String storageNotEnough = "storageNotEnough";
+  static const String storageNotEnoughMessage = "storageNotEnoughMessage";
+  static const String manage = "manage";
+  static const String somethingNotRight = "somethingNotRight";
+  static const String somethingNotRightMessage = "somethingNotRightMessage";
+  static const String oopsSomethingWrong = "oopsSomethingWrong";
+  static const String close = "close";
+  static const String technicalSupport = "technicalSupport";
 
   // ===========================================================================
   // Validation Messages
@@ -122,39 +123,38 @@ abstract class LocalizationKeys {
 
   // General
 
-  static String get required => 'required'.tr();
-  static String get fieldRequired => 'fieldRequired'.tr();
-  static String get phoneRequired => "phoneRequired".tr();
-  static String get invalidPhone => "invalidPhone".tr();
+  static const String required = 'required';
+  static const String fieldRequired = 'fieldRequired';
+  static const String phoneRequired = "phoneRequired";
+  static const String invalidPhone = "invalidPhone";
 
   // URL Validation
-  static String get urlRequired => 'urlRequired'.tr();
-  static String get invalidUrlFormat => 'invalidUrlFormat'.tr();
-  static String get urlMustIncludeProtocol => 'urlMustIncludeProtocol'.tr();
-  static String get urlMustUseHttpProtocol => 'urlMustUseHttpProtocol'.tr();
-  static String get urlMustIncludeDomain => 'urlMustIncludeDomain'.tr();
-  static String get invalidDomainName => 'invalidDomainName'.tr();
+  static const String urlRequired = 'urlRequired';
+  static const String invalidUrlFormat = 'invalidUrlFormat';
+  static const String urlMustIncludeProtocol = 'urlMustIncludeProtocol';
+  static const String urlMustUseHttpProtocol = 'urlMustUseHttpProtocol';
+  static const String urlMustIncludeDomain = 'urlMustIncludeDomain';
+  static const String invalidDomainName = 'invalidDomainName';
 
   // Email Validation
-  static String get emailRequired => 'emailRequired'.tr();
-  static String get invalidEmailAddress => 'invalidEmailAddress'.tr();
-  static String get emailTooLong => 'emailTooLong'.tr();
-  static String get emailUsernameTooLong => 'emailUsernameTooLong'.tr();
+  static const String emailRequired = 'emailRequired';
+  static const String invalidEmailAddress = 'invalidEmailAddress';
+  static const String emailTooLong = 'emailTooLong';
+  static const String emailUsernameTooLong = 'emailUsernameTooLong';
 
   // Password Validation
-  static String get passwordRequired => 'passwordRequired'.tr();
+  static const String passwordRequired = 'passwordRequired';
   static String passwordMinLength(int length) =>
       'passwordMinLength'.tr(args: ['$length']);
-  static String get passwordRequireUppercase => 'passwordRequireUppercase'.tr();
-  static String get passwordRequireLowercase => 'passwordRequireLowercase'.tr();
-  static String get passwordRequireNumber => 'passwordRequireNumber'.tr();
-  static String get passwordRequireSpecialChar =>
-      'passwordRequireSpecialChar'.tr();
-  static String get confirmPasswordRequired => 'confirmPasswordRequired'.tr();
-  static String get passwordsDoNotMatch => 'passwordsDoNotMatch'.tr();
+  static const String passwordRequireUppercase = 'passwordRequireUppercase';
+  static const String passwordRequireLowercase = 'passwordRequireLowercase';
+  static const String passwordRequireNumber = 'passwordRequireNumber';
+  static const String passwordRequireSpecialChar = 'passwordRequireSpecialChar';
+  static const String confirmPasswordRequired = 'confirmPasswordRequired';
+  static const String passwordsDoNotMatch = 'passwordsDoNotMatch';
 
   // Username Validation
-  static String get usernameRequired => 'usernameRequired'.tr();
+  static const String usernameRequired = 'usernameRequired';
   static String usernameMinLength(int length) =>
       'usernameMinLength'.tr(args: ['$length']);
   static String usernameMaxLength(int length) =>
@@ -173,52 +173,52 @@ abstract class LocalizationKeys {
     } else {
       key = 'usernameInvalidCharactersLettersOnly';
     }
-    return key.tr();
+    return key;
   }
 
   // ===========================================================================
   // Onboarding
   // ===========================================================================
 
-  static String get onboardingTitle1 => 'onboardingTitle1'.tr();
-  static String get onboardingDesc1 => 'onboardingDesc1'.tr();
-  static String get onboardingTitle2 => 'onboardingTitle2'.tr();
-  static String get onboardingDesc2 => 'onboardingDesc2'.tr();
-  static String get onboardingTitle3 => 'onboardingTitle3'.tr();
-  static String get onboardingDesc3 => 'onboardingDesc3'.tr();
+  static const String onboardingTitle1 = 'onboardingTitle1';
+  static const String onboardingDesc1 = 'onboardingDesc1';
+  static const String onboardingTitle2 = 'onboardingTitle2';
+  static const String onboardingDesc2 = 'onboardingDesc2';
+  static const String onboardingTitle3 = 'onboardingTitle3';
+  static const String onboardingDesc3 = 'onboardingDesc3';
 
   // ===========================================================================
   // Auth
   // ===========================================================================
 
-  static String get login => 'login'.tr();
-  static String get register => 'register'.tr();
-  static String get email => 'email'.tr();
-  static String get phone => 'phone'.tr();
-  static String get password => 'password'.tr();
-  static String get confirmPassword => 'confirmPassword'.tr();
-  static String get forgotPassword => 'forgotPassword'.tr();
-  static String get name => 'name'.tr();
-  static String get username => 'username'.tr();
-  static String get dontHaveAccount => "dontHaveAnAccount".tr();
-  static String get alreadyHaveAccount => "alreadyHaveAnAccount".tr();
+  static const String login = 'login';
+  static const String register = 'register';
+  static const String email = 'email';
+  static const String phone = 'phone';
+  static const String password = 'password';
+  static const String confirmPassword = 'confirmPassword';
+  static const String forgotPassword = 'forgotPassword';
+  static const String name = 'name';
+  static const String username = 'username';
+  static const String dontHaveAccount = "dontHaveAnAccount";
+  static const String alreadyHaveAccount = "alreadyHaveAnAccount";
 
   // ===========================================================================
   // Developer environment
   // ===========================================================================
 
-  static String get developerModeEnabled => 'developerModeEnabled'.tr();
-  static String get environmentConfig => 'environmentConfig'.tr();
-  static String get configurationSaved => 'configurationSaved'.tr();
-  static String get baseUrl => 'baseUrl'.tr();
-  static String get environment => 'environment'.tr();
-  static String get saveAndRestart => 'saveAndRestart'.tr();
-  static String get defaultMode => 'default'.tr();
-  static String get customMode => 'custom'.tr();
-  static String get baseUrlConfiguration => 'baseUrlConfiguration'.tr();
-  static String get developerLogin => 'developerLogin'.tr();
-  static String get invalidCredentials => 'invalidCredentials'.tr();
-  static String get environmentChanged => 'environmentChanged'.tr();
+  static const String developerModeEnabled = 'developerModeEnabled';
+  static const String environmentConfig = 'environmentConfig';
+  static const String configurationSaved = 'configurationSaved';
+  static const String baseUrl = 'baseUrl';
+  static const String environment = 'environment';
+  static const String saveAndRestart = 'saveAndRestart';
+  static const String defaultMode = 'default';
+  static const String customMode = 'custom';
+  static const String baseUrlConfiguration = 'baseUrlConfiguration';
+  static const String developerLogin = 'developerLogin';
+  static const String invalidCredentials = 'invalidCredentials';
+  static const String environmentChanged = 'environmentChanged';
   static String switchedToEnv(String envName) =>
       'switchedToEnv'.tr(args: [envName]);
 
@@ -226,36 +226,33 @@ abstract class LocalizationKeys {
   // Home
   // ===========================================================================
 
-  static String get welcome => 'welcome'.tr();
-  static String get welcomeFlutterStarterKit => "welcomeFlutterStarterKit".tr();
+  static const String welcome = 'welcome';
+  static const String welcomeFlutterStarterKit = "welcomeFlutterStarterKit";
 
+  static const String homeTitle = 'homeTitle';
+  static const String appName = 'appName';
 
-  static String get homeTitle => 'homeTitle'.tr();
-  static String get appName => 'appName'.tr();
-
-  static String get getStarted => 'getStarted'.tr();
-  static String get changeLanguage => 'changeLanguage'.tr();
-  static String get settings => 'settings'.tr();
-
+  static const String getStarted = 'getStarted';
+  static const String changeLanguage = 'changeLanguage';
+  static const String settings = 'settings';
 
   // ===========================================================================
   // Account Management
   // ===========================================================================
 
-  static String get logout => 'logout'.tr();
-  static String get deleteAccount => 'deleteAccount'.tr();
-  static String get deleteAccountWarning => 'deleteAccountWarning'.tr();
-  static String get accountDeletedSuccessfully =>
-      'accountDeletedSuccessfully'.tr();
-  static String get accountDeletionFailed => 'accountDeletionFailed'.tr();
+  static const String logout = 'logout';
+  static const String deleteAccount = 'deleteAccount';
+  static const String deleteAccountWarning = 'deleteAccountWarning';
+  static const String accountDeletedSuccessfully = 'accountDeletedSuccessfully';
+  static const String accountDeletionFailed = 'accountDeletionFailed';
 
   // ===========================================================================
   // easy_localization examples
   // ===========================================================================
 
-  static String get hello => 'example.hello'.tr();
-  static String get world => 'example.world'.tr();
-  static String get helloWorld => 'example.helloWorld'.tr();
+  static const String hello = 'example.hello';
+  static const String world = 'example.world';
+  static const String helloWorld = 'example.helloWorld';
 
   /// Example of a message with positional arguments.
   /// Expects a translation string like: "My name is {} and I am a {}."
@@ -274,7 +271,7 @@ abstract class LocalizationKeys {
 
   /// Example of gender-based translation.
   /// Expects a translation string like: "gender": {"male": "He", "female": "She"}
-  static String  get gender => 'gender'.tr();
+  static const String gender = 'gender';
   static String genderBool(bool male) =>
       'gender'.tr(gender: male ? "male" : "female");
 
@@ -316,29 +313,4 @@ abstract class LocalizationKeys {
   static String dateLogging() => 'dateLogging'.tr(
     namedArgs: {'currentDate': DateTime.now().toIso8601String()},
   );
-}
-
-/// Raw error message keys (non-localized).
-/// Use these for error handling logic that needs the key itself.
-abstract class ErrorKeys {
-  ErrorKeys._();
-
-  static const String error = 'error';
-  static const String cancelError = 'cancelError';
-  static const String invalidDataError = 'invalidDataError';
-  static const String badRequestError = 'badRequestError';
-  static const String noContent = 'noContent';
-  static const String forbiddenError = 'forbiddenError';
-  static const String internalServerError = 'internalServerError';
-  static const String unauthorizedError = 'unauthorizedError';
-  static const String unauthorizedServerError = 'unauthorizedServerError';
-  static const String notFoundError = 'notFoundError';
-  static const String conflictError = 'conflictError';
-  static const String unknownError = 'unknownError';
-  static const String timeoutError = 'timeoutError';
-  static const String cacheError = 'cacheError';
-  static const String noInternetError = 'noInternetError';
-  static const String noConnectionError = 'noConnectionError';
-  static const String pleaseMakeSureConnectedToInternet =
-      'pleaseMakeSureConnectedToInternet';
 }
