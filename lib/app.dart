@@ -4,7 +4,7 @@ import 'core/di/injection.dart' as di;
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/constants/app_constants.dart';
-import 'core/utils/responsive_layout.dart';
+import 'core/utils/responsive/responsive_layout.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -30,7 +30,7 @@ class App extends StatelessWidget {
         return MediaQuery(
           data: mediaQuery.copyWith(textScaler: TextScaler.noScaling),
           child: ResponsiveScope(
-            layout: ResponsiveLayout.fromSize(screenSize: mediaQuery.size),
+            context,
             child: child ?? const SizedBox.shrink(),
           ),
         );

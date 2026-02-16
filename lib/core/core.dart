@@ -40,4 +40,4 @@ export 'router/app_router.dart';
 //            utils
 // ================================
 
-export 'utils/responsive_layout.dart';
+export 'utils/responsive/responsive_layout.dart';
