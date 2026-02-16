@@ -20,6 +20,7 @@ class PhoneTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InternationalPhoneNumberInput(
+      //countries: ['EG'],
       formatInput: true,
       onSaved: onSaved,
       ignoreBlank: true,
@@ -34,7 +35,7 @@ class PhoneTextField extends StatelessWidget {
         selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
       ),
       keyboardType: TextInputType.numberWithOptions(
-        signed: true,
+        signed: false,
         decimal: true,
       ),
       inputDecoration: InputDecoration(

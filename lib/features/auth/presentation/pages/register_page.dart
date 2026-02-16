@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_starter_kit/core/core.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/components/text_fields/phone_text_field.dart';
 import '../../../../core/components/text_fields/text_fields.dart';
 import '../../../../core/assets/localization_keys.dart';
 import '../../../../core/utils/validators/password_validator.dart';
@@ -19,6 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
@@ -26,6 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
+    _phoneController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -51,59 +55,64 @@ class _RegisterPageState extends State<RegisterPage> {
           }
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomTextField(
-                    maxLines: 1,
-                    controller: _nameController,
-                    hintText: LocalizationKeys.name,
-                    labelText: LocalizationKeys.name,
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.next,
-                    validator: UsernameValidator.validateUsername,
-                    // Custom Username Requirements
-                    // validator: (value) => UsernameValidator.validateUsername(
-                    //   value,
-                    //   minLength: 5,
-                    //   maxLength: 15,
-                    //   allowNumbers: false,
-                    // ),
-                  ),
-                  const SizedBox(height: 16),
-                  EmailTextField(controller: _emailController),
-                  const SizedBox(height: 16),
-                  PasswordTextField(controller: _passwordController),
-                  const SizedBox(height: 16),
-                  PasswordTextField(
-                    controller: _confirmPasswordController,
-                    validator: (value) =>
-                        PasswordValidator.validatePasswordConfirmation(
-                          value,
-                          _passwordController.text,
-                        ),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        AuthCubit.of(context).register(
-                          name: _nameController.text,
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        );
-                      }
-                    },
-                    child: Text(LocalizationKeys.register),
-                  ),
-                  const SizedBox(height: 24),
-                  TextButton(
-                    onPressed: () => context.pop(),
-                    child: const Text('Go to Login'),
-                  ),
-                ],
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    40.spacingHeight,
+                    CustomTextField(
+                      maxLines: 1,
+                      controller: _nameController,
+                      hintText: LocalizationKeys.name,
+                      labelText: LocalizationKeys.name,
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      validator: UsernameValidator.validateUsername,
+                      // Custom Username Requirements
+                      // validator: (value) => UsernameValidator.validateUsername(
+                      //   value,
+                      //   minLength: 5,
+                      //   maxLength: 15,
+                      //   allowNumbers: false,
+                      // ),
+                    ),
+                    const SizedBox(height: 16),
+                    EmailTextField(controller: _emailController),
+                    const SizedBox(height: 16),
+                    PhoneTextField(controller: _phoneController),
+                    const SizedBox(height: 16),
+                    PasswordTextField(controller: _passwordController),
+                    const SizedBox(height: 16),
+                    PasswordTextField(
+                      controller: _confirmPasswordController,
+                      validator: (value) =>
+                          PasswordValidator.validatePasswordConfirmation(
+                            value,
+                            _passwordController.text,
+                          ),
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          AuthCubit.of(context).register(
+                            name: _nameController.text,
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
+                        }
+                      },
+                      child: Text(LocalizationKeys.register),
+                    ),
+                    const SizedBox(height: 24),
+                    TextButton(
+                      onPressed: () => context.pop(),
+                      child: const Text('Go to Login'),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
