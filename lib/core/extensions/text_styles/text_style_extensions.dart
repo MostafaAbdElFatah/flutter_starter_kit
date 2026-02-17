@@ -1,18 +1,15 @@
-import 'package:flutter/material.dart';
-
-import '../../assets/fonts.dart';
+import '../../core.dart';
 
 /// Extension on [TextStyle] to provide convenient methods for modifying [TextStyle]s
 /// with various font weights.
 ///
 /// This extension allows you to easily change the font weight, color, size, and font family
 /// of existing [TextStyle] instances.
-///TODO:- REFACTORING
 extension AppTextStyle on TextStyle {
   /// Makes the [TextStyle] thin.
   ///
   /// Thin is the least thick font weight.
-  static const TextStyle defaultTextStyle = TextStyle();
+  static TextStyle get defaultTextStyle => TextStyle();
 
   /// Creates a [TextStyle] with the specified parameters.
   ///
@@ -23,18 +20,18 @@ extension AppTextStyle on TextStyle {
   ///
   /// Returns a [TextStyle] configured with the provided parameters.
   static TextStyle textStyle({
+    bool? setSp,
     Color? color,
     double? fontSize,
     FontWeights? fontWeight,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) {
-    return  defaultTextStyle.copyWith(
+    return defaultTextStyle.copyWith(
       // Uses the [Color] instance on which this extension is called
       color: color,
       fontWeight: fontWeight?.weight,
       // Applies scalable pixels if [setSp] is true
-      fontSize: setSp ? fontSize : fontSize,
+      fontSize: (setSp ?? true) ? fontSize?.sp : fontSize,
       // Defaults to a specific font family
       fontFamily: fontFamily?.name ?? FontFamily.primary.name,
     );
@@ -44,9 +41,9 @@ extension AppTextStyle on TextStyle {
   ///
   /// Thin is the least thick font weight.
   TextStyle thin({
+    bool? setSp,
     Color? color,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) {
     return textStyle(
@@ -62,9 +59,9 @@ extension AppTextStyle on TextStyle {
   ///
   /// Extra-light is slightly thicker than thin.
   TextStyle extraLight({
+    bool? setSp,
     Color? color,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) {
     return textStyle(
@@ -80,9 +77,9 @@ extension AppTextStyle on TextStyle {
   ///
   /// Light is thinner than regular.
   TextStyle light({
+    bool? setSp,
     Color? color,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) {
     return textStyle(
@@ -98,9 +95,9 @@ extension AppTextStyle on TextStyle {
   ///
   /// Regular is the standard font weight.
   TextStyle regular({
+    bool? setSp,
     Color? color,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) {
     return textStyle(
@@ -116,9 +113,9 @@ extension AppTextStyle on TextStyle {
   ///
   /// Medium is slightly thicker than regular.
   TextStyle medium({
+    bool? setSp,
     Color? color,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) {
     return textStyle(
@@ -134,9 +131,9 @@ extension AppTextStyle on TextStyle {
   ///
   /// Semi-bold is thicker than medium.
   TextStyle semiBold({
+    bool? setSp,
     Color? color,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) {
     return textStyle(
@@ -152,9 +149,9 @@ extension AppTextStyle on TextStyle {
   ///
   /// Bold is thicker than semi-bold.
   TextStyle bold({
+    bool? setSp,
     Color? color,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) {
     return textStyle(
@@ -170,9 +167,9 @@ extension AppTextStyle on TextStyle {
   ///
   /// Extra-bold is thicker than bold.
   TextStyle extraBold({
+    bool? setSp,
     Color? color,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) {
     return textStyle(
@@ -188,9 +185,9 @@ extension AppTextStyle on TextStyle {
   ///
   /// Black is the most thick font weight.
   TextStyle black({
+    bool? setSp,
     Color? color,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) {
     return textStyle(

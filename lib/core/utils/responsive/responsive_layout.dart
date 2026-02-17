@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
 
 import 'device.dart';
@@ -9,16 +11,13 @@ class ResponsiveScope extends InheritedWidget {
     super.key,
     required BuildContext context,
     required super.child,
-  }) : layout = ResponsiveLayout(context) {
+  }) : layout = ResponsiveLayout(context: context) {
     _current = layout;
   }
 
   static ResponsiveLayout get current {
-    final layout = _current;
-    if (layout == null) {
-      throw FlutterError('ResponsiveScope not initialized');
-    }
-    return layout;
+    _current ??= ResponsiveLayout();
+    return _current!;
   }
 
   static ResponsiveLayout of(BuildContext context) {
@@ -27,7 +26,7 @@ class ResponsiveScope extends InheritedWidget {
     if (scope == null) {
       throw FlutterError(
         'ResponsiveScope not found.\n'
-        'Wrap your app with ResponsiveScope.',
+            'Wrap your app with ResponsiveScope.',
       );
     }
     _current = scope.layout;
@@ -63,18 +62,18 @@ class ResponsiveLayout {
     required double widthScale,
     required double heightScale,
     required double textScale,
-  }) : _widthScale = widthScale,
-       _heightScale = heightScale,
-       _textScale = textScale;
+  })  : _widthScale = widthScale,
+        _heightScale = heightScale,
+        _textScale = textScale;
 
   // Factory constructor
-  factory ResponsiveLayout(
-    BuildContext context, {
+  factory ResponsiveLayout({
+    BuildContext? context,
     Size baseSize = _defaultBaseSize,
   }) {
-    final screen = MediaQuery.sizeOf(context);
+    final screen =
+    context != null ? MediaQuery.sizeOf(context) : _logicalScreenSize();
     final device = Device.fromWidth(screen.shortestSide);
-
     return ResponsiveLayout._(
       screenSize: screen,
       baseSize: baseSize,
@@ -161,6 +160,11 @@ class ResponsiveLayout {
       Device.largeTablet => ratio.clamp(1.15, 1.35),
       Device.desktop || Device.web => ratio.clamp(1.2, 1.45),
     };
+  }
+
+  static Size _logicalScreenSize() {
+    final view = PlatformDispatcher.instance.views.first;
+    return view.physicalSize / view.devicePixelRatio;
   }
 }
 

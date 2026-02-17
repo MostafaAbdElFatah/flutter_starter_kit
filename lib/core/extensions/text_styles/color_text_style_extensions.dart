@@ -13,7 +13,6 @@ import 'text_style_extensions.dart';
 /// ```dart
 /// TextStyle style = Colors.blue.bold(fontSize: 16, setSp: true);
 /// ```
-///TODO:- REFACTORING
 extension CustomTextStylesThemeExtensions on Color {
   /// Creates a [TextStyle] with the specified parameters.
   ///
@@ -24,9 +23,9 @@ extension CustomTextStylesThemeExtensions on Color {
   ///
   /// Returns a [TextStyle] configured with the provided parameters.
   TextStyle textStyle({
+    bool? setSp,
     double? fontSize,
     FontWeights? fontWeight,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) {
     return AppTextStyle.textStyle(
@@ -44,8 +43,8 @@ extension CustomTextStylesThemeExtensions on Color {
   ///
   /// Thin is the least thick font weight.
   TextStyle thin({
+    bool? setSp,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) =>
       textStyle(
@@ -57,8 +56,8 @@ extension CustomTextStylesThemeExtensions on Color {
 
   /// Creates a [TextStyle] with an extra-light font weight.
   TextStyle extraLight({
+    bool? setSp,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) =>
       textStyle(
@@ -70,8 +69,8 @@ extension CustomTextStylesThemeExtensions on Color {
 
   /// Creates a [TextStyle] with a light font weight.
   TextStyle light({
+    bool? setSp,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) =>
       textStyle(
@@ -85,8 +84,8 @@ extension CustomTextStylesThemeExtensions on Color {
   ///
   /// Regular is the standard font weight.
   TextStyle regular({
+    bool? setSp,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) =>
       textStyle(
@@ -98,8 +97,8 @@ extension CustomTextStylesThemeExtensions on Color {
 
   /// Creates a [TextStyle] with a medium font weight.
   TextStyle medium({
+    bool? setSp,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) =>
       textStyle(
@@ -111,8 +110,8 @@ extension CustomTextStylesThemeExtensions on Color {
 
   /// Creates a [TextStyle] with a semi-bold font weight.
   TextStyle semiBold({
+    bool? setSp,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) =>
       textStyle(
@@ -124,8 +123,8 @@ extension CustomTextStylesThemeExtensions on Color {
 
   /// Creates a [TextStyle] with a bold font weight.
   TextStyle bold({
+    bool? setSp,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) =>
       textStyle(
@@ -137,8 +136,8 @@ extension CustomTextStylesThemeExtensions on Color {
 
   /// Creates a [TextStyle] with an extra-bold font weight.
   TextStyle extraBold({
+    bool? setSp,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) =>
       textStyle(
@@ -152,8 +151,8 @@ extension CustomTextStylesThemeExtensions on Color {
   ///
   /// Black is the most thick font weight.
   TextStyle black({
+    bool? setSp,
     double? fontSize,
-    bool setSp = false,
     FontFamily? fontFamily,
   }) =>
       textStyle(
