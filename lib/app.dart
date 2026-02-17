@@ -30,7 +30,7 @@ class App extends StatelessWidget {
         return MediaQuery(
           data: mediaQuery.copyWith(textScaler: TextScaler.noScaling),
           child: ResponsiveScope(
-            context,
+            context: context,
             child: child ?? const SizedBox.shrink(),
           ),
         );

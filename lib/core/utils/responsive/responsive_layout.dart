@@ -5,8 +5,11 @@ import 'device.dart';
 class ResponsiveScope extends InheritedWidget {
   final ResponsiveLayout layout;
   static ResponsiveLayout? _current;
-  ResponsiveScope(BuildContext context, {super.key, required super.child})
-    : layout = ResponsiveLayout(context) {
+  ResponsiveScope({
+    super.key,
+    required BuildContext context,
+    required super.child,
+  }) : layout = ResponsiveLayout(context) {
     _current = layout;
   }
 
