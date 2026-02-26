@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../assets/localization_keys.dart';
 
+
 /// Represents a generic API response.
 ///
 /// This class is used to standardize the structure of responses from the API,
@@ -10,10 +11,18 @@ class APIResponse extends Equatable {
   const APIResponse({
     required this.statusCode,
     this.message,
+    this.errors,
     this.links,
     this.meta,
-    this.errors,
   });
+
+  /// 👇 allows children to reuse parsed base response
+  APIResponse.fromBase(APIResponse base)
+    : statusCode = base.statusCode,
+      message = base.message,
+      links = base.links,
+      meta = base.meta,
+      errors = base.errors;
 
   /// The HTTP status code of the response.
   final int statusCode;
@@ -30,6 +39,13 @@ class APIResponse extends Equatable {
   /// A map of validation errors or other detailed error messages.
   final Map<String, dynamic>? errors;
 
+  /// Validates if the response is a standard HTTP success.
+  ///
+  /// * **200-299**: Success (OK, Created, No Content, etc.)
+  /// * **400-499**: Client Error (Bad Request, Unauthorized)
+  /// * **500-599**: Server Error (Internal Server Error)
+  bool get isSuccess => statusCode >= 200 && statusCode < 300;
+
   /// Creates a copy of this [APIResponse] but with the given fields replaced with the new values.
   APIResponse copyWith({
     int? statusCode,
@@ -37,37 +53,35 @@ class APIResponse extends Equatable {
     Map<String, dynamic>? errors,
     Links? links,
     Meta? meta,
-  }) =>
-      APIResponse(
-        statusCode: statusCode ?? this.statusCode,
-        message: message ?? this.message,
-        errors: errors ?? this.errors,
-        links: links ?? this.links,
-        meta: meta ?? this.meta,
-      );
+  }) => APIResponse(
+    statusCode: statusCode ?? this.statusCode,
+    message: message ?? this.message,
+    errors: errors ?? this.errors,
+    links: links ?? this.links,
+    meta: meta ?? this.meta,
+  );
 
   /// Creates an [APIResponse] from a JSON object.
   factory APIResponse.fromJson(
     int? statusCode,
     String? message,
     Map<String, dynamic> json,
-  ) =>
-      APIResponse(
-        statusCode: statusCode ?? 0,
-        message: json["message"] ?? message,
-        errors: json["errors"],
-        links: json["links"] == null ? null : Links.fromJson(json["links"]),
-        meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-      );
+  ) => APIResponse(
+    statusCode: statusCode ?? 0,
+    message: json["message"] ?? message,
+    errors: json["errors"],
+    links: json["links"] == null ? null : Links.fromJson(json["links"]),
+    meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
+  );
 
   /// Converts this [APIResponse] into a JSON object.
   Map<String, dynamic> toJson() => {
-        "statusCode": statusCode,
-        "message": message,
-        "links": links?.toJson(),
-        "meta": meta?.toJson(),
-        "errors": errors,
-      };
+    "statusCode": statusCode,
+    "message": message,
+    "links": links?.toJson(),
+    "meta": meta?.toJson(),
+    "errors": errors,
+  };
 
   /// A computed property that returns a consolidated error message.
   ///
@@ -85,10 +99,11 @@ class APIResponse extends Equatable {
             return value;
           }
           return 'N/A';
-        })
+        }),
     ];
-    final Iterable<String> nonEmptyParts =
-        parts.where((part) => part.isNotEmpty);
+    final Iterable<String> nonEmptyParts = parts.where(
+      (part) => part.isNotEmpty,
+    );
     final String combinedContent = nonEmptyParts.join('\n');
     return combinedContent;
   }
@@ -99,12 +114,7 @@ class APIResponse extends Equatable {
 
 /// Represents pagination links in an API response.
 class Links extends Equatable {
-  const Links({
-    this.first,
-    this.last,
-    this.prev,
-    this.next,
-  });
+  const Links({this.first, this.last, this.prev, this.next});
 
   /// The URL for the first page of results.
   final String? first;
@@ -119,12 +129,7 @@ class Links extends Equatable {
   final String? next;
 
   /// Creates a copy of this [Links] but with the given fields replaced with the new values.
-  Links copyWith({
-    String? first,
-    String? last,
-    String? prev,
-    String? next,
-  }) =>
+  Links copyWith({String? first, String? last, String? prev, String? next}) =>
       Links(
         first: first ?? this.first,
         last: last ?? this.last,
@@ -134,19 +139,19 @@ class Links extends Equatable {
 
   /// Creates a [Links] object from a JSON map.
   factory Links.fromJson(Map<String, dynamic> json) => Links(
-        first: json["first"],
-        last: json["last"],
-        prev: json["prev"],
-        next: json["next"],
-      );
+    first: json["first"],
+    last: json["last"],
+    prev: json["prev"],
+    next: json["next"],
+  );
 
   /// Converts this [Links] object into a JSON map.
   Map<String, dynamic> toJson() => {
-        "first": first,
-        "last": last,
-        "prev": prev,
-        "next": next,
-      };
+    "first": first,
+    "last": last,
+    "prev": prev,
+    "next": next,
+  };
 
   @override
   List<Object?> get props => [first, last, prev, next];
@@ -199,56 +204,59 @@ class Meta extends Equatable {
     int? perPage,
     int? to,
     int? total,
-  }) =>
-      Meta(
-        currentPage: currentPage ?? this.currentPage,
-        from: from ?? this.from,
-        lastPage: lastPage ?? this.lastPage,
-        links: links ?? this.links,
-        path: path ?? this.path,
-        perPage: perPage ?? this.perPage,
-        to: to ?? this.to,
-        total: total ?? this.total,
-      );
+  }) => Meta(
+    currentPage: currentPage ?? this.currentPage,
+    from: from ?? this.from,
+    lastPage: lastPage ?? this.lastPage,
+    links: links ?? this.links,
+    path: path ?? this.path,
+    perPage: perPage ?? this.perPage,
+    to: to ?? this.to,
+    total: total ?? this.total,
+  );
 
   /// Creates a [Meta] object from a JSON map.
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-        currentPage: json["current_page"],
-        from: json["from"],
-        lastPage: json["last_page"],
-        links: json["links"] == null
-            ? []
-            : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
-        path: json["path"],
-        perPage: json["per_page"],
-        to: json["to"],
-        total: json["total"],
-      );
+    currentPage: json["current_page"],
+    from: json["from"],
+    lastPage: json["last_page"],
+    links: json.containsKey('links') && json['links'] != null
+        ? List<Link>.from(json["links"]!.map((x) => Link.fromJson(x)))
+        : [],
+    path: json["path"],
+    perPage: json["per_page"],
+    to: json["to"],
+    total: json["total"],
+  );
 
   /// Converts this [Meta] object into a JSON map.
   Map<String, dynamic> toJson() => {
-        "current_page": currentPage,
-        "from": from,
-        "last_page": lastPage,
-        "links": links.map((x) => x.toJson()).toList(),
-        "path": path,
-        "per_page": perPage,
-        "to": to,
-        "total": total,
-      };
+    "current_page": currentPage,
+    "from": from,
+    "last_page": lastPage,
+    "links": links.map((x) => x.toJson()).toList(),
+    "path": path,
+    "per_page": perPage,
+    "to": to,
+    "total": total,
+  };
 
   @override
-  List<Object?> get props =>
-      [currentPage, from, lastPage, links, path, perPage, to, total];
+  List<Object?> get props => [
+    currentPage,
+    from,
+    lastPage,
+    links,
+    path,
+    perPage,
+    to,
+    total,
+  ];
 }
 
 /// Represents a single link within the pagination metadata.
 class Link extends Equatable {
-  const Link({
-    this.url,
-    required this.label,
-    required this.active,
-  });
+  const Link({this.url, required this.label, required this.active});
 
   /// The URL for the link, which can be null (e.g., for "..." separators).
   final String? url;
@@ -260,30 +268,22 @@ class Link extends Equatable {
   final bool active;
 
   /// Creates a copy of this [Link] but with the given fields replaced with the new values.
-  Link copyWith({
-    String? url,
-    String? label,
-    bool? active,
-  }) =>
-      Link(
-        url: url ?? this.url,
-        label: label ?? this.label,
-        active: active ?? this.active,
-      );
+  Link copyWith({String? url, String? label, bool? active}) => Link(
+    url: url ?? this.url,
+    label: label ?? this.label,
+    active: active ?? this.active,
+  );
 
   /// Creates a [Link] object from a JSON map.
-  factory Link.fromJson(Map<String, dynamic> json) => Link(
-        url: json["url"],
-        label: json["label"],
-        active: json["active"],
-      );
+  factory Link.fromJson(Map<String, dynamic> json) =>
+      Link(url: json["url"], label: json["label"], active: json["active"]);
 
   /// Converts this [Link] object into a JSON map.
   Map<String, dynamic> toJson() => {
-        "url": url,
-        "label": label,
-        "active": active,
-      };
+    "url": url,
+    "label": label,
+    "active": active,
+  };
 
   @override
   List<Object?> get props => [url, label, active];

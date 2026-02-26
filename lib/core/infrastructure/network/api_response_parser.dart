@@ -32,7 +32,7 @@ class IsolateAPIResponseParser implements APIResponseParser {
     required APICallback parser,
   }) async {
     try {
-      return await _payloadParser.parse<T>(
+      return _payloadParser.parse<T>(
         input: <String, dynamic>{
           _parserKey: parser,
           _statusCodeKey: statusCode,

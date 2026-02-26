@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 import '../errors/failure.dart';
+import '../models/list_api_response.dart';
+import '../models/typed_api_response.dart';
 import '../network/api_client.dart';
 import '../network/api_endpoint.dart';
 import '../network/network_connectivity.dart';
@@ -37,8 +39,16 @@ abstract class RemoteDataSource {
   const RemoteDataSource({
     required APIClient apiClient,
     required NetworkConnectivity connectivity,
-  }) : _apiClient = apiClient,
-       _connectivity = connectivity;
+  })  : _apiClient = apiClient,
+        _connectivity = connectivity;
+
+  /// Ensures that the device has internet connectivity.
+  ///
+  /// Throws: [FailureType.noInternetConnection] if there is no internet connection.
+  Future<void> _ensureConnectivity() async {
+    final isConnected = await _connectivity.isConnected;
+    if (!isConnected) throw FailureType.noInternetConnection;
+  }
 
   /// Fetches data from the specified [APIEndpoint] and decodes it into the desired model type [T].
   ///
@@ -79,11 +89,75 @@ abstract class RemoteDataSource {
     );
   }
 
-  /// Ensures that the device has internet connectivity.
+  /// Fetches a single item from the specified [APIEndpoint] and decodes it into [T].
   ///
-  /// Throws: [FailureType.noInternetConnection] if there is no internet connection.
-  Future<void> _ensureConnectivity() async {
-    final isConnected = await _connectivity.isConnected;
-    if (!isConnected) throw FailureType.noInternetConnection;
-  }
+  /// Wraps the response in a [TypedAPIResponse] containing the parsed model.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// final response = await getOne<User>(
+  ///   endpoint: UserEndpoint.getById(id: '123'),
+  ///   itemFromJson: User.fromJson,
+  /// );
+  /// ```
+  ///
+  /// - [T]: The type of the model to be returned.
+  /// - [endpoint]: The [APIEndpoint] defining the API request details.
+  /// - [itemFromJson]: A callback to convert JSON into an instance of [T].
+  ///
+  /// Returns: A [Future] containing a [TypedAPIResponse<T>] on success.
+  ///
+  /// Throws:
+  /// - [FailureType.noInternetConnection] if there is no internet connection.
+  /// - [FailureType] variants if the API request fails.
+  @protected
+  Future<TypedAPIResponse<T>> getSingle<T>({
+    required APIEndpoint endpoint,
+    required T Function(Map<String, dynamic>) itemFromJson,
+  }) =>
+      fetch<TypedAPIResponse<T>>(
+        target: endpoint,
+        mapper: (statusCode, message, json) => TypedAPIResponse<T>.fromJson(
+          statusCode: statusCode,
+          message: message,
+          json: json,
+          itemFromJson: itemFromJson,
+        ),
+      );
+
+  /// Fetches a list of items from the specified [APIEndpoint] and decodes each into [T].
+  ///
+  /// Wraps the response in a [ListAPIResponse] containing the parsed list of models.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// final response = await getList<User>(
+  ///   endpoint: UserEndpoint.getAll,
+  ///   itemFromJson: User.fromJson,
+  /// );
+  /// ```
+  ///
+  /// - [T]: The type of each model in the list.
+  /// - [endpoint]: The [APIEndpoint] defining the API request details.
+  /// - [itemFromJson]: A callback to convert each JSON object into an instance of [T].
+  ///
+  /// Returns: A [Future] containing a [ListAPIResponse<T>] on success.
+  ///
+  /// Throws:
+  /// - [FailureType.noInternetConnection] if there is no internet connection.
+  /// - [FailureType] variants if the API request fails.
+  @protected
+  Future<ListAPIResponse<T>> getList<T>({
+    required APIEndpoint endpoint,
+    required T Function(Map<String, dynamic>) itemFromJson,
+  }) =>
+      fetch<ListAPIResponse<T>>(
+        target: endpoint,
+        mapper: (statusCode, message, json) => ListAPIResponse<T>.fromJson(
+          statusCode: statusCode,
+          message: message,
+          json: json,
+          itemFromJson: itemFromJson,
+        ),
+      );
 }
