@@ -39,8 +39,8 @@ abstract class RemoteDataSource {
   const RemoteDataSource({
     required APIClient apiClient,
     required NetworkConnectivity connectivity,
-  })  : _apiClient = apiClient,
-        _connectivity = connectivity;
+  }) : _apiClient = apiClient,
+       _connectivity = connectivity;
 
   /// Ensures that the device has internet connectivity.
   ///
@@ -102,7 +102,7 @@ abstract class RemoteDataSource {
   /// ```
   ///
   /// - [T]: The type of the model to be returned.
-  /// - [endpoint]: The [APIEndpoint] defining the API request details.
+  /// - [target]: The [APIEndpoint] defining the API request details.
   /// - [itemFromJson]: A callback to convert JSON into an instance of [T].
   ///
   /// Returns: A [Future] containing a [TypedAPIResponse<T>] on success.
@@ -112,18 +112,17 @@ abstract class RemoteDataSource {
   /// - [FailureType] variants if the API request fails.
   @protected
   Future<TypedAPIResponse<T>> getSingle<T>({
-    required APIEndpoint endpoint,
+    required APIEndpoint target,
     required T Function(Map<String, dynamic>) itemFromJson,
-  }) =>
-      fetch<TypedAPIResponse<T>>(
-        target: endpoint,
-        mapper: (statusCode, message, json) => TypedAPIResponse<T>.fromJson(
-          statusCode: statusCode,
-          message: message,
-          json: json,
-          itemFromJson: itemFromJson,
-        ),
-      );
+  }) => fetch<TypedAPIResponse<T>>(
+    target: target,
+    mapper: (statusCode, message, json) => TypedAPIResponse<T>.fromJson(
+      statusCode: statusCode,
+      message: message,
+      json: json,
+      itemFromJson: itemFromJson,
+    ),
+  );
 
   /// Fetches a list of items from the specified [APIEndpoint] and decodes each into [T].
   ///
@@ -138,8 +137,8 @@ abstract class RemoteDataSource {
   /// ```
   ///
   /// - [T]: The type of each model in the list.
-  /// - [endpoint]: The [APIEndpoint] defining the API request details.
-  /// - [itemFromJson]: A callback to convert each JSON object into an instance of [T].
+  /// - [target]: The [APIEndpoint] defining the API request details.
+  /// - [mapper]: A callback to convert each JSON object into an instance of [T].
   ///
   /// Returns: A [Future] containing a [ListAPIResponse<T>] on success.
   ///
@@ -148,16 +147,15 @@ abstract class RemoteDataSource {
   /// - [FailureType] variants if the API request fails.
   @protected
   Future<ListAPIResponse<T>> getList<T>({
-    required APIEndpoint endpoint,
-    required T Function(Map<String, dynamic>) itemFromJson,
-  }) =>
-      fetch<ListAPIResponse<T>>(
-        target: endpoint,
-        mapper: (statusCode, message, json) => ListAPIResponse<T>.fromJson(
-          statusCode: statusCode,
-          message: message,
-          json: json,
-          itemFromJson: itemFromJson,
-        ),
-      );
+    required APIEndpoint target,
+    required T Function(Map<String, dynamic>) mapper,
+  }) => fetch<ListAPIResponse<T>>(
+    target: target,
+    mapper: (statusCode, message, json) => ListAPIResponse<T>.fromJson(
+      statusCode: statusCode,
+      message: message,
+      json: json,
+      itemFromJson: mapper,
+    ),
+  );
 }
