@@ -134,15 +134,13 @@ class AdaptiveDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
+      child: LiquidGlassContainer(
+        margin: EdgeInsets.all(20.w),
         padding: EdgeInsets.all(20.w),
-        child: LiquidGlassContainer(
-          padding: EdgeInsets.all(20.w),
+        child: Material(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-
-
               if (options.icon != null ||
                   options.svgAssetPath != null ||
                   options.imageAssetPath != null ||

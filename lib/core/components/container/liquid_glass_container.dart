@@ -44,6 +44,7 @@ class LiquidGlassContainer extends StatelessWidget {
   final Color? borderColor;
   final double borderRadius;
   final DecorationImage? image;
+  final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
   const LiquidGlassContainer({
     super.key,
@@ -51,47 +52,51 @@ class LiquidGlassContainer extends StatelessWidget {
     this.blur = 10.0,
     this.opacity = 0.1,
     this.color = Colors.white,
-    this.padding,
     this.borderWidth = 1,
     this.borderRadius = 20,
     this.borderColor,
     this.gradient,
+    this.padding,
+    this.margin,
     this.image,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-        child: Container(
-          padding: padding,
-          decoration: BoxDecoration(
-            image: image,
-            borderRadius: BorderRadiusDirectional.only(
-              // topStart: Radius.circular(borderRadius / 2)n,
-              // bottomEnd: Radius.circular(borderRadius / 2),
-              topEnd: Radius.circular(borderRadius),
-              bottomStart: Radius.circular(borderRadius),
+    return Padding(
+      padding: margin ?? EdgeInsets.zero,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+          child: Container(
+            padding: padding,
+            decoration: BoxDecoration(
+              image: image,
+              borderRadius: BorderRadiusDirectional.only(
+                // topStart: Radius.circular(borderRadius / 2)n,
+                // bottomEnd: Radius.circular(borderRadius / 2),
+                topEnd: Radius.circular(borderRadius),
+                bottomStart: Radius.circular(borderRadius),
+              ),
+              border: Border.all(
+                color: borderColor ?? Colors.white.withValues(alpha: 0.3),
+                width: borderWidth,
+              ),
+              gradient: gradient ??
+                  LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [0.1, 0.5, 1],
+                    colors: [
+                      Colors.white.withValues(alpha: 0.05),
+                      Colors.black.withValues(alpha: 0.05),
+                      Colors.white.withValues(alpha: 0.05),
+                    ],
+                  ),
             ),
-            border: Border.all(
-              color: borderColor ?? Colors.white.withValues(alpha: 0.3),
-              width: borderWidth,
-            ),
-            gradient: gradient ??
-                LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0.1, 0.5, 1],
-                  colors: [
-                    Colors.white.withValues(alpha: 0.05),
-                    Colors.black.withValues(alpha: 0.05),
-                    Colors.white.withValues(alpha: 0.05),
-                  ],
-                ),
+            child: child,
           ),
-          child: child,
         ),
       ),
     );
