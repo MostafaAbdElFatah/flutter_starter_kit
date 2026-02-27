@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/use_cases/usecase.dart';
+import '../../../../core/infrastructure/domain/use_cases/usecase.dart';
 import '../repository/environment_repository.dart';
 
 /// A use case for authenticating a developer.

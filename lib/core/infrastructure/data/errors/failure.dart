@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import '../../assets/localization_keys.dart';
+import '../../../assets/localization_keys.dart';
 
 part 'exceptions.dart';
 

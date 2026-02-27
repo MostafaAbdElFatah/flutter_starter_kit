@@ -1,19 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stream_transform/stream_transform.dart';
-import 'package:bloc/bloc.dart';
 
-
-import '../../core.dart';
-import '../common/operation_runner.dart';
-
+import '../../../common/operation_runner.dart';
 
 /// A generic base Bloc that can be extended by all feature-specific blocs.
 ///
 /// Provides:
 /// - A static `of` helper for convenient access from the widget tree.
 /// - Optional cancellation helpers to avoid stale async emits.
-abstract class BaseBloc<EventType, StateType>
-    extends Bloc<EventType, StateType> with OperationRunner {
+abstract class BaseBloc<EventType, StateType> extends Bloc<EventType, StateType>
+    with OperationRunner {
   BaseBloc(super.initialState);
 
   /// Retrieves the bloc instance from the widget tree.
@@ -23,7 +20,9 @@ abstract class BaseBloc<EventType, StateType>
   }) => BlocProvider.of<T>(context, listen: listen);
 
   // Helper function for debouncing
-  EventTransformer<T> debounce<T>([Duration duration = const Duration(milliseconds: 300)]) {
+  EventTransformer<T> debounce<T>([
+    Duration duration = const Duration(milliseconds: 300),
+  ]) {
     return (events, mapper) => events.debounce(duration).switchMap(mapper);
   }
 

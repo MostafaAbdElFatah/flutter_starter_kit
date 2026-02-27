@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../entities/pagination_result.dart';
+import '../../domain/entities/pagination_result.dart';
+
 
 abstract class ListPaginatedState<T> extends Equatable {
   final List<T> items;

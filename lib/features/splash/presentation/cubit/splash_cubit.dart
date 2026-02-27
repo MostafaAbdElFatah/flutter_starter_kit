@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/use_cases/usecase.dart';
-import '../../../../core/infrastructure/cubits/base_cubit.dart';
+import '../../../../core/infrastructure/domain/use_cases/usecase.dart';
 import '../../../auth/domain/use_cases/is_logged_in_usecase.dart';
+import '../../../../core/infrastructure/presentation/cubits/base_cubit.dart';
 import '../../../onboarding/domain/use_cases/check_onboarding_status_usecase.dart';
 
 enum SplashState {

@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/use_cases/usecase.dart';
+import '../../../../core/infrastructure/domain/use_cases/usecase.dart';
 import '../entities/notification_entity.dart';
 import '../repository/notification_repository.dart';
 

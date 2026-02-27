@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/use_cases/usecase.dart';
+import '../../../../core/infrastructure/domain/use_cases/usecase.dart';
 import '../repositories/auth_repository.dart';
 
 /// A use case that checks if a user is currently logged in.

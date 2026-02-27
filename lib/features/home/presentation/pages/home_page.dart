@@ -1,6 +1,6 @@
 import '../../../../core/core.dart';
 import '../../../../core/di/injection.dart' as di;
-import '../../../../core/infrastructure/use_cases/usecase.dart';
+import '../../../../core/infrastructure/domain/use_cases/usecase.dart';
 import '../../../environments_dev/domain/use_cases/get_current_environment_use_case.dart';
 
 class HomePage extends StatelessWidget {

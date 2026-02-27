@@ -1,11 +1,11 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/errors/failure.dart';
-import '../../../../core/infrastructure/data_sources/remote_datasource.dart';
-import '../../../../core/infrastructure/models/api_response.dart';
-import '../models/requests/login_request.dart';
+import '../../../../core/infrastructure/data/errors/failure.dart';
+import '../../../../core/infrastructure/data/data_sources/remote_datasource.dart';
+import '../../../../core/infrastructure/data/models/api_response.dart';
 import '../models/requests/register_request.dart';
 import '../models/responses/login_response.dart';
+import '../models/requests/login_request.dart';
 import '../models/auth_endpoints.dart';
 
 /// An abstract class representing the remote data source for authentication.

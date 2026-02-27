@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/infrastructure/errors/failure.dart';
+import '../../../../core/infrastructure/data/errors/failure.dart';
 import '../../../../core/services/notification/local_notification_service.dart';
 import '../../domain/entities/notification_entity.dart';
 import '../../domain/repository/notification_repository.dart';

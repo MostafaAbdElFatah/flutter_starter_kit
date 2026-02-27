@@ -17,7 +17,7 @@ import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../components/pages/app_error_page.dart';
 import '../di/injection.dart' as di;
-import '../infrastructure/use_cases/usecase.dart';
+import '../infrastructure/domain/use_cases/usecase.dart';
 import '../utils/log.dart';
 
 part 'auth_routes.dart';

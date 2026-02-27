@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../entities/base_entity.dart';
+import '../../domain/entities/base_entity.dart';
 
 class BaseModel extends BaseEntity {
   const BaseModel({

@@ -103,7 +103,7 @@ abstract class RemoteDataSource {
   ///
   /// - [T]: The type of the model to be returned.
   /// - [target]: The [APIEndpoint] defining the API request details.
-  /// - [itemFromJson]: A callback to convert JSON into an instance of [T].
+  /// - [mapper]: A callback to convert JSON into an instance of [T].
   ///
   /// Returns: A [Future] containing a [TypedAPIResponse<T>] on success.
   ///
@@ -113,14 +113,14 @@ abstract class RemoteDataSource {
   @protected
   Future<TypedAPIResponse<T>> getSingle<T>({
     required APIEndpoint target,
-    required T Function(Map<String, dynamic>) itemFromJson,
+    required T Function(Map<String, dynamic>) mapper,
   }) => fetch<TypedAPIResponse<T>>(
     target: target,
     mapper: (statusCode, message, json) => TypedAPIResponse<T>.fromJson(
       statusCode: statusCode,
       message: message,
       json: json,
-      itemFromJson: itemFromJson,
+      itemFromJson: mapper,
     ),
   );
 

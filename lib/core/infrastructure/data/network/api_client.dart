@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+
 import 'api_endpoint.dart';
 
 typedef APICallback<T> =
