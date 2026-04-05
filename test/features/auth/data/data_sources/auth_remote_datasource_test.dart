@@ -1,28 +1,30 @@
-import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 import 'package:flutter_starter_kit/core/infrastructure/data/errors/failure.dart';
-import 'package:flutter_starter_kit/features/auth/data/models/requests/login_request.dart';
-import 'package:flutter_starter_kit/features/auth/data/data_sources/auth_remote_datasource.dart';
-import 'package:flutter_starter_kit/features/auth/data/models/requests/register_request.dart';
-import 'package:flutter_starter_kit/features/auth/data/models/responses/login_response.dart';
 import 'package:flutter_starter_kit/core/infrastructure/data/models/api_response.dart';
-import 'package:flutter_starter_kit/features/auth/data/models/user.dart';
+import 'package:flutter_starter_kit/core/infrastructure/data/models/typed_api_response.dart';
+import 'package:flutter_starter_kit/features/auth/data/data_source/auth_remote_data_source.dart';
+import 'package:flutter_starter_kit/features/auth/data/models/login_user_model.dart';
+import 'package:flutter_starter_kit/features/auth/data/models/user_model.dart';
+import 'package:flutter_starter_kit/features/auth/domain/entities/login_credentials.dart';
+import 'package:flutter_starter_kit/features/auth/domain/entities/register_credentials.dart';
+
 import '../../../../helper/helper_test.mocks.dart';
 
 void main() {
   late MockAPIClient apiClient;
   late MockNetworkConnectivity connectivity;
   late MockAuthEndpoints authEndpoints;
+  late MockAPIEndpoint endpoint;
   late AuthRemoteDataSourceImpl dataSource;
-  final endpoint = MockAPIEndpoint();
 
   setUp(() {
     apiClient = MockAPIClient();
     connectivity = MockNetworkConnectivity();
     authEndpoints = MockAuthEndpoints();
+    endpoint = MockAPIEndpoint();
 
-    // Default: device is online
     when(connectivity.isConnected).thenAnswer((_) async => true);
 
     dataSource = AuthRemoteDataSourceImpl(
@@ -32,31 +34,34 @@ void main() {
     );
   });
 
-  group("Connectivity", () {
-    test("throws noInternetConnection when offline", () async {
-      // Arrange
+  group('Connectivity', () {
+    final request = LoginCredentials(email: '', password: '', deviceName: '');
+
+    test('throws noInternetConnection when offline', () async {
       when(connectivity.isConnected).thenAnswer((_) async => false);
-      final endpoint = MockAPIEndpoint();
+      when(authEndpoints.login(request)).thenReturn(endpoint);
 
-      /// Calling fetch indirectly by using login()
-      when(authEndpoints.login(any)).thenReturn(endpoint);
-
-      // Act & Assert
-      expect(
-        dataSource.login(LoginRequest(email: "", password: "", deviceName: '')),
+      await expectLater(
+        dataSource.login(request),
         throwsA(FailureType.noInternetConnection),
       );
+
+      verify(authEndpoints.login(request)).called(1);
       verify(connectivity.isConnected).called(1);
       verifyNever(
-        apiClient.fetch(target: endpoint, mapper: anyNamed("mapper")),
+        apiClient.fetch<TypedAPIResponse<LoginUserModel>>(
+          target: endpoint,
+          mapper: anyNamed('mapper'),
+          isFormData: anyNamed('isFormData'),
+        ),
       );
     });
   });
 
-  group("Login", () {
-    final request = LoginRequest(
-      email: "a@mail.com",
-      password: "123",
+  group('Login', () {
+    final request = LoginCredentials(
+      email: 'a@mail.com',
+      password: '123',
       deviceName: 'iPhone13,2',
     );
     final userModel = UserModel(
@@ -65,57 +70,57 @@ void main() {
       name: 'Test User',
       isVerified: true,
     );
-    final loginUser = LoginUser(token: 'auth_token', user: userModel);
+    final loginUserModel = LoginUserModel(token: 'auth_token', user: userModel);
 
     setUp(() {
       when(authEndpoints.login(request)).thenReturn(endpoint);
     });
 
-    test("returns LoginUser when API succeeds", () async {
-      // Arrange
-      final response = LoginResponse(statusCode: 200, data: loginUser);
+    test('returns LoginUserModel when API succeeds', () async {
+      final response = TypedAPIResponse<LoginUserModel>(
+        statusCode: 200,
+        data: loginUserModel,
+      );
       when(
-        apiClient.fetch<LoginResponse>(
+        apiClient.fetch<TypedAPIResponse<LoginUserModel>>(
           target: endpoint,
-          mapper: LoginResponse.fromJson,
+          mapper: anyNamed('mapper'),
+          isFormData: anyNamed('isFormData'),
         ),
       ).thenAnswer((_) async => response);
 
-      // Act
       final result = await dataSource.login(request);
 
-      // Assert
-      expect(result, loginUser);
+      expect(result, loginUserModel);
+      verify(authEndpoints.login(request)).called(1);
       verify(connectivity.isConnected).called(1);
       verify(
-        apiClient.fetch<LoginResponse>(
+        apiClient.fetch<TypedAPIResponse<LoginUserModel>>(
           target: endpoint,
-          mapper: anyNamed("mapper"),
+          mapper: anyNamed('mapper'),
+          isFormData: false,
         ),
       ).called(1);
     });
 
-    test("throws ServerException when API returns error", () async {
-      // Arrange
-      final response = LoginResponse(
+    test('throws ServerException when API returns error', () async {
+      final response = TypedAPIResponse<LoginUserModel>(
         statusCode: 500,
-        message: "Invalid credentials",
+        message: 'Invalid credentials',
       );
-
       when(
-        apiClient.fetch<LoginResponse>(
+        apiClient.fetch<TypedAPIResponse<LoginUserModel>>(
           target: endpoint,
-          mapper: LoginResponse.fromJson,
-          isFormData: anyNamed("isFormData"),
+          mapper: anyNamed('mapper'),
+          isFormData: anyNamed('isFormData'),
         ),
       ).thenAnswer((_) async => response);
 
-      // Act & Assert
-      expect(
+      await expectLater(
         dataSource.login(request),
         throwsA(
           isA<ServerException>().having(
-            (e) => e.message,
+            (exception) => exception.message,
             'message',
             'Invalid credentials',
           ),
@@ -124,11 +129,11 @@ void main() {
     });
   });
 
-  group("Register", () {
-    final request = RegisterRequest(
-      email: "b@mail.com",
-      password: "111",
-      name: "B",
+  group('Register', () {
+    const request = RegisterCredentials(
+      email: 'b@mail.com',
+      password: '111',
+      name: 'B',
     );
     final userModel = UserModel(
       id: '1',
@@ -136,49 +141,50 @@ void main() {
       name: 'Test User',
       isVerified: true,
     );
-    final loginUser = LoginUser(token: 'auth_token', user: userModel);
+    final loginUserModel = LoginUserModel(token: 'auth_token', user: userModel);
 
     setUp(() {
       when(authEndpoints.register(request)).thenReturn(endpoint);
     });
 
-    test("returns LoginUser when API response is 200", () async {
-      // Arrange
-      final response = LoginResponse(statusCode: 200, data: loginUser);
-      when(
-        apiClient.fetch<LoginResponse>(
-          target: endpoint,
-          mapper: LoginResponse.fromJson,
-        ),
-      ).thenAnswer((_) async => response);
-
-      // Act
-      final result = await dataSource.register(request);
-
-      //Assert
-      expect(result, loginUser);
-    });
-
-    test("throws ServerException on API failure", () async {
-      // Arrange
-      final response = LoginResponse(
-        statusCode: 400,
-        data: loginUser,
-        message: "Email exists",
+    test('returns LoginUserModel when API response is successful', () async {
+      final response = TypedAPIResponse<LoginUserModel>(
+        statusCode: 200,
+        data: loginUserModel,
       );
       when(
-        apiClient.fetch<LoginResponse>(
+        apiClient.fetch<TypedAPIResponse<LoginUserModel>>(
           target: endpoint,
-          mapper: LoginResponse.fromJson,
+          mapper: anyNamed('mapper'),
+          isFormData: anyNamed('isFormData'),
         ),
       ).thenAnswer((_) async => response);
 
-      // Act & Arrange
-      expect(
+      final result = await dataSource.register(request);
+
+      expect(result, loginUserModel);
+      verify(authEndpoints.register(request)).called(1);
+      verify(connectivity.isConnected).called(1);
+    });
+
+    test('throws ServerException on API failure', () async {
+      final response = TypedAPIResponse<LoginUserModel>(
+        statusCode: 400,
+        message: 'Email exists',
+      );
+      when(
+        apiClient.fetch<TypedAPIResponse<LoginUserModel>>(
+          target: endpoint,
+          mapper: anyNamed('mapper'),
+          isFormData: anyNamed('isFormData'),
+        ),
+      ).thenAnswer((_) async => response);
+
+      await expectLater(
         dataSource.register(request),
         throwsA(
           isA<ServerException>().having(
-            (e) => e.message,
+            (exception) => exception.message,
             'message',
             'Email exists',
           ),
@@ -187,76 +193,94 @@ void main() {
     });
   });
 
-  group("Logout", () {
-    final endpoint = MockAPIEndpoint();
-
+  group('Logout', () {
     setUp(() {
       when(authEndpoints.logout()).thenReturn(endpoint);
     });
 
-    test("completes when API is 200", () async {
-      // Arrange
-      final response = LoginResponse(statusCode: 200);
+    test('completes when API is successful', () async {
+      final response = APIResponse(statusCode: 200);
       when(
         apiClient.fetch<APIResponse>(
           target: endpoint,
           mapper: APIResponse.fromJson,
+          isFormData: anyNamed('isFormData'),
         ),
       ).thenAnswer((_) async => response);
 
-      // Act & Arrange
-      expect(dataSource.logout(), completes);
+      await expectLater(dataSource.logout(), completes);
+
+      verify(authEndpoints.logout()).called(1);
+      verify(connectivity.isConnected).called(1);
     });
 
-    test("throws ServerException when API is not 200", () async {
-      // Arrange
-      final response = LoginResponse(statusCode: 500, message: "Error");
+    test('throws ServerException when API is not successful', () async {
+      final response = APIResponse(statusCode: 500, message: 'Error');
       when(
         apiClient.fetch<APIResponse>(
           target: endpoint,
           mapper: APIResponse.fromJson,
-          isFormData: anyNamed("isFormData"),
+          isFormData: anyNamed('isFormData'),
         ),
       ).thenAnswer((_) async => response);
-      // Act & Arrange
-      expect(dataSource.logout(), throwsA(isA<ServerException>()));
+
+      await expectLater(
+        dataSource.logout(),
+        throwsA(
+          isA<ServerException>().having(
+            (exception) => exception.message,
+            'message',
+            'Error',
+          ),
+        ),
+      );
     });
   });
 
-  group("DeleteAccount", () {
-    final endpoint = MockAPIEndpoint();
-
+  group('DeleteAccount', () {
     setUp(() {
       when(authEndpoints.deleteAccount()).thenReturn(endpoint);
     });
 
-    test("completes when API returns 200", () async {
-      // Arrange
-      final response = LoginResponse(statusCode: 200);
+    test('completes when API returns success', () async {
+      final response = APIResponse(statusCode: 200);
       when(
         apiClient.fetch<APIResponse>(
           target: endpoint,
           mapper: APIResponse.fromJson,
+          isFormData: anyNamed('isFormData'),
         ),
       ).thenAnswer((_) async => response);
 
-      // Act & Arrange
-      expect(dataSource.deleteAccount(), completes);
+      await expectLater(dataSource.deleteAccount(), completes);
+
+      verify(authEndpoints.deleteAccount()).called(1);
+      verify(connectivity.isConnected).called(1);
     });
 
-    test("throws ServerException when API response != 200", () async {
+    test(
+      'throws ServerException when API response is not successful',
+      () async {
+        final response = APIResponse(statusCode: 500, message: 'Failed');
+        when(
+          apiClient.fetch<APIResponse>(
+            target: endpoint,
+            mapper: APIResponse.fromJson,
+            isFormData: anyNamed('isFormData'),
+          ),
+        ).thenAnswer((_) async => response);
 
-      // Arrange
-      final response = LoginResponse(statusCode: 500, message: "Failed");
-      when(
-        apiClient.fetch<APIResponse>(
-          target: endpoint,
-          mapper: APIResponse.fromJson,
-        ),
-      ).thenAnswer((_) async => response);
-
-      // Act & Arrange
-      expect(dataSource.deleteAccount(), throwsA(isA<ServerException>()));
-    });
+        await expectLater(
+          dataSource.deleteAccount(),
+          throwsA(
+            isA<ServerException>().having(
+              (exception) => exception.message,
+              'message',
+              'Failed',
+            ),
+          ),
+        );
+      },
+    );
   });
 }

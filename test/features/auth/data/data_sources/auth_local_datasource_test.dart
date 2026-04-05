@@ -1,7 +1,7 @@
+import 'package:flutter_starter_kit/features/auth/data/data_source/auth_local_data_source.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_starter_kit/features/auth/data/data_sources/auth_local_datasource.dart';
 import '../../../../helper/helper_test.mocks.dart';
 
 void main() {

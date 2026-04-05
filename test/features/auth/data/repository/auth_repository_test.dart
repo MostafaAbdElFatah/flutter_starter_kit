@@ -1,26 +1,45 @@
-import 'package:flutter_starter_kit/features/auth/data/models/user_model.dart';
-import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
-import 'package:flutter_starter_kit/features/auth/domain/entities/user.dart';
+import 'package:flutter_starter_kit/core/infrastructure/data/errors/failure.dart';
+import 'package:flutter_starter_kit/core/services/device_services.dart';
+import 'package:flutter_starter_kit/core/utils/log.dart';
+import 'package:flutter_starter_kit/features/auth/data/models/login_user_model.dart';
+import 'package:flutter_starter_kit/features/auth/data/models/user_model.dart';
 import 'package:flutter_starter_kit/features/auth/data/repository/auth_repository.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/login_credentials.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/register_credentials.dart';
-import 'package:flutter_starter_kit/core/infrastructure/data/errors/failure.dart';
-import 'package:flutter_starter_kit/core/utils/log.dart';
+import 'package:flutter_starter_kit/features/auth/domain/entities/user.dart';
+
 import '../../../../helper/helper_test.mocks.dart';
 
+class _FakeDeviceServices implements DeviceServices {
+  String? deviceModel;
+  Object? throwable;
+  int getDeviceModelCallCount = 0;
+
+  @override
+  Future<String?> getDeviceModel() async {
+    getDeviceModelCallCount++;
+
+    if (throwable != null) {
+      throw throwable!;
+    }
+
+    return deviceModel;
+  }
+}
 
 void main() {
   Log.overrideShouldDebugForTests = true;
 
   late AuthRepositoryImpl repository;
-  late MockDeviceServices mockDeviceServices;
+  late _FakeDeviceServices mockDeviceServices;
   late MockAuthLocalDataSource mockLocalDataSource;
   late MockAuthRemoteDataSource mockRemoteDataSource;
 
   setUp(() {
-    mockDeviceServices = MockDeviceServices();
+    mockDeviceServices = _FakeDeviceServices();
     mockLocalDataSource = MockAuthLocalDataSource();
     mockRemoteDataSource = MockAuthRemoteDataSource();
 
@@ -32,297 +51,244 @@ void main() {
   });
 
   group('isLoggedIn', () {
-    test('should return true when token and verified user exist', () async {
-      // Arrange
-      final mockUser = UserModel(
-        id: '1',
-        email: 'test@example.com',
-        name: 'Test User',
-        isVerified: true,
-      );
+    test('should return true when a non-empty token exists', () async {
       when(
         mockLocalDataSource.getToken(),
       ).thenAnswer((_) async => 'valid_token');
-      when(mockLocalDataSource.getUser()).thenReturn(mockUser);
 
-      // Act
       final result = await repository.isLoggedIn();
 
-      // Assert
       expect(result, true);
       verify(mockLocalDataSource.getToken()).called(1);
-      verify(mockLocalDataSource.getUser()).called(1);
+      verifyNever(mockLocalDataSource.getUser());
     });
 
     test('should return false when token is null', () async {
-      // Arrange
-      final mockUser = UserModel(
-        id: '1',
-        email: 'test@example.com',
-        name: 'Test User',
-        isVerified: true,
-      );
       when(mockLocalDataSource.getToken()).thenAnswer((_) async => null);
-      when(mockLocalDataSource.getUser()).thenReturn(mockUser);
 
-      // Act
       final result = await repository.isLoggedIn();
 
-      // Assert
       expect(result, false);
+      verify(mockLocalDataSource.getToken()).called(1);
+      verifyNever(mockLocalDataSource.getUser());
     });
 
     test('should return false when token is empty', () async {
-      // Arrange
-      final mockUser = UserModel(
-        id: '1',
-        email: 'test@example.com',
-        name: 'Test User',
-        isVerified: true,
-      );
       when(mockLocalDataSource.getToken()).thenAnswer((_) async => '');
-      when(mockLocalDataSource.getUser()).thenReturn(mockUser);
-
-      // Act
-      final result = await repository.isLoggedIn();
-
-      // Assert
-      expect(result, false);
-    });
-
-    test('should return false when user is null', () async {
-      // Arrange
-      when(
-        mockLocalDataSource.getToken(),
-      ).thenAnswer((_) async => 'valid_token');
-      when(mockLocalDataSource.getUser()).thenReturn(null);
-
-      // Act
-      final result = await repository.isLoggedIn();
-
-      // Assert
-      expect(result, false);
-    });
-
-    test('should return false when user is not verified', () async {
-      // Arrange
-      final mockUser = UserModel(
-        id: '1',
-        email: 'test@example.com',
-        name: 'Test User',
-        isVerified: false,
-      );
-      when(
-        mockLocalDataSource.getToken(),
-      ).thenAnswer((_) async => 'valid_token');
-      when(mockLocalDataSource.getUser()).thenReturn(mockUser);
-
-      // Act
-      final result = await repository.isLoggedIn();
-
-      // Assert
-      expect(result, false);
-    });
-
-    test('should return false if exception occurs', () async {
-      when(mockLocalDataSource.getToken())
-          .thenThrow(Exception('Error'));
-      when(mockLocalDataSource.getUser())
-          .thenThrow(Exception('Error'));
 
       final result = await repository.isLoggedIn();
 
       expect(result, false);
+      verify(mockLocalDataSource.getToken()).called(1);
+      verifyNever(mockLocalDataSource.getUser());
     });
 
+    test('should return false if token lookup throws', () async {
+      when(mockLocalDataSource.getToken()).thenThrow(Exception('Error'));
+
+      final result = await repository.isLoggedIn();
+
+      expect(result, false);
+      verify(mockLocalDataSource.getToken()).called(1);
+      verifyNever(mockLocalDataSource.getUser());
+    });
   });
 
   group('getAuthenticatedUser', () {
-    test('should return user when logged in', () async {
-      // Arrange
+    test('should return the cached user as an entity', () {
       final mockUser = UserModel(
         id: '1',
         email: 'test@test.com',
+        name: 'Test User',
         isVerified: true,
       );
       when(mockLocalDataSource.getUser()).thenReturn(mockUser);
-      when(
-        mockLocalDataSource.getToken(),
-      ).thenAnswer((_) async => 'valid_token');
 
-      // Act
-      final result = await repository.getAuthenticatedUser();
-
-      // Assert
-      expect(result, isNotNull);
-      expect(result?.id, '1');
-      expect(result?.email, 'test@test.com');
-    });
-
-    test('should return null when not logged in', () async {
-      // Arrange
-      when(mockLocalDataSource.getUser()).thenReturn(null);
-      when(mockLocalDataSource.getToken()).thenAnswer((_) async => null);
-
-      // Act
-      final result = await repository.getAuthenticatedUser();
-
-      // Assert
-      expect(result, isNull);
-    });
-
-    test('should return null on error', () async {
-      // Arrange
-      when(mockLocalDataSource.getUser()).thenReturn(null);
-      when(
-        mockLocalDataSource.getToken(),
-      ).thenAnswer((_) async => 'valid_token');
-
-      // Act
       final result = repository.getAuthenticatedUser();
 
-      // Assert
+      expect(result, isNotNull);
+      expect(result, isA<User>());
+      expect(result?.id, '1');
+      expect(result?.email, 'test@test.com');
+      expect(result?.name, 'Test User');
+      verify(mockLocalDataSource.getUser()).called(1);
+      verifyNever(mockLocalDataSource.getToken());
+    });
+
+    test('should return null when no cached user exists', () {
+      when(mockLocalDataSource.getUser()).thenReturn(null);
+
+      final result = repository.getAuthenticatedUser();
+
       expect(result, isNull);
+      verify(mockLocalDataSource.getUser()).called(1);
+      verifyNever(mockLocalDataSource.getToken());
+    });
+
+    test('should propagate errors from the local datasource', () {
+      when(mockLocalDataSource.getUser()).thenThrow(Exception('Error'));
+
+      expect(() => repository.getAuthenticatedUser(), throwsException);
+      verify(mockLocalDataSource.getUser()).called(1);
+      verifyNever(mockLocalDataSource.getToken());
     });
   });
 
   group('login', () {
-    test('should successfully login and return user', () async {
-      // Arrange
-      const credentials = LoginCredentials(
-        email: 'test@example.com',
-        password: 'password123',
-      );
-      const deviceName = 'iPhone 15';
-      final mockUserModel = UserModel(
-        id: '1',
-        email: 'test@example.com',
-        name: 'Test User',
-        isVerified: true,
-      );
-      final mockLoginUser = LoginUser(token: 'auth_token', user: mockUserModel);
+    test(
+      'should successfully login and cache the authenticated user',
+      () async {
+        final credentials = LoginCredentials(
+          email: 'test@example.com',
+          password: 'password123',
+        );
+        const deviceName = 'iPhone 15';
+        final mockUserModel = UserModel(
+          id: '1',
+          email: 'test@example.com',
+          name: 'Test User',
+          isVerified: true,
+        );
+        final mockLoginUser = LoginUserModel(
+          token: 'auth_token',
+          user: mockUserModel,
+        );
 
-      when(
-        mockDeviceServices.getDeviceModel(),
-      ).thenAnswer((_) async => deviceName);
-      when(
-        mockRemoteDataSource.login(any),
-      ).thenAnswer((_) async => mockLoginUser);
-      when(mockLocalDataSource.saveToken(any)).thenAnswer((_) async => {});
-      when(mockLocalDataSource.saveUser(any)).thenAnswer((_) async => {});
+        mockDeviceServices.deviceModel = deviceName;
+        when(
+          mockRemoteDataSource.login(any),
+        ).thenAnswer((_) async => mockLoginUser);
+        when(
+          mockLocalDataSource.saveToken('auth_token'),
+        ).thenAnswer((_) async {});
+        when(
+          mockLocalDataSource.saveUser(mockUserModel),
+        ).thenAnswer((_) async {});
 
-      // Act
-      final result = await repository.login(credentials);
+        final result = await repository.login(credentials);
 
-      // Assert
-      expect(result, isA<User>());
-      verify(mockDeviceServices.getDeviceModel()).called(1);
-      verify(mockRemoteDataSource.login(any)).called(1);
-      verify(mockLocalDataSource.saveToken('auth_token')).called(1);
-      verify(mockLocalDataSource.saveUser(mockUserModel)).called(1);
-    });
+        final verification = verify(mockRemoteDataSource.login(captureAny));
+        final capturedCredentials =
+            verification.captured.single as LoginCredentials;
+
+        expect(result, isA<User>());
+        expect(result.id, '1');
+        expect(result.email, 'test@example.com');
+        expect(capturedCredentials.email, credentials.email);
+        expect(capturedCredentials.password, credentials.password);
+        expect(capturedCredentials.deviceName, deviceName);
+        expect(mockDeviceServices.getDeviceModelCallCount, 1);
+        verification.called(1);
+        verify(mockLocalDataSource.saveToken('auth_token')).called(1);
+        verify(mockLocalDataSource.saveUser(mockUserModel)).called(1);
+      },
+    );
 
     test('should throw Failure when login fails', () async {
-      // Arrange
-      const credentials = LoginCredentials(
+      final credentials = LoginCredentials(
         email: 'test@example.com',
         password: 'wrong_password',
       );
       const deviceName = 'iPhone 15';
 
-      when(
-        mockDeviceServices.getDeviceModel(),
-      ).thenAnswer((_) async => deviceName);
+      mockDeviceServices.deviceModel = deviceName;
       when(
         mockRemoteDataSource.login(any),
-      ).thenThrow(ServerException('Invalid credentials'));
+      ).thenThrow(const ServerException('Invalid credentials'));
 
-      // Act & Assert
-      expect(repository.login(credentials), throwsA(isA<Failure>()));
+      await expectLater(repository.login(credentials), throwsA(isA<Failure>()));
+
+      expect(mockDeviceServices.getDeviceModelCallCount, 1);
+      verify(mockRemoteDataSource.login(any)).called(1);
+      verifyNever(mockLocalDataSource.saveToken(any));
+      verifyNever(mockLocalDataSource.saveUser(any));
     });
   });
 
   group('register', () {
-    test('should successfully register and return user', () async {
-      // Arrange
-      const credentials = RegisterCredentials(
-        name: 'Test User',
-        email: 'test@example.com',
-        password: 'password123',
-      );
-      const deviceName = 'iPhone 15';
-      final mockUserModel = UserModel(
-        id: '1',
-        email: 'test@example.com',
-        name: 'Test User',
-        isVerified: true,
-      );
-      final mockLoginUser = LoginUser(token: 'auth_token', user: mockUserModel);
+    test(
+      'should successfully register and cache the authenticated user',
+      () async {
+        const credentials = RegisterCredentials(
+          name: 'Test User',
+          email: 'test@example.com',
+          password: 'password123',
+        );
+        final mockUserModel = UserModel(
+          id: '1',
+          email: 'test@example.com',
+          name: 'Test User',
+          isVerified: true,
+        );
+        final mockLoginUser = LoginUserModel(
+          token: 'auth_token',
+          user: mockUserModel,
+        );
 
-      when(
-        mockDeviceServices.getDeviceModel(),
-      ).thenAnswer((_) async => deviceName);
-      when(
-        mockRemoteDataSource.register(any),
-      ).thenAnswer((_) async => mockLoginUser);
-      when(mockLocalDataSource.saveToken(any)).thenAnswer((_) async => {});
-      when(mockLocalDataSource.saveUser(any)).thenAnswer((_) async => {});
+        when(
+          mockRemoteDataSource.register(credentials),
+        ).thenAnswer((_) async => mockLoginUser);
+        when(
+          mockLocalDataSource.saveToken('auth_token'),
+        ).thenAnswer((_) async {});
+        when(
+          mockLocalDataSource.saveUser(mockUserModel),
+        ).thenAnswer((_) async {});
 
-      // Act
-      final result = await repository.register(credentials);
+        final result = await repository.register(credentials);
 
-      // Assert
-      expect(result, isA<User>());
-      verify(mockDeviceServices.getDeviceModel()).called(1);
-      verify(mockRemoteDataSource.register(any)).called(1);
-      verify(mockLocalDataSource.saveToken('auth_token')).called(1);
-      verify(mockLocalDataSource.saveUser(mockUserModel)).called(1);
-    });
+        expect(result, isA<User>());
+        expect(result.id, '1');
+        expect(result.email, 'test@example.com');
+        expect(mockDeviceServices.getDeviceModelCallCount, 0);
+        verify(mockRemoteDataSource.register(credentials)).called(1);
+        verify(mockLocalDataSource.saveToken('auth_token')).called(1);
+        verify(mockLocalDataSource.saveUser(mockUserModel)).called(1);
+      },
+    );
 
     test('should throw Failure when registration fails', () async {
-      // Arrange
       const credentials = RegisterCredentials(
         name: 'Test User',
         email: 'test@example.com',
         password: 'password123',
       );
-      const deviceName = 'iPhone 15';
 
       when(
-        mockDeviceServices.getDeviceModel(),
-      ).thenAnswer((_) async => deviceName);
-      when(
-        mockRemoteDataSource.register(any),
-      ).thenThrow(ServerException('Email already exists'));
+        mockRemoteDataSource.register(credentials),
+      ).thenThrow(const ServerException('Email already exists'));
 
-      // Act & Assert
-      expect(repository.register(credentials), throwsA(isA<Failure>()));
+      await expectLater(
+        repository.register(credentials),
+        throwsA(isA<Failure>()),
+      );
+
+      expect(mockDeviceServices.getDeviceModelCallCount, 0);
+      verify(mockRemoteDataSource.register(credentials)).called(1);
+      verifyNever(mockLocalDataSource.saveToken(any));
+      verifyNever(mockLocalDataSource.saveUser(any));
     });
   });
 
   group('logout', () {
     test('should logout from server and clear local data', () async {
-      // Arrange
-      when(mockRemoteDataSource.logout()).thenAnswer((_) async => {});
-      when(mockLocalDataSource.deleteUser()).thenAnswer((_) async => {});
+      when(mockRemoteDataSource.logout()).thenAnswer((_) async {});
+      when(mockLocalDataSource.deleteUser()).thenAnswer((_) async {});
 
-      // Act
       await repository.logout();
 
-      // Assert
       verify(mockRemoteDataSource.logout()).called(1);
       verify(mockLocalDataSource.deleteUser()).called(1);
     });
 
     test('should clear local data even when server logout fails', () async {
-      // Arrange
       when(
         mockRemoteDataSource.logout(),
-      ).thenThrow(ServerException('Network error'));
-      when(mockLocalDataSource.deleteUser()).thenAnswer((_) async => {});
+      ).thenThrow(const ServerException('Network error'));
+      when(mockLocalDataSource.deleteUser()).thenAnswer((_) async {});
 
-      // Act & Assert
-      expect(repository.logout(), throwsA(isA<Failure>()));
+      await expectLater(repository.logout(), throwsA(isA<Failure>()));
+
       verify(mockRemoteDataSource.logout()).called(1);
       verify(mockLocalDataSource.deleteUser()).called(1);
     });
@@ -330,28 +296,23 @@ void main() {
 
   group('deleteAccount', () {
     test('should delete account from server and clear local data', () async {
-      // Arrange
-      when(mockRemoteDataSource.deleteAccount()).thenAnswer((_) async => {});
-      when(mockLocalDataSource.deleteUser()).thenAnswer((_) async => {});
+      when(mockRemoteDataSource.deleteAccount()).thenAnswer((_) async {});
+      when(mockLocalDataSource.deleteUser()).thenAnswer((_) async {});
 
-      // Act
       await repository.deleteAccount();
 
-      // Assert
       verify(mockRemoteDataSource.deleteAccount()).called(1);
       verify(mockLocalDataSource.deleteUser()).called(1);
     });
 
-    test('should clear local data even when server delete fails', () async {
-      // Arrange
+    test('should not clear local data when server delete fails', () async {
       when(
         mockRemoteDataSource.deleteAccount(),
-      ).thenThrow(ServerException('Network error'));
+      ).thenThrow(const ServerException('Network error'));
+      when(mockLocalDataSource.deleteUser()).thenAnswer((_) async {});
 
-      when(mockLocalDataSource.deleteUser()).thenAnswer((_) async => {});
+      await expectLater(repository.deleteAccount(), throwsA(isA<Failure>()));
 
-      // Act & Assert
-      expect(repository.deleteAccount(), throwsA(isA<Failure>()));
       verify(mockRemoteDataSource.deleteAccount()).called(1);
       verifyNever(mockLocalDataSource.deleteUser());
     });

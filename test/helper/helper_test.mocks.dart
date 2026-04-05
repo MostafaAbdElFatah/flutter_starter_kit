@@ -1360,15 +1360,28 @@ class MockUserModel extends _i1.Mock implements _i35.UserModel {
   }
 
   @override
-  String get phone =>
+  String get id =>
       (super.noSuchMethod(
-            Invocation.getter(#phone),
+            Invocation.getter(#id),
+            returnValue: _i26.dummyValue<String>(this, Invocation.getter(#id)),
+          )
+          as String);
+
+  @override
+  String get email =>
+      (super.noSuchMethod(
+            Invocation.getter(#email),
             returnValue: _i26.dummyValue<String>(
               this,
-              Invocation.getter(#phone),
+              Invocation.getter(#email),
             ),
           )
           as String);
+
+  @override
+  bool get isVerified =>
+      (super.noSuchMethod(Invocation.getter(#isVerified), returnValue: false)
+          as bool);
 
   @override
   Map<String, dynamic> toJson() =>
@@ -2956,13 +2969,19 @@ class MockAuthRemoteDataSource extends _i1.Mock
           as _i11.Future<void>);
 
   @override
-  _i11.Future<void> register(_i47.RegisterCredentials? request) =>
+  _i11.Future<_i23.LoginUserModel> register(
+    _i47.RegisterCredentials? request,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#register, [request]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i11.Future<_i23.LoginUserModel>.value(
+              _FakeLoginUserModel_29(
+                this,
+                Invocation.method(#register, [request]),
+              ),
+            ),
           )
-          as _i11.Future<void>);
+          as _i11.Future<_i23.LoginUserModel>);
 
   @override
   _i11.Future<void> logout() =>
@@ -3011,13 +3030,14 @@ class MockAuthRepository extends _i1.Mock implements _i24.AuthRepository {
           as _i11.Future<void>);
 
   @override
-  _i11.Future<void> register(_i47.RegisterCredentials? credentials) =>
+  _i11.Future<_i12.User> register(_i47.RegisterCredentials? credentials) =>
       (super.noSuchMethod(
             Invocation.method(#register, [credentials]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i11.Future<_i12.User>.value(
+              _FakeUser_11(this, Invocation.method(#register, [credentials])),
+            ),
           )
-          as _i11.Future<void>);
+          as _i11.Future<_i12.User>);
 
   @override
   _i11.Future<bool> isLoggedIn() =>
@@ -3105,13 +3125,14 @@ class MockRegisterUseCase extends _i1.Mock implements _i51.RegisterUseCase {
           as _i24.AuthRepository);
 
   @override
-  _i11.Future<void> call(_i47.RegisterCredentials? credentials) =>
+  _i11.Future<_i12.User> call(_i47.RegisterCredentials? credentials) =>
       (super.noSuchMethod(
             Invocation.method(#call, [credentials]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i11.Future<_i12.User>.value(
+              _FakeUser_11(this, Invocation.method(#call, [credentials])),
+            ),
           )
-          as _i11.Future<void>);
+          as _i11.Future<_i12.User>);
 }
 
 /// A class which mocks [LogoutUseCase].

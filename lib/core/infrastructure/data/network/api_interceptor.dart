@@ -32,7 +32,12 @@ class APIInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // Add the current languageCode to the requests headers.
+    final appConfig = _environmentConfigService.currentApiConfig;
+
+    // Add the API key to the request headers.
+    options.headers['X-Api-Key'] = appConfig.apiKey;
+
+    // Add the current languageCode to the request headers.
     options.headers['Accept-Language'] = _appLocaleState.current.languageCode;
 
     // Add the authorization token if it exists.
