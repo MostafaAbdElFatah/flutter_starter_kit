@@ -1,11 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_starter_kit/core/core.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../../core/components/text_fields/phone_text_field.dart';
-import '../../../../core/components/text_fields/text_fields.dart';
-import '../../../../core/assets/localization_keys.dart';
+import '../../../../core/core.dart';
 import '../../../../core/utils/validators/password_validator.dart';
 import '../../../../core/utils/validators/user_name_validator.dart';
 import '../cubit/auth_cubit.dart';
