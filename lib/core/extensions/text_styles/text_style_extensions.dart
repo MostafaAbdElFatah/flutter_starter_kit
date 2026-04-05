@@ -20,7 +20,6 @@ extension AppTextStyle on TextStyle {
   ///
   /// Returns a [TextStyle] configured with the provided parameters.
   static TextStyle textStyle({
-    bool? setSp,
     Color? color,
     double? fontSize,
     FontWeights? fontWeight,
@@ -30,8 +29,7 @@ extension AppTextStyle on TextStyle {
       // Uses the [Color] instance on which this extension is called
       color: color,
       fontWeight: fontWeight?.weight,
-      // Applies scalable pixels if [setSp] is true
-      fontSize: (setSp ?? true) ? fontSize?.sp : fontSize,
+      fontSize: fontSize,
       // Defaults to a specific font family
       fontFamily: fontFamily?.name ?? FontFamily.primary.name,
     );
@@ -41,14 +39,12 @@ extension AppTextStyle on TextStyle {
   ///
   /// Thin is the least thick font weight.
   TextStyle thin({
-    bool? setSp,
     Color? color,
     double? fontSize,
     FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
-      setSp: setSp,
       fontSize: fontSize,
       fontFamily: fontFamily,
       fontWeight: FontWeights.thin,
@@ -59,14 +55,12 @@ extension AppTextStyle on TextStyle {
   ///
   /// Extra-light is slightly thicker than thin.
   TextStyle extraLight({
-    bool? setSp,
     Color? color,
     double? fontSize,
     FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
-      setSp: setSp,
       fontSize: fontSize,
       fontFamily: fontFamily,
       fontWeight: FontWeights.extraLight,
@@ -77,14 +71,12 @@ extension AppTextStyle on TextStyle {
   ///
   /// Light is thinner than regular.
   TextStyle light({
-    bool? setSp,
     Color? color,
     double? fontSize,
     FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
-      setSp: setSp,
       fontSize: fontSize,
       fontFamily: fontFamily,
       fontWeight: FontWeights.light,
@@ -95,14 +87,12 @@ extension AppTextStyle on TextStyle {
   ///
   /// Regular is the standard font weight.
   TextStyle regular({
-    bool? setSp,
     Color? color,
     double? fontSize,
     FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
-      setSp: setSp,
       fontSize: fontSize,
       fontFamily: fontFamily,
       fontWeight: FontWeights.regular,
@@ -113,14 +103,12 @@ extension AppTextStyle on TextStyle {
   ///
   /// Medium is slightly thicker than regular.
   TextStyle medium({
-    bool? setSp,
     Color? color,
     double? fontSize,
     FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
-      setSp: setSp,
       fontSize: fontSize,
       fontFamily: fontFamily,
       fontWeight: FontWeights.medium,
@@ -131,14 +119,12 @@ extension AppTextStyle on TextStyle {
   ///
   /// Semi-bold is thicker than medium.
   TextStyle semiBold({
-    bool? setSp,
     Color? color,
     double? fontSize,
     FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
-      setSp: setSp,
       fontSize: fontSize,
       fontFamily: fontFamily,
       fontWeight: FontWeights.semiBold,
@@ -149,14 +135,12 @@ extension AppTextStyle on TextStyle {
   ///
   /// Bold is thicker than semi-bold.
   TextStyle bold({
-    bool? setSp,
     Color? color,
     double? fontSize,
     FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
-      setSp: setSp,
       fontSize: fontSize,
       fontFamily: fontFamily,
       fontWeight: FontWeights.bold,
@@ -167,14 +151,12 @@ extension AppTextStyle on TextStyle {
   ///
   /// Extra-bold is thicker than bold.
   TextStyle extraBold({
-    bool? setSp,
     Color? color,
     double? fontSize,
     FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
-      setSp: setSp,
       fontSize: fontSize,
       fontFamily: fontFamily,
       fontWeight: FontWeights.extraBold,
@@ -185,14 +167,12 @@ extension AppTextStyle on TextStyle {
   ///
   /// Black is the most thick font weight.
   TextStyle black({
-    bool? setSp,
     Color? color,
     double? fontSize,
     FontFamily? fontFamily,
   }) {
     return textStyle(
       color: color,
-      setSp: setSp,
       fontSize: fontSize,
       fontFamily: fontFamily,
       fontWeight: FontWeights.black,

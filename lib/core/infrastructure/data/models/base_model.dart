@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import '../../domain/entities/base_entity.dart';
 
-class BaseModel extends BaseEntity {
+class BaseModel<T> extends BaseEntity<T> {
   const BaseModel({
     required super.id,
     required super.name,
@@ -24,7 +24,9 @@ class BaseModel extends BaseEntity {
         "name": name,
       };
 
-  BaseEntity toEntity() => BaseEntity(id: id, name: name);
+  // BaseEntity<T> toEntity<T>() => BaseEntity<T>(id: id, name: name);
+
+  Type toEntity() => BaseEntity<T>(id: id, name: name) as Type;
 
   @override
   String toString() => jsonEncode(toJson());

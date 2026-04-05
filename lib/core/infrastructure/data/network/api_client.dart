@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
-
 import 'api_endpoint.dart';
 
 typedef APICallback<T> =
-    T Function(int? statusCode, String? message, Map<String, dynamic> json);
+T Function(int? statusCode, String? message, Map<String, dynamic> json);
 
 /// An abstract base class that defines the interface for an API client.
 ///
@@ -19,12 +18,12 @@ abstract class APIClient {
   /// [queryParameters] contains optional query parameters appended to the URL.
   /// Returns a [Response] from the server.
   Future<Model> get<Model>(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? queryParameters,
-    required APICallback mapper,
-  });
+      String path, {
+        dynamic data,
+        Map<String, dynamic>? headers,
+        Map<String, dynamic>? queryParameters,
+        required APICallback mapper,
+      });
 
   /// Sends an HTTP POST request to the given [path].
   ///
@@ -33,12 +32,12 @@ abstract class APIClient {
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
   Future<Model> post<Model>(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? queryParameters,
-    required APICallback mapper,
-  });
+      String path, {
+        dynamic data,
+        Map<String, dynamic>? headers,
+        Map<String, dynamic>? queryParameters,
+        required APICallback mapper,
+      });
 
   /// Sends an HTTP PUT request to the given [path].
   ///
@@ -47,12 +46,12 @@ abstract class APIClient {
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
   Future<Model> put<Model>(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? queryParameters,
-    required APICallback mapper,
-  });
+      String path, {
+        dynamic data,
+        Map<String, dynamic>? headers,
+        Map<String, dynamic>? queryParameters,
+        required APICallback mapper,
+      });
 
   /// Sends an HTTP DELETE request to the given [path].
   ///
@@ -61,12 +60,12 @@ abstract class APIClient {
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
   Future<Model> delete<Model>(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? queryParameters,
-    required APICallback mapper,
-  });
+      String path, {
+        dynamic data,
+        Map<String, dynamic>? headers,
+        Map<String, dynamic>? queryParameters,
+        required APICallback mapper,
+      });
 
   /// Sends an HTTP PATCH request to the given [path].
   ///
@@ -75,12 +74,12 @@ abstract class APIClient {
   /// [queryParameters] contains optional query parameters.
   /// Returns a [Response] from the server.
   Future<Model> patch<Model>(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? queryParameters,
-    required APICallback mapper,
-  });
+      String path, {
+        dynamic data,
+        Map<String, dynamic>? headers,
+        Map<String, dynamic>? queryParameters,
+        required APICallback mapper,
+      });
 
   /// Sends a custom [RequestOptions] request and parses the response.
   ///
@@ -88,9 +87,9 @@ abstract class APIClient {
   /// Returns an instance of [Model] decoded from the response.
   /// Throws a [NetworkFailure] or decoding error if the request fails or parsing fails.
   Future<Model> request<Model>(
-    RequestOptions options, {
-    required APICallback mapper,
-  });
+      RequestOptions options, {
+        required APICallback mapper,
+      });
 
   /// Fetches data from a specific [APIEndpoint] and decodes it into [Model].
   ///

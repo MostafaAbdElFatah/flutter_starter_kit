@@ -1,4 +1,4 @@
-
+import 'package:flutter/services.dart';
 
 import '../../core.dart';
 
@@ -53,10 +53,16 @@ class CustomTextField extends StatelessWidget {
   final bool expands;
 
   /// A widget to display before the input area, typically an icon.
-  final Widget? prefixIcon;
+  final Widget? prefix;
 
   /// A widget to display after the input area, typically an icon.
-  final Widget? suffixIcon;
+  final Widget? suffix;
+
+  /// A icon to display before the input area, typically an icon.
+  final IconData? prefixIcon;
+
+  /// A to to display after the input area, typically an icon.
+  final IconData? suffixIcon;
 
   /// The file path of an SVG icon to display before the input area.
   final String? prefixSVGIcon;
@@ -72,6 +78,9 @@ class CustomTextField extends StatelessWidget {
 
   /// The type of keyboard to use for editing the text.
   final TextInputType? keyboardType;
+
+  /// Optional input formatters to apply to the underlying [TextFormField].
+  final List<TextInputFormatter>? inputFormatters;
 
   /// Callback invoked when the text field is tapped.
   final GestureTapCallback? onTap;
@@ -109,6 +118,9 @@ class CustomTextField extends StatelessWidget {
   /// Validation logic for the input.
   final String? Function(String? value)? validator;
 
+  final EdgeInsetsGeometry? prefixPadding;
+  final EdgeInsetsGeometry? suffixPadding;
+
   // ================================
   //        Constructor
   // ================================
@@ -124,6 +136,8 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     this.hintText,
+    this.prefix,
+    this.suffix,
     this.prefixIcon,
     this.suffixIcon,
     this.prefixSVGIcon,
@@ -136,6 +150,7 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.keyboardType,
+    this.inputFormatters,
     this.maxLines,
     this.minLines,
     this.textInputAction,
@@ -153,13 +168,15 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     this.expands = false,
     this.obscuringCharacter = '*',
+    this.prefixPadding,
+    this.suffixPadding,
   });
 
   // ================================
   //            Build
   // ================================
 
-  /// Builds the [CustomTextField] widget.
+  /// Builds the [CustomTextField]
   ///
   /// This method constructs a [TextFormField] with the provided configuration,
   /// applying default styles and handling the display of prefix/suffix icons,
@@ -170,6 +187,8 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     // Enforce maxLines to 1 if obscureText is true to satisfy Flutter's constraints.
     final effectiveMaxLines = obscureText ? 1 : maxLines;
+    final suffixIcon = _suffix(context);
+    final prefixIcon = _prefix(context);
 
     return TextFormField(
       controller: controller,
@@ -182,6 +201,7 @@ class CustomTextField extends StatelessWidget {
       obscureText: obscureText,
       obscuringCharacter: obscuringCharacter,
       keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       readOnly: readOnly ?? false,
       autofillHints: autofillHints,
       textInputAction: textInputAction,
@@ -192,7 +212,10 @@ class CustomTextField extends StatelessWidget {
       onTapOutside: onTapOutside,
       onFieldSubmitted: onFieldSubmitted,
       onEditingComplete: onEditingComplete,
-      style: AppColors.black.regular(fontSize: 16),
+      style: AppColors.white.regular(fontSize: 16),
+      textAlignVertical: prefixIcon != null || suffixIcon != null
+          ? TextAlignVertical.center
+          : null,
       decoration:
           decoration ??
           InputDecoration(
@@ -201,12 +224,20 @@ class CustomTextField extends StatelessWidget {
             labelText: labelText,
             floatingLabelBehavior: floatingLabelBehavior,
             hintStyle: hintStyle,
-            suffixIcon: suffixSVGIcon != null
-                ? SvgIcon(svgAssetPath: suffixSVGIcon!)
-                : suffixIcon,
-            prefixIcon: prefixSVGIcon != null
-                ? SvgIcon(svgAssetPath: prefixSVGIcon!)
-                : prefixIcon,
+            suffixIcon: suffixIcon,
+            prefixIcon: prefixIcon,
+            // Add contentPadding to center the text vertically
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 12,
+              // vertical: 5, // Adjust this value as needed
+            ),
+            // Reduce the constraints of the prefix icon container
+            // prefixIconConstraints: BoxConstraints(
+            //   minHeight: 40,
+            // ),
+            // suffixIconConstraints: BoxConstraints(
+            //   minHeight: 40,
+            // ),
           ),
     );
   }
@@ -214,6 +245,36 @@ class CustomTextField extends StatelessWidget {
   // ================================
   //     Private Helper Methods
   // ================================
+
+  Widget? _suffix(BuildContext context) {
+    if (suffixSVGIcon != null) {
+      return SvgIcon(
+        svgAssetPath: suffixSVGIcon!,
+        padding: suffixPadding ?? EdgeInsets.all(10),
+      );
+    } else if (suffixIcon != null) {
+      return Padding(
+        padding: suffixPadding ?? EdgeInsets.all(10),
+        child: Icon(suffixIcon),
+      );
+    }
+    return suffix;
+  }
+
+  Widget? _prefix(BuildContext context) {
+    if (prefixSVGIcon != null) {
+      return SvgIcon(
+        svgAssetPath: prefixSVGIcon!,
+        padding: prefixPadding ?? EdgeInsets.all(10),
+      );
+    } else if (prefixIcon != null) {
+      return Padding(
+        padding: prefixPadding ?? EdgeInsets.all(10),
+        child: Icon(prefixIcon),
+      );
+    }
+    return prefix;
+  }
 
   // Add any private helper methods here if needed in the future.
 }

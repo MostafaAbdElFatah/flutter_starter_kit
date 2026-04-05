@@ -7,8 +7,7 @@ class TypedAPIResponse<T> extends APIResponse {
     required super.statusCode,
     super.message,
     super.errors,
-    super.links,
-    super.meta,
+    super.pagination,
   });
 
   TypedAPIResponse.fromBase({
@@ -31,7 +30,7 @@ class TypedAPIResponse<T> extends APIResponse {
   }) {
     final rawData = json['data'];
     return TypedAPIResponse.fromBase(
-      data: itemFromJson(rawData as Map<String, dynamic>),
+      data: rawData is Map<String, dynamic> ? itemFromJson(rawData) : null,
       base: APIResponse.fromJson(statusCode, message, json),
     );
   }

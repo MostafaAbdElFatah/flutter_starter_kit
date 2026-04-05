@@ -3,7 +3,7 @@ class PaginationParams {
   final int? limit;
 
   const PaginationParams({
-    this.page ,
+    this.page,
     this.limit,
   });
 

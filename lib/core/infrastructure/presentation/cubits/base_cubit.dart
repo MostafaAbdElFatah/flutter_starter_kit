@@ -16,7 +16,8 @@ abstract class BaseCubit<StateType> extends Cubit<StateType>
   static T of<T extends Cubit<dynamic>>(
     BuildContext context, {
     bool listen = false,
-  }) => BlocProvider.of<T>(context, listen: listen);
+  }) =>
+      BlocProvider.of<T>(context, listen: listen);
 
   /// Emits [state] only if the cubit is still open.
   ///

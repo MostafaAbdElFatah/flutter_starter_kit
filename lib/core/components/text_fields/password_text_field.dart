@@ -35,9 +35,6 @@ class PasswordTextField extends StatefulWidget {
   /// The style to apply to the hint text.
   final TextStyle? hintStyle;
 
-  /// If true, displays an SVG icon as the prefix icon instead of the default [prefixIcon].
-  final bool isPrefixIcon;
-
   /// The action button to display on the keyboard (e.g., next, done).
   final TextInputAction? textInputAction;
 
@@ -94,7 +91,6 @@ class PasswordTextField extends StatefulWidget {
     this.onTapOutside,
     this.onEditingComplete,
     this.onFieldSubmitted,
-    this.isPrefixIcon = false,
     this.filled,
   });
 
@@ -180,15 +176,13 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       hintStyle: widget.hintStyle,
       labelText: widget.labelText,
       floatingLabelBehavior: widget.floatingLabelBehavior,
-      prefixIcon: !widget.isPrefixIcon
-          ? null
-          : Icon(widget.prefixIcon, size: widget.iconSize),
-      suffixIcon: IconButton(
+      prefixIcon: widget.prefixIcon,
+      suffix: IconButton(
         icon: Icon(
           _isPasswordHidden ? Icons.visibility_off : Icons.visibility,
           color: _isFocused
               ? Theme.of(context).primaryColor
-              : AppColors.silver, // Change color based on focus
+              : AppColors.whiteSmoke, // Change color based on focus
         ),
         onPressed: _togglePasswordVisibility,
       ),

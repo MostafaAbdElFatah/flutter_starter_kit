@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/widgets.dart';
 
 import 'device.dart';
@@ -11,13 +9,16 @@ class ResponsiveScope extends InheritedWidget {
     super.key,
     required BuildContext context,
     required super.child,
-  }) : layout = ResponsiveLayout(context: context) {
+  }) : layout = ResponsiveLayout(context) {
     _current = layout;
   }
 
   static ResponsiveLayout get current {
-    _current ??= ResponsiveLayout();
-    return _current!;
+    final layout = _current;
+    if (layout == null) {
+      throw FlutterError('ResponsiveScope not initialized');
+    }
+    return layout;
   }
 
   static ResponsiveLayout of(BuildContext context) {
@@ -67,13 +68,13 @@ class ResponsiveLayout {
         _textScale = textScale;
 
   // Factory constructor
-  factory ResponsiveLayout({
-    BuildContext? context,
-    Size baseSize = _defaultBaseSize,
-  }) {
-    final screen =
-    context != null ? MediaQuery.sizeOf(context) : _logicalScreenSize();
+  factory ResponsiveLayout(
+      BuildContext context, {
+        Size baseSize = _defaultBaseSize,
+      }) {
+    final screen = MediaQuery.sizeOf(context);
     final device = Device.fromWidth(screen.shortestSide);
+
     return ResponsiveLayout._(
       screenSize: screen,
       baseSize: baseSize,
@@ -95,6 +96,10 @@ class ResponsiveLayout {
   double w(double v) => v * _widthScale;
   double h(double v) => v * _heightScale;
   double sp(double v) => v * _textScale;
+
+
+  /// Scales a font size value
+  int pageLimit(int value) => isTablet ? (value * 1.5).round() : value;
 
   // Padding helpers
   // Creates uniform padding scaled to screen width
@@ -161,11 +166,6 @@ class ResponsiveLayout {
       Device.desktop || Device.web => ratio.clamp(1.2, 1.45),
     };
   }
-
-  static Size _logicalScreenSize() {
-    final view = PlatformDispatcher.instance.views.first;
-    return view.physicalSize / view.devicePixelRatio;
-  }
 }
 
 // static double _calcTextScale(Size screen, Size base) {
@@ -203,6 +203,7 @@ extension ResponsiveNum on num {
   double get w => _layout.w(toDouble());
   double get h => _layout.h(toDouble());
   double get sp => _layout.sp(toDouble());
+  int get pageLimit => _layout.pageLimit(toInt());
 
   SizedBox get spacingWidth => _layout.spacingWidth(toDouble());
   SizedBox get spacingHeight => _layout.spacingHeight(toDouble());

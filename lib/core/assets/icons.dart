@@ -22,8 +22,9 @@ abstract class SvgIcons {
   // common
   // ===========================================================================
 
-  static const critical = "$_commonPath/critical.svg";
+  static const dangerWaring = "assets/icons/payments/danger_waring.svg";
   static const shieldFail = "$_commonPath/shield-fail.svg";
+  static const whiteShieldFail = "assets/icons/payments/white-shield-fail.svg";
   static const shieldFailBorder = "$_commonPath/shield-fail-border.svg";
   static const success = "$_commonPath/success.svg";
   static const success2 = "$_commonPath/success2.svg";
@@ -32,4 +33,5 @@ abstract class SvgIcons {
   static const starBorder = "$_commonPath/star_border.svg";
   static const whiteStar = "$_commonPath/white-star.svg";
   static const yellowStar = "$_commonPath/yellow-star.svg";
+
 }

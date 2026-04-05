@@ -1,5 +1,6 @@
 part of 'failure.dart';
 
+
 /// An exception for unexpected errors that are not covered by other exception types.
 ///
 /// This can be used as a fallback for unknown errors.
@@ -16,7 +17,7 @@ class UnexpectedException extends Failure {
 /// An exception that occurs when there is a problem with the server.
 ///
 /// This is thrown when the server returns a non-200 status code, or if
-/// there's an issue with the network connection during a server request.
+/// there's an issue with the network connection during a server requests.
 class ServerException extends Failure {
   const ServerException(super.message);
 

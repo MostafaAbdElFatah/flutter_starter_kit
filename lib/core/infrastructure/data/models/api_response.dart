@@ -12,17 +12,15 @@ class APIResponse extends Equatable {
     required this.statusCode,
     this.message,
     this.errors,
-    this.links,
-    this.meta,
+    this.pagination,
   });
 
   /// 👇 allows children to reuse parsed base response
   APIResponse.fromBase(APIResponse base)
-    : statusCode = base.statusCode,
-      message = base.message,
-      links = base.links,
-      meta = base.meta,
-      errors = base.errors;
+      : statusCode = base.statusCode,
+        message = base.message,
+        errors = base.errors,
+        pagination = base.pagination;
 
   /// The HTTP status code of the response.
   final int statusCode;
@@ -30,11 +28,7 @@ class APIResponse extends Equatable {
   /// A message from the server, which can be for success or error scenarios.
   final String? message;
 
-  /// Pagination links, if available.
-  final Links? links;
-
-  /// Metadata about the response, including pagination details.
-  final Meta? meta;
+  final Pagination? pagination;
 
   /// A map of validation errors or other detailed error messages.
   final Map<String, dynamic>? errors;
@@ -51,37 +45,35 @@ class APIResponse extends Equatable {
     int? statusCode,
     String? message,
     Map<String, dynamic>? errors,
-    Links? links,
-    Meta? meta,
-  }) => APIResponse(
-    statusCode: statusCode ?? this.statusCode,
-    message: message ?? this.message,
-    errors: errors ?? this.errors,
-    links: links ?? this.links,
-    meta: meta ?? this.meta,
-  );
+    Pagination? pagination,
+  }) =>
+      APIResponse(
+        statusCode: statusCode ?? this.statusCode,
+        message: message ?? this.message,
+        pagination: pagination ?? this.pagination,
+        errors: errors ?? this.errors,
+      );
 
   /// Creates an [APIResponse] from a JSON object.
   factory APIResponse.fromJson(
     int? statusCode,
     String? message,
     Map<String, dynamic> json,
-  ) => APIResponse(
-    statusCode: statusCode ?? 0,
-    message: json["message"] ?? message,
-    errors: json["errors"],
-    links: json["links"] == null ? null : Links.fromJson(json["links"]),
-    meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-  );
+  ) =>
+      APIResponse(
+        statusCode: statusCode ?? 0,
+        message: json["message"] ?? message,
+        errors: json["errors"],
+        pagination: json["pagination"] == null ? null : Pagination.fromJson(json["pagination"]),
+      );
 
   /// Converts this [APIResponse] into a JSON object.
   Map<String, dynamic> toJson() => {
-    "statusCode": statusCode,
-    "message": message,
-    "links": links?.toJson(),
-    "meta": meta?.toJson(),
-    "errors": errors,
-  };
+        "statusCode": statusCode,
+        "message": message,
+        "pagination": pagination?.toJson(),
+        "errors": errors,
+      };
 
   /// A computed property that returns a consolidated error message.
   ///
@@ -99,192 +91,109 @@ class APIResponse extends Equatable {
             return value;
           }
           return 'N/A';
-        }),
+        })
     ];
-    final Iterable<String> nonEmptyParts = parts.where(
-      (part) => part.isNotEmpty,
-    );
+    final Iterable<String> nonEmptyParts =
+        parts.where((part) => part.isNotEmpty);
     final String combinedContent = nonEmptyParts.join('\n');
     return combinedContent;
   }
 
   @override
-  List<Object?> get props => [statusCode, message, links, meta, errors];
+  List<Object?> get props => [statusCode, message, errors];
 }
 
-/// Represents pagination links in an API response.
-class Links extends Equatable {
-  const Links({this.first, this.last, this.prev, this.next});
+class Pagination extends Equatable {
+  const Pagination({
+    required this.currentPage,
+    required this.lastPage,
+    required this.perPage,
+    required this.total,
+    required this.from,
+    required this.to,
+    required this.path,
+    required this.firstPageUrl,
+    required this.lastPageUrl,
+    required this.nextPageUrl,
+    required this.prevPageUrl,
+  });
 
-  /// The URL for the first page of results.
-  final String? first;
+  final int currentPage;
+  final int lastPage;
+  final int perPage;
+  final int total;
+  final int from;
+  final int to;
+  final String? path;
+  final String? firstPageUrl;
+  final String? lastPageUrl;
+  final String? nextPageUrl;
+  final String? prevPageUrl;
 
-  /// The URL for the last page of results.
-  final String? last;
+  Pagination copyWith({
+    int? currentPage,
+    int? lastPage,
+    int? perPage,
+    int? total,
+    int? from,
+    int? to,
+    String? path,
+    String? firstPageUrl,
+    String? lastPageUrl,
+    String? nextPageUrl,
+    String? prevPageUrl,
+  }) {
+    return Pagination(
+      currentPage: currentPage ?? this.currentPage,
+      lastPage: lastPage ?? this.lastPage,
+      perPage: perPage ?? this.perPage,
+      total: total ?? this.total,
+      from: from ?? this.from,
+      to: to ?? this.to,
+      path: path ?? this.path,
+      firstPageUrl: firstPageUrl ?? this.firstPageUrl,
+      lastPageUrl: lastPageUrl ?? this.lastPageUrl,
+      nextPageUrl: nextPageUrl ?? this.nextPageUrl,
+      prevPageUrl: prevPageUrl ?? this.prevPageUrl,
+    );
+  }
 
-  /// The URL for the previous page of results.
-  final String? prev;
+  factory Pagination.fromJson(Map<String, dynamic> json){
+    return Pagination(
+      currentPage: json["current_page"],
+      lastPage: json["last_page"],
+      perPage: json["per_page"],
+      total: json["total"],
+      from: json["from"],
+      to: json["to"],
+      path: json["path"],
+      firstPageUrl: json["first_page_url"],
+      lastPageUrl: json["last_page_url"],
+      nextPageUrl: json["next_page_url"],
+      prevPageUrl: json["prev_page_url"],
+    );
+  }
 
-  /// The URL for the next page of results.
-  final String? next;
-
-  /// Creates a copy of this [Links] but with the given fields replaced with the new values.
-  Links copyWith({String? first, String? last, String? prev, String? next}) =>
-      Links(
-        first: first ?? this.first,
-        last: last ?? this.last,
-        prev: prev ?? this.prev,
-        next: next ?? this.next,
-      );
-
-  /// Creates a [Links] object from a JSON map.
-  factory Links.fromJson(Map<String, dynamic> json) => Links(
-    first: json["first"],
-    last: json["last"],
-    prev: json["prev"],
-    next: json["next"],
-  );
-
-  /// Converts this [Links] object into a JSON map.
   Map<String, dynamic> toJson() => {
-    "first": first,
-    "last": last,
-    "prev": prev,
-    "next": next,
+    "current_page": currentPage,
+    "last_page": lastPage,
+    "per_page": perPage,
+    "total": total,
+    "from": from,
+    "to": to,
+    "path": path,
+    "first_page_url": firstPageUrl,
+    "last_page_url": lastPageUrl,
+    "next_page_url": nextPageUrl,
+    "prev_page_url": prevPageUrl,
   };
 
   @override
-  List<Object?> get props => [first, last, prev, next];
-}
-
-/// Represents metadata for a paginated API response.
-class Meta extends Equatable {
-  const Meta({
-    this.currentPage,
-    this.from,
-    this.lastPage,
-    this.links = const [],
-    this.path,
-    this.perPage,
-    this.to,
-    this.total,
-  });
-
-  /// The current page number.
-  final int? currentPage;
-
-  /// The index of the first item on the current page.
-  final int? from;
-
-  /// The last page number.
-  final int? lastPage;
-
-  /// A list of links for pagination.
-  final List<Link> links;
-
-  /// The base path for the API endpoint.
-  final String? path;
-
-  /// The number of items per page.
-  final int? perPage;
-
-  /// The index of the last item on the current page.
-  final int? to;
-
-  /// The total number of items across all pages.
-  final int? total;
-
-  /// Creates a copy of this [Meta] but with the given fields replaced with the new values.
-  Meta copyWith({
-    int? currentPage,
-    int? from,
-    int? lastPage,
-    List<Link>? links,
-    String? path,
-    int? perPage,
-    int? to,
-    int? total,
-  }) => Meta(
-    currentPage: currentPage ?? this.currentPage,
-    from: from ?? this.from,
-    lastPage: lastPage ?? this.lastPage,
-    links: links ?? this.links,
-    path: path ?? this.path,
-    perPage: perPage ?? this.perPage,
-    to: to ?? this.to,
-    total: total ?? this.total,
-  );
-
-  /// Creates a [Meta] object from a JSON map.
-  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-    currentPage: json["current_page"],
-    from: json["from"],
-    lastPage: json["last_page"],
-    links: json.containsKey('links') && json['links'] != null
-        ? List<Link>.from(json["links"]!.map((x) => Link.fromJson(x)))
-        : [],
-    path: json["path"],
-    perPage: json["per_page"],
-    to: json["to"],
-    total: json["total"],
-  );
-
-  /// Converts this [Meta] object into a JSON map.
-  Map<String, dynamic> toJson() => {
-    "current_page": currentPage,
-    "from": from,
-    "last_page": lastPage,
-    "links": links.map((x) => x.toJson()).toList(),
-    "path": path,
-    "per_page": perPage,
-    "to": to,
-    "total": total,
-  };
+  String toString(){
+    return "$currentPage, $lastPage, $perPage, $total, $from, $to, $path, $firstPageUrl, $lastPageUrl, $nextPageUrl, $prevPageUrl, ";
+  }
 
   @override
   List<Object?> get props => [
-    currentPage,
-    from,
-    lastPage,
-    links,
-    path,
-    perPage,
-    to,
-    total,
-  ];
-}
-
-/// Represents a single link within the pagination metadata.
-class Link extends Equatable {
-  const Link({this.url, required this.label, required this.active});
-
-  /// The URL for the link, which can be null (e.g., for "..." separators).
-  final String? url;
-
-  /// The label for the link (e.g., "1", "Next &raquo;").
-  final String label;
-
-  /// Whether this link represents the active/current page.
-  final bool active;
-
-  /// Creates a copy of this [Link] but with the given fields replaced with the new values.
-  Link copyWith({String? url, String? label, bool? active}) => Link(
-    url: url ?? this.url,
-    label: label ?? this.label,
-    active: active ?? this.active,
-  );
-
-  /// Creates a [Link] object from a JSON map.
-  factory Link.fromJson(Map<String, dynamic> json) =>
-      Link(url: json["url"], label: json["label"], active: json["active"]);
-
-  /// Converts this [Link] object into a JSON map.
-  Map<String, dynamic> toJson() => {
-    "url": url,
-    "label": label,
-    "active": active,
-  };
-
-  @override
-  List<Object?> get props => [url, label, active];
+    currentPage, lastPage, perPage, total, from, to, path, firstPageUrl, lastPageUrl, nextPageUrl, prevPageUrl, ];
 }

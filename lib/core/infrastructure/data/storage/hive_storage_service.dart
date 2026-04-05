@@ -1,6 +1,5 @@
 import 'dart:convert';
-import 'package:hive_ce/hive_ce.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../utils/log.dart';
@@ -86,7 +85,12 @@ class HiveStorageService implements StorageService {
     if (jsonString == null || jsonString.isEmpty) return defaultValue;
     try {
       return fromJson(jsonDecode(jsonString));
-    } catch (e) {
+    } catch (error, stackTrace) {
+      Log.fatalError(
+        "Failed to decode JSON for key $key",
+        error: error,
+        stackTrace: stackTrace,
+      );
       return defaultValue;
     }
   }
@@ -108,7 +112,12 @@ class HiveStorageService implements StorageService {
           .map<T>((item) => fromJson(item as Map<String, dynamic>))
           .toList();
       return decodedList;
-    } catch (e) {
+    } catch (error, stackTrace) {
+      Log.fatalError(
+        "Failed to decode JSON for key $key",
+        error: error,
+        stackTrace: stackTrace,
+      );
       return defaultValue ?? [];
     }
   }

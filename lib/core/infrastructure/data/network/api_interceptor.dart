@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
+import 'package:injectable/injectable.dart' hide Environment;
 
-import '../../../../features/environments_dev/data/storage/environment_config_service.dart';
+import '../../../env/env_data.dart';
 import '../../../utils/app_locale.dart';
 import '../storage/secure_storage_service.dart';
 import 'api_endpoint.dart';
@@ -14,30 +14,25 @@ import 'api_endpoint.dart';
 
 @lazySingleton
 class APIInterceptor extends Interceptor {
+  final AppConfig _appConfig;
   final AppLocaleState _appLocaleState;
   final SecureStorageService _secureStorage;
-  final EnvironmentConfigService _environmentConfigService;
 
   /// Creates a new [APIInterceptor] instance.
   APIInterceptor({
+    required AppConfig appConfig,
     required AppLocaleState appLocaleState,
     required SecureStorageService secureStorage,
-    required EnvironmentConfigService environmentConfigService,
-  }) : _appLocaleState = appLocaleState,
-       _secureStorage = secureStorage,
-       _environmentConfigService = environmentConfigService;
+  })  : _appLocaleState = appLocaleState,
+        _secureStorage = secureStorage,
+        _appConfig = appConfig;
 
   @override
   Future<void> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final appConfig = _environmentConfigService.currentApiConfig;
-
-    // Add the API key to the request headers.
-    options.headers['X-Api-Key'] = appConfig.apiKey;
-
-    // Add the current languageCode to the request headers.
+    // Add the current languageCode to the requests headers.
     options.headers['Accept-Language'] = _appLocaleState.current.languageCode;
 
     // Add the authorization token if it exists.
@@ -50,7 +45,7 @@ class APIInterceptor extends Interceptor {
 
     if (endpoint != null && endpoint.isCompositeUrl) {
       // BASE + ENDPOINT -> inject the current base URL from ConfigService
-      options.baseUrl = _environmentConfigService.currentApiConfig.baseUrl;
+      options.baseUrl = _appConfig.baseUrl;
     }
     options.extra.remove('endpoint');
     super.onRequest(options, handler);

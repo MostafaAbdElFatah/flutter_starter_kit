@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart' as ui;
 import 'package:flutter/material.dart' hide TextDirection;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
+
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
@@ -20,7 +21,7 @@ enum AppLocale {
   Locale get locale => Locale(code);
 
   // Configuration Constants
-  static final String path = 'assets/translations';
+  static const String path = 'assets/translations';
 
   // Default locale
   static final Locale defaultLocale = AppLocale.arabic.locale;
@@ -59,10 +60,19 @@ enum AppLocale {
   static ui.TextDirection getTextDirection(Locale locale) =>
       isRTL(locale) ? ui.TextDirection.rtl : ui.TextDirection.ltr;
 
-  // Logic to toggle language
-  static void toggle(BuildContext context) async {
-    void rebirth() => Phoenix.rebirth(context);
+  static Future<void> set(BuildContext context, AppLocale locale) async {
+    await context.setLocale(locale.locale);
+  }
 
+  static Future<void> setByIsArabic(
+    BuildContext context,
+    bool isArabic,
+  ) async {
+    await set(context, isArabic ? AppLocale.arabic : AppLocale.english);
+  }
+
+  // Logic to toggle language
+  static Future<void> toggle(BuildContext context) async {
     final currentLocale = context.locale;
 
     // Find current enum index
@@ -72,16 +82,24 @@ enum AppLocale {
 
     // Calculate next index (circular)
     final nextIndex = (currentIndex + 1) % AppLocale.values.length;
-    final newLocale = AppLocale.values[nextIndex].locale;
+    final newLocale = AppLocale.values[nextIndex];
 
     // Apply changes
-    // Apply the changes
-    await context.setLocale(newLocale);
-
-    // Note: EasyLocalization automatically rebuilds the widget tree.
-    // You likely do NOT need Phoenix.rebirth unless you need to reset singletons.
-    rebirth();
+    await set(context, newLocale);
   }
+}
+
+/// Extension on [Locale] that provides convenience
+/// getters for commonly used language checks.
+extension LocaleX on Locale {
+  /// Returns `true` if this locale matches the Arabic app locale.
+  bool get isArabic => _matches(AppLocale.arabic);
+
+  /// Returns `true` if this locale matches the English app locale.
+  bool get isEnglish => _matches(AppLocale.english);
+
+  /// Compares this locale with the given [AppLocale].
+  bool _matches(AppLocale appLocale) => languageCode == appLocale.code;
 }
 
 /// Extension methods for easier locale management
@@ -92,10 +110,22 @@ extension LocaleConfigExtension on BuildContext {
   /// Checks if current locale is RTL
   bool get isRTL => AppLocale.isRTL(currentLocale);
 
+  /// Returns `true` if this locale matches the Arabic app locale.
+  bool get isArabic => currentLocale.isArabic;
+
+  /// Returns `true` if this locale matches the English app locale.
+  bool get isEnglish => currentLocale.isEnglish;
+
   /// Gets text direction for current locale
   ui.TextDirection get textDirection =>
       AppLocale.getTextDirection(currentLocale);
 
   // Logic to toggle language
-  void toggleLanguage() => AppLocale.toggle(this);
+  void toggleLanguage() {
+    AppLocale.toggle(this);
+  }
+
+  void setLanguage(bool isArabic) {
+    AppLocale.setByIsArabic(this, isArabic);
+  }
 }

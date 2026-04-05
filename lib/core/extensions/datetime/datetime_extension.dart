@@ -59,11 +59,6 @@ extension DateTimeToString on DateTime {
       difference(toDate ?? DateTime.now()).inDays;
 }
 
-/// Convenience formatting for an integer interpreted as seconds.
-extension IntToString on int {
-  String get formattedString => Duration(seconds: this).secondFormattedString;
-}
-
 /// String formatting helpers for [Duration].
 extension DurationToString on Duration {
   /// Returns a clock-like string: `DD HH:MM:SS` when days > 0,

@@ -23,7 +23,6 @@ extension CustomTextStylesThemeExtensions on Color {
   ///
   /// Returns a [TextStyle] configured with the provided parameters.
   TextStyle textStyle({
-    bool? setSp,
     double? fontSize,
     FontWeights? fontWeight,
     FontFamily? fontFamily,
@@ -31,7 +30,6 @@ extension CustomTextStylesThemeExtensions on Color {
     return AppTextStyle.textStyle(
       // Uses the [Color] instance on which this extension is called
       color: this,
-      setSp: setSp,
       fontSize: fontSize,
       fontWeight: fontWeight,
       // Defaults to a specific font family
@@ -43,39 +41,33 @@ extension CustomTextStylesThemeExtensions on Color {
   ///
   /// Thin is the least thick font weight.
   TextStyle thin({
-    bool? setSp,
     double? fontSize,
     FontFamily? fontFamily,
   }) =>
       textStyle(
         fontSize: fontSize,
-        setSp: setSp,
         fontFamily: fontFamily,
         fontWeight: FontWeights.thin,
       );
 
   /// Creates a [TextStyle] with an extra-light font weight.
   TextStyle extraLight({
-    bool? setSp,
     double? fontSize,
     FontFamily? fontFamily,
   }) =>
       textStyle(
         fontSize: fontSize,
-        setSp: setSp,
         fontFamily: fontFamily,
         fontWeight: FontWeights.extraLight,
       );
 
   /// Creates a [TextStyle] with a light font weight.
   TextStyle light({
-    bool? setSp,
     double? fontSize,
     FontFamily? fontFamily,
   }) =>
       textStyle(
         fontSize: fontSize,
-        setSp: setSp,
         fontFamily: fontFamily,
         fontWeight: FontWeights.light,
       );
@@ -84,65 +76,55 @@ extension CustomTextStylesThemeExtensions on Color {
   ///
   /// Regular is the standard font weight.
   TextStyle regular({
-    bool? setSp,
     double? fontSize,
     FontFamily? fontFamily,
   }) =>
       textStyle(
         fontSize: fontSize,
-        setSp: setSp,
         fontFamily: fontFamily,
         fontWeight: FontWeights.regular,
       );
 
   /// Creates a [TextStyle] with a medium font weight.
   TextStyle medium({
-    bool? setSp,
     double? fontSize,
     FontFamily? fontFamily,
   }) =>
       textStyle(
         fontSize: fontSize,
-        setSp: setSp,
         fontFamily: fontFamily,
         fontWeight: FontWeights.medium,
       );
 
   /// Creates a [TextStyle] with a semi-bold font weight.
   TextStyle semiBold({
-    bool? setSp,
     double? fontSize,
     FontFamily? fontFamily,
   }) =>
       textStyle(
         fontSize: fontSize,
-        setSp: setSp,
         fontFamily: fontFamily,
         fontWeight: FontWeights.semiBold,
       );
 
   /// Creates a [TextStyle] with a bold font weight.
   TextStyle bold({
-    bool? setSp,
     double? fontSize,
     FontFamily? fontFamily,
   }) =>
       textStyle(
         fontSize: fontSize,
-        setSp: setSp,
         fontFamily: fontFamily,
         fontWeight: FontWeights.bold,
       );
 
   /// Creates a [TextStyle] with an extra-bold font weight.
   TextStyle extraBold({
-    bool? setSp,
     double? fontSize,
     FontFamily? fontFamily,
   }) =>
       textStyle(
         fontSize: fontSize,
-        setSp: setSp,
         fontFamily: fontFamily,
         fontWeight: FontWeights.extraBold,
       );
@@ -151,13 +133,11 @@ extension CustomTextStylesThemeExtensions on Color {
   ///
   /// Black is the most thick font weight.
   TextStyle black({
-    bool? setSp,
     double? fontSize,
     FontFamily? fontFamily,
   }) =>
       textStyle(
         fontSize: fontSize,
-        setSp: setSp,
         fontFamily: fontFamily,
         fontWeight: FontWeights.black,
       );

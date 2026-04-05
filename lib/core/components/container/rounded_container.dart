@@ -17,8 +17,11 @@ class RoundedContainer extends StatelessWidget {
   /// The child widget to be placed inside the container.
   final Widget? child;
 
-  /// The radius of the rounded corners. Defaults to `14`.
-  final double? borderRadius;
+  /// The uniform corner radius. Defaults to 14 if [customBorderRadius] is not provided.
+  final double? radius;
+
+  /// Allows for non-uniform radiuses (e.g., only top corners). Overrides [radius].
+  final BorderRadiusGeometry? customBorderRadius;
 
   /// The background color of the container. This is a required parameter.
   final Color background;
@@ -52,27 +55,29 @@ class RoundedContainer extends StatelessWidget {
 
   /// Creates a [RoundedContainer].
   ///
-  /// - [background]: The background color of the container (required).
-  /// - [child]: The widget placed inside the container.
-  /// - [width]: The width of the container.
-  /// - [height]: The height of the container.
-  /// - [borderRadius]: The radius of the rounded corners (default: `14`).
-  /// - [applyBorder]: Whether to apply a border to the container (default: `false`).
-  /// - [border]: The border around the container (optional).
-  /// - [borderColor]: The color of the border (default: `AppColors.silver`).
-  /// - [borderWidth]: The width of the border (default: `1`).
-  /// - [margin]: The margin around the container.
-  /// - [padding]: The padding inside the container.
-  /// - [alignment]: The alignment of the child within the container (default: [Alignment.center]).
-  /// - [applyShadow]: Whether to apply a shadow to the container (default: `false`).
-  /// - [boxShadow]: The shadow effect for the container (optional). Only applied if [applyShadow] is `true`.
+  /// * [background]: The background color of the container (required).
+  /// * [child]: The widget placed inside the container.
+  /// * [width]: The width of the container.
+  /// * [height]: The height of the container.
+  /// * [radius]: The radius of the rounded corners (default: `14`).
+  /// * [customBorderRadius]: Allows for specific or non-uniform radiuses, overrides [radius].
+  /// * [applyBorder]: Whether to apply a default border to the container (default: `false`).
+  /// * [border]: A custom [BoxBorder]. If provided, [applyBorder] is ignored.
+  /// * [borderColor]: The color of the border (default: `AppColors.silver`).
+  /// * [borderWidth]: The width of the border (default: `1`).
+  /// * [margin]: The margin around the outside of the container.
+  /// * [padding]: The padding inside the container.
+  /// * [alignment]: The alignment of the child within the container (default: [Alignment.center]).
+  /// * [applyShadow]: Whether to apply a default shadow to the container (default: `false`).
+  /// * [boxShadow]: A custom list of [BoxShadow]. If provided, [applyShadow] is ignored.
   const RoundedContainer({
     super.key,
     required this.background,
     this.child,
     this.width,
     this.height,
-    this.borderRadius,
+    this.radius,
+    this.customBorderRadius,
     this.applyBorder = false,
     this.border,
     this.borderColor,
@@ -107,32 +112,34 @@ class RoundedContainer extends StatelessWidget {
         // Sets the background color of the container
         color: background,
         // Defines the shape and border of the container
-        borderRadius: BorderRadius.circular(borderRadius ?? 14),
+        borderRadius: customBorderRadius ?? BorderRadius.circular(radius ?? 14),
 
-        border: applyBorder
-            ? border ??
-                Border.all(
-                  // Sets the border width (default: 1)
-                  width: borderWidth ?? 1,
-                  // Sets the border color (default: AppColors.silver)
-                  color: borderColor ?? AppColors.silver,
-                )
-            : null,
-        boxShadow: applyShadow
-            ? boxShadow ??
-                [
-                  BoxShadow(
-                    // Shadow color with opacity
-                    color: Colors.grey.withValues(alpha: 0.5),
-                    // Vertical offset for shadow
-                    offset: const Offset(0, 3),
-                    // How soft the shadow is
-                    blurRadius: 7,
-                    // Spread of the shadow
-                    spreadRadius: 0,
-                  ),
-                ]
-            : null,
+        border:
+            border ??
+            (applyBorder
+                ? Border.all(
+                    // Sets the border width (default: 1)
+                    width: borderWidth ?? 1,
+                    // Sets the border color (default: AppColors.silver)
+                    color: borderColor ?? AppColors.silver,
+                  )
+                : null),
+        boxShadow:
+            boxShadow ??
+            (applyShadow
+                ? [
+                    BoxShadow(
+                      // Shadow color with opacity
+                      color: Colors.grey.withValues(alpha: 0.5),
+                      // Vertical offset for shadow
+                      offset: const Offset(0, 3),
+                      // How soft the shadow is
+                      blurRadius: 7,
+                      // Spread of the shadow
+                      spreadRadius: 0,
+                    ),
+                  ]
+                : null),
       ),
 
       // Places the child widget inside the container

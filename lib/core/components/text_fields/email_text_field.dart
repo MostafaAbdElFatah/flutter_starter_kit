@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-
-import '../../assets/localization_keys.dart';
+import '../../core.dart';
 import '../../utils/validators/email_validator.dart';
-import 'custom_text_field.dart';
 
 /// A specialized text field widget tailored for email input.
 ///
@@ -20,10 +17,16 @@ class EmailTextField extends StatelessWidget {
   final bool? readOnly;
 
   /// A widget to display before the input area, typically an icon.
-  final Widget? prefixIcon;
+  final Widget? prefix;
 
   /// A widget to display after the input area, typically an icon.
-  final Widget? suffixIcon;
+  final Widget? suffix;
+
+  /// A icon to display before the input area, typically an icon.
+  final IconData? prefixIcon;
+
+  /// A to to display after the input area, typically an icon.
+  final IconData? suffixIcon;
 
   /// The file path of an SVG icon to display before the input area.
   final String? prefixSVGIcon;
@@ -43,6 +46,8 @@ class EmailTextField extends StatelessWidget {
   /// The action button to display on the keyboard.
   final TextInputAction? textInputAction;
 
+  final String? Function(String? value)? validator;
+
   // ================================
   //        Constructor
   // ================================
@@ -54,6 +59,8 @@ class EmailTextField extends StatelessWidget {
   const EmailTextField({
     super.key,
     this.readOnly,
+    this.prefix,
+    this.suffix,
     this.prefixIcon,
     this.suffixIcon,
     this.prefixSVGIcon,
@@ -62,6 +69,7 @@ class EmailTextField extends StatelessWidget {
     this.onChanged,
     this.controller,
     this.textInputAction,
+    this.validator,
   });
 
   // ================================
@@ -81,12 +89,13 @@ class EmailTextField extends StatelessWidget {
       onSaved: onSaved,
       onChanged: onChanged,
       controller: controller,
+      prefix: prefix,
+      suffix: suffix,
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
-      prefixSVGIcon: prefixSVGIcon,
       suffixSVGIcon: suffixSVGIcon,
+      //prefixSVGIcon: SvgIcons.email,
       hintText: LocalizationKeys.email,
-      labelText: LocalizationKeys.email,
       textInputAction: textInputAction,
       keyboardType: TextInputType.emailAddress,
       autofillHints: const [
@@ -95,13 +104,13 @@ class EmailTextField extends StatelessWidget {
         AutofillHints.telephoneNumber,
         AutofillHints.telephoneNumberDevice,
       ],
-      validator: EmailValidator.validateEmail,
+      validator: validator ?? EmailValidator.validateEmail,
     );
   }
 
-  // ================================
-  //     Private Helper Methods
-  // ================================
+// ================================
+//     Private Helper Methods
+// ================================
 
-  // Add any private helper methods here if needed in the future.
+// Add any private helper methods here if needed in the future.
 }

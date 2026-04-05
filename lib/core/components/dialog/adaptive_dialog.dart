@@ -1,5 +1,6 @@
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../common/dialog_guard.dart';
 import '../../core.dart';
 
 /// Configuration options for [AdaptiveDialog].
@@ -133,8 +134,12 @@ class AdaptiveDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final contentWidth = context.isMobile
+        ? double.infinity
+        : MediaQuery.sizeOf(context).width / 2;
     return Center(
       child: LiquidGlassContainer(
+        width: contentWidth,
         margin: EdgeInsets.all(20.w),
         padding: EdgeInsets.all(20.w),
         child: Material(
@@ -176,9 +181,15 @@ class AdaptiveDialog extends StatelessWidget {
                   options.onCancelPressed != null)
                 Row(
                   children: [
-                    Expanded(flex: 3, child: _buildConfirmButton(context)),
+                    Expanded(
+                      flex: 3,
+                      child: _buildConfirmButton(context),
+                    ),
                     SizedBox(width: 10.w),
-                    Expanded(flex: 2, child: _buildCancelButton(context)),
+                    Expanded(
+                      flex: 2,
+                      child: _buildCancelButton(context),
+                    ),
                   ],
                 )
               else
@@ -215,7 +226,11 @@ class AdaptiveDialog extends StatelessWidget {
 
     if (options.icon != null) {
       final double size = options.imageWidth ?? options.imageHeight ?? 80.w;
-      return Icon(options.icon, size: size, color: AppColors.white);
+      return Icon(
+        options.icon,
+        size: size,
+        color: AppColors.white,
+      );
     }
 
     return SvgPicture.asset(
@@ -227,7 +242,8 @@ class AdaptiveDialog extends StatelessWidget {
 
   Widget _buildConfirmButton(BuildContext context) => FlexibleElevatedButton(
     padding: EdgeInsets.zero,
-    onPressed: options.onConfirmPressed ?? () => Navigator.of(context).pop(),
+    onPressed:
+    options.onConfirmPressed ?? () => Navigator.of(context).pop(),
     label: options.confirmLabel ?? LocalizationKeys.ok,
     backgroundColor: options.confirmBackground,
     buttonStyle: options.confirmButtonStyle,
@@ -266,23 +282,25 @@ extension AlertTypeX on AlertType {
   String get assetPath {
     return switch (this) {
       AlertType.success => SvgIcons.success,
-      AlertType.failure => SvgIcons.shieldFail,
+      AlertType.failure => SvgIcons.whiteShieldFail,
       AlertType.warning => SvgIcons.warning,
-      AlertType.critical => SvgIcons.critical,
+      AlertType.critical => SvgIcons.dangerWaring,
     };
   }
 }
-
 /// Extension methods for [BuildContext] to simplify showing design-system dialogs.
 extension DialogX on BuildContext {
   /// Displays a customized dialog based on the app's design system.
   ///
   /// This is the base method used by other dialog helpers in this extension.
   Future<T?> openAdaptiveDialog<T>(
-    AdaptiveDialogOptions options, {
-    bool barrierDismissible = true,
-  }) => openDialog<T>(
-    barrierDismissible: barrierDismissible,
-    child: AdaptiveDialog(options: options),
-  );
+      AdaptiveDialogOptions options, {
+        bool barrierDismissible = true,
+        OpenMode mode = OpenMode.drops,
+      }) =>
+      openDialog<T>(
+        mode: mode,
+        barrierDismissible: barrierDismissible,
+        child: AdaptiveDialog(options: options),
+      );
 }

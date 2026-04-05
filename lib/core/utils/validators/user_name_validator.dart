@@ -46,6 +46,29 @@ class UsernameValidator {
     return null;
   }
 
+  static String? validateUsernameLength(
+      String? value, {
+        bool required = true,
+        int minLength = 3,
+        int maxLength = 20,
+      }) {
+    final username = value?.trim();
+
+    if (username == null || username.isEmpty) {
+      return required ? LocalizationKeys.usernameRequired : null;
+    }
+
+    if (username.length < minLength) {
+      return LocalizationKeys.usernameMinLength(minLength);
+    }
+
+    if (username.length > maxLength) {
+      return LocalizationKeys.usernameMaxLength(maxLength);
+    }
+
+    return null;
+  }
+
   static String? validateUsernameOptional(
       String? value, {
         bool required = true,

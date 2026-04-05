@@ -39,8 +39,8 @@ abstract class RemoteDataSource {
   const RemoteDataSource({
     required APIClient apiClient,
     required NetworkConnectivity connectivity,
-  }) : _apiClient = apiClient,
-       _connectivity = connectivity;
+  })  : _apiClient = apiClient,
+        _connectivity = connectivity;
 
   /// Ensures that the device has internet connectivity.
   ///
@@ -114,15 +114,16 @@ abstract class RemoteDataSource {
   Future<TypedAPIResponse<T>> getSingle<T>({
     required APIEndpoint target,
     required T Function(Map<String, dynamic>) mapper,
-  }) => fetch<TypedAPIResponse<T>>(
-    target: target,
-    mapper: (statusCode, message, json) => TypedAPIResponse<T>.fromJson(
-      statusCode: statusCode,
-      message: message,
-      json: json,
-      itemFromJson: mapper,
-    ),
-  );
+  }) =>
+      fetch<TypedAPIResponse<T>>(
+        target: target,
+        mapper: (statusCode, message, json) => TypedAPIResponse<T>.fromJson(
+          statusCode: statusCode,
+          message: message,
+          json: json,
+          itemFromJson: mapper,
+        ),
+      );
 
   /// Fetches a list of items from the specified [APIEndpoint] and decodes each into [T].
   ///
@@ -149,13 +150,14 @@ abstract class RemoteDataSource {
   Future<ListAPIResponse<T>> getList<T>({
     required APIEndpoint target,
     required T Function(Map<String, dynamic>) mapper,
-  }) => fetch<ListAPIResponse<T>>(
-    target: target,
-    mapper: (statusCode, message, json) => ListAPIResponse<T>.fromJson(
-      statusCode: statusCode,
-      message: message,
-      json: json,
-      itemFromJson: mapper,
-    ),
-  );
+  }) =>
+      fetch<ListAPIResponse<T>>(
+        target: target,
+        mapper: (statusCode, message, json) => ListAPIResponse<T>.fromJson(
+          statusCode: statusCode,
+          message: message,
+          json: json,
+          itemFromJson: mapper,
+        ),
+      );
 }

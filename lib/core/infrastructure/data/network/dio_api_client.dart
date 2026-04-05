@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-
 import '../../../assets/localization_keys.dart';
 import '../../../utils/log.dart';
-import '../errors/failure.dart';
 import 'api_client.dart';
 import 'api_endpoint.dart';
+import '../errors/failure.dart';
 import 'api_response_parser.dart';
 
 /// A concrete implementation of [ApiService] using the [Dio] package.
@@ -20,8 +19,8 @@ class DioAPIClient implements APIClient {
   /// - Parameter dio: A [Dio] instance for making HTTP requests.
   /// - Parameter connectivity: A [NetworkConnectivity] instance for  network connectivity.
   DioAPIClient(Dio dio, APIResponseParser parser)
-    : _dio = dio,
-      _parser = parser;
+      : _dio = dio,
+        _parser = parser;
 
   /// Sends an HTTP GET request to the given [path].
   ///
@@ -36,16 +35,17 @@ class DioAPIClient implements APIClient {
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
     required APICallback mapper,
-  }) => request(
-    RequestOptions(
-      path: path,
-      data: data,
-      headers: headers,
-      method: HttpMethod.get.rawValue,
-      queryParameters: queryParameters,
-    ),
-    mapper: mapper,
-  );
+  }) =>
+      request(
+        RequestOptions(
+          path: path,
+          data: data,
+          headers: headers,
+          method: HttpMethod.get.rawValue,
+          queryParameters: queryParameters,
+        ),
+        mapper: mapper,
+      );
 
   /// Sends an HTTP POST request to the given [path].
   ///
@@ -60,16 +60,17 @@ class DioAPIClient implements APIClient {
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
     required APICallback mapper,
-  }) => request(
-    RequestOptions(
-      path: path,
-      data: data,
-      headers: headers,
-      method: HttpMethod.post.rawValue,
-      queryParameters: queryParameters,
-    ),
-    mapper: mapper,
-  );
+  }) =>
+      request(
+        RequestOptions(
+          path: path,
+          data: data,
+          headers: headers,
+          method: HttpMethod.post.rawValue,
+          queryParameters: queryParameters,
+        ),
+        mapper: mapper,
+      );
 
   /// Sends an HTTP PUT request to the given [path].
   ///
@@ -84,16 +85,17 @@ class DioAPIClient implements APIClient {
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
     required APICallback mapper,
-  }) => request(
-    RequestOptions(
-      path: path,
-      data: data,
-      headers: headers,
-      method: HttpMethod.put.rawValue,
-      queryParameters: queryParameters,
-    ),
-    mapper: mapper,
-  );
+  }) =>
+      request(
+        RequestOptions(
+          path: path,
+          data: data,
+          headers: headers,
+          method: HttpMethod.put.rawValue,
+          queryParameters: queryParameters,
+        ),
+        mapper: mapper,
+      );
 
   /// Sends an HTTP DELETE request to the given [path].
   ///
@@ -108,16 +110,17 @@ class DioAPIClient implements APIClient {
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
     required APICallback mapper,
-  }) => request(
-    RequestOptions(
-      path: path,
-      data: data,
-      headers: headers,
-      method: HttpMethod.delete.rawValue,
-      queryParameters: queryParameters,
-    ),
-    mapper: mapper,
-  );
+  }) =>
+      request(
+        RequestOptions(
+          path: path,
+          data: data,
+          headers: headers,
+          method: HttpMethod.delete.rawValue,
+          queryParameters: queryParameters,
+        ),
+        mapper: mapper,
+      );
 
   /// Sends an HTTP PATCH request to the given [path].
   ///
@@ -132,16 +135,17 @@ class DioAPIClient implements APIClient {
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
     required APICallback mapper,
-  }) => request(
-    RequestOptions(
-      path: path,
-      data: data,
-      headers: headers,
-      method: HttpMethod.patch.rawValue,
-      queryParameters: queryParameters,
-    ),
-    mapper: mapper,
-  );
+  }) =>
+      request(
+        RequestOptions(
+          path: path,
+          data: data,
+          headers: headers,
+          method: HttpMethod.patch.rawValue,
+          queryParameters: queryParameters,
+        ),
+        mapper: mapper,
+      );
 
   /// Fetches data from a specific [APIEndpoint] and decodes it into [Model].
   ///

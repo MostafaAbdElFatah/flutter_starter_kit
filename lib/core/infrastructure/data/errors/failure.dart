@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../../assets/localization_keys.dart';
-
 part 'exceptions.dart';
 
 class Failure extends Equatable implements Exception {
@@ -19,7 +18,7 @@ class Failure extends Equatable implements Exception {
 
   /// Returns a localized string representation of the failure for display.
   @override
-  String toString() => message.tr();
+  String toString() => "Exception: ${message.tr()}";
 
   /// Handles a dynamic error and converts it into a standardized [Exception].
   ///
@@ -103,7 +102,7 @@ enum FailureType implements Equatable, Failure {
   /// Represents a 5xx Internal Server Error.
   internetServerError(LocalizationKeys.internalServerError),
 
-  /// Represents a user-cancelled request.
+  /// Represents a user-cancelled requests.
   cancel(LocalizationKeys.cancelError),
 
   /// Represents a connection timeout error.
@@ -146,5 +145,5 @@ enum FailureType implements Equatable, Failure {
 
   /// Returns a localized string representation of the failure for display.
   @override
-  String toString() => message.tr();
+  String toString() => "Failure: ${message.tr()}";
 }

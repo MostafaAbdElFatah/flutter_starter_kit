@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/pagination_result.dart';
 
-
 abstract class ListPaginatedState<T> extends Equatable {
   final List<T> items;
   final int currentPage;
@@ -22,7 +21,6 @@ abstract class ListPaginatedState<T> extends Equatable {
   })  : items = result.items,
         currentPage = result.currentPage,
         hasMore = result.currentPage != result.totalPages;
-
 
   int get nextPage => currentPage + 1;
 

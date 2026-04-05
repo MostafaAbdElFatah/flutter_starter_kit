@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Extension methods for [BuildContext]
@@ -9,27 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 /// - Keyboard control
 /// - Opening web pages and map apps
 extension ContextExtension on BuildContext {
-  /// Default design size based on device type
-  /// Tablet → 1200 x 1920
-  /// Phone  → 432 x 932
-  Size get defaultSize =>
-      isTablet ? const Size(1200, 1920) : const Size(432, 932);
-
-  /// Opens a web page inside an in-app browser
-  Future<void> openWebPage(String url) {
-    return FlutterWebBrowser.openWebPage(url: url);
-  }
-
-  /// Returns `true` if the device is considered a tablet
-  /// based on aspect ratio and shortest side
-  bool get isTablet {
-    final mediaQuery = MediaQuery.of(this);
-    final aspectRatio = mediaQuery.size.aspectRatio;
-
-    return aspectRatio < 1.6 && mediaQuery.size.shortestSide >= 600;
-  }
-
-  /// Hides the soft keyboard if it is currently open
   void hideKeyboard() {
     final currentFocus = FocusScope.of(this);
 

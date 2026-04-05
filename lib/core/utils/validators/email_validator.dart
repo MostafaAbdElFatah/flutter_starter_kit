@@ -30,9 +30,9 @@ class EmailValidator {
   }
 
   static String? validateEmailOptional(
-      String? value, {
-        bool required = true,
-      }) {
+    String? value, {
+    bool required = false,
+  }) {
     if (value == null || value.trim().isEmpty) {
       return required ? LocalizationKeys.emailRequired : null;
     }

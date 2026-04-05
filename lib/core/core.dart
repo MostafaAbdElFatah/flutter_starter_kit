@@ -1,6 +1,5 @@
 export 'package:flutter/material.dart';
 export 'package:go_router/go_router.dart';
-export 'package:easy_localization/easy_localization.dart' hide TextDirection;
 
 // ================================
 //            assets
@@ -24,20 +23,19 @@ export 'constants/app_colors.dart';
 // ================================
 //            extensions
 // ================================
-export 'extensions/extensions_export.dart';
+export 'extensions/extensions.dart';
 
 export 'extensions/datetime/datetime_extension.dart';
 export 'extensions/text_styles/color_text_style_extensions.dart';
 
 // ================================
-//            router
+//            extensions
 // ================================
-
 export 'router/app_router.dart';
-
 
 // ================================
 //            utils
 // ================================
 
+export 'utils/app_locale.dart';
 export 'utils/responsive/responsive_layout.dart';

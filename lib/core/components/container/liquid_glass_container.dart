@@ -25,7 +25,7 @@ class LabelLiquidGlassContainer extends StatelessWidget {
       gradient: gradient,
       borderColor: borderColor,
       padding:
-          padding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Text(
         label,
         style: style ?? AppColors.white.regular(fontSize: 12),
@@ -46,6 +46,12 @@ class LiquidGlassContainer extends StatelessWidget {
   final DecorationImage? image;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
+
+  /// The width of the container. If not specified, it will adapt to its child or parent constraints.
+  final double? width;
+
+  /// The height of the container. If not specified, it will adapt to its child or parent constraints.
+  final double? height;
   const LiquidGlassContainer({
     super.key,
     required this.child,
@@ -56,9 +62,11 @@ class LiquidGlassContainer extends StatelessWidget {
     this.borderRadius = 20,
     this.borderColor,
     this.gradient,
-    this.padding,
-    this.margin,
     this.image,
+    this.width,
+    this.height,
+    this.margin,
+    this.padding,
   });
 
   @override
@@ -70,6 +78,8 @@ class LiquidGlassContainer extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
           child: Container(
+            width: width,
+            height: height,
             padding: padding,
             decoration: BoxDecoration(
               image: image,

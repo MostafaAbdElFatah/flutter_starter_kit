@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../services/parser/payload_parser.dart';
 import '../../../utils/log.dart';
 import 'api_client.dart';
-import '../../../services/parser/payload_parser.dart';
 
 abstract class APIResponseParser {
   Future<T> parse<T>({

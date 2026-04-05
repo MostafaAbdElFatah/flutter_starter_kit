@@ -6,6 +6,7 @@ import 'package:hive_ce_flutter/adapters.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/environments_dev/data/storage/environment_config_service.dart';
+import '../common/dialog_guard.dart';
 import '../utils/app_locale.dart';
 import 'injection.config.dart';
 
@@ -22,6 +23,23 @@ Future<GetIt> configureDependencies() async {
 /// A global service locator instance for dependency injection.
 final _getIt = GetIt.instance;
 
+/// A top-level convenience function for resolving dependencies from the service locator.
+///
+/// Example:
+/// ```dart
+/// final myService = get<MyService>();
+/// ```
+T get<T extends Object>() => _getIt<T>();
+
+/// Returns whether a dependency of type [T] is currently registered.
+bool isRegistered<T extends Object>() => _getIt.isRegistered<T>();
+
+/// Global accessor for [DialogGuard] used across the app.
+///
+/// Provides a centralized way to manage dialogs in YourSaudiGuide
+/// without requiring BuildContext access every time.
+DialogGuard get dialogGuard => _getIt<DialogGuard>();
+
 /// A convenient global accessor for the application's [AppLocaleState].
 ///
 /// This provides easy access to locate without needing to
@@ -34,14 +52,6 @@ AppLocaleState get appLocaleState => _getIt<AppLocaleState>();
 /// repeatedly look up the service from the service locator.
 EnvironmentConfigService get environmentConfigService =>
     _getIt<EnvironmentConfigService>();
-
-/// A top-level convenience function for resolving dependencies from the service locator.
-///
-/// Example:
-/// ```dart
-/// final myService = get<MyService>();
-/// ```
-T get<T extends Object>() => _getIt<T>();
 
 /// A module for registering third-party dependencies that injectable cannot
 /// construct on its own.
