@@ -1,3 +1,25 @@
+abstract class DiskCacheService extends StorageService {}
+
+abstract class MemoryCacheService extends StorageService {
+  /// Deletes all entries whose keys start with the given [prefix].
+  ///
+  /// This is useful when keys are grouped by a namespace or feature,
+  /// allowing multiple related entries to be removed in a single call.
+  ///
+  /// If [prefix] is empty, the method should typically perform no action
+  /// to avoid unintentionally deleting all stored values.
+  ///
+  /// Example:
+  /// ```dart
+  /// storage.deleteByPrefix('user_');
+  /// ```
+  ///
+  /// This would remove keys like:
+  /// - `user_1`
+  /// - `user_profile`
+  /// - `user_settings`
+  void deleteByPrefix(String prefix);
+}
 
 /// A typedef for a callback function that converts JSON data into a specified type [T].
 ///
@@ -11,10 +33,8 @@
 typedef StorageCallback<T> = T Function(Map<String, dynamic> json);
 
 /// A typedef for a callback function that converts iterable elements into a specified type [T].
-typedef StorageIterableCallback<T> = T Function(
-    Iterable elements, {
-    bool growable,
-    });
+typedef StorageIterableCallback<T> =
+    T Function(Iterable elements, {bool growable});
 
 /// Abstract class for general local storage functionality.
 ///
@@ -42,19 +62,13 @@ abstract class StorageService {
   /// Stores a [value] associated with the given [key] in storage.
   ///
   /// Use this for plain data types such as [int], [String], [bool], [List], or [Map].
-  Future<void> put({
-    required dynamic key,
-    required dynamic value,
-  });
+  Future<void> put({required dynamic key, required dynamic value});
 
   /// Stores a JSON-encoded [value] associated with the given [key] in storage.
   ///
   /// This is useful for saving custom objects (e.g., domain models) after they
   /// have been converted to a JSON map.
-  Future<void> putJson({
-    required dynamic key,
-    required dynamic value,
-  });
+  Future<void> putJson({required dynamic key, required dynamic value});
 
   /// Retrieves a value associated with the given [key] from storage.
   ///
@@ -68,7 +82,7 @@ abstract class StorageService {
   T? getJson<T>({
     required dynamic key,
     required StorageCallback<T> fromJson,
-    dynamic defaultValue,
+    T? defaultValue,
   });
 
   /// Retrieves a list of JSON objects associated with [key] and converts each to type [T].
@@ -78,6 +92,18 @@ abstract class StorageService {
   List<T> getList<T>({
     required dynamic key,
     required StorageCallback<T> fromJson,
-    dynamic defaultValue,
+    List<T>? defaultValue,
   });
+
+  /// Removes **all stored entries** from the storage.
+  ///
+  /// After calling this method, the storage will be empty.
+  /// This operation is asynchronous and should be awaited
+  /// to ensure the storage has been fully cleared.
+  ///
+  /// Example:
+  /// ```dart
+  /// await storage.clear();
+  /// ```
+  Future<void> clear();
 }

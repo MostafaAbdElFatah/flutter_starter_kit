@@ -10,8 +10,8 @@ import 'storage_service.dart';
 ///
 /// This service encrypts the Hive box to protect sensitive data. It depends on a
 /// [SecureStorageService] to persist the encryption key securely.
-@Injectable(as: StorageService)
-class HiveStorageService implements StorageService {
+@Injectable(as: DiskCacheService)
+class HiveStorageService implements DiskCacheService {
   late Box _box;
   final SecureStorageService _secureStorage;
   static const String _boxName = 'app_data';
@@ -79,7 +79,7 @@ class HiveStorageService implements StorageService {
   T? getJson<T>({
     required dynamic key,
     required StorageCallback<T> fromJson,
-    dynamic defaultValue,
+    T? defaultValue,
   }) {
     final String? jsonString = _box.get(key);
     if (jsonString == null || jsonString.isEmpty) return defaultValue;
@@ -99,7 +99,7 @@ class HiveStorageService implements StorageService {
   List<T> getList<T>({
     required dynamic key,
     required StorageCallback<T> fromJson,
-    dynamic defaultValue,
+    List<T>? defaultValue,
   }) {
     final String? jsonString = _box.get(key);
     if (jsonString == null || jsonString.isEmpty) return defaultValue ?? [];
@@ -121,4 +121,6 @@ class HiveStorageService implements StorageService {
       return defaultValue ?? [];
     }
   }
+
+  clear() => _box.clear();
 }
