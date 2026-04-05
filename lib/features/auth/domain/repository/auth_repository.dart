@@ -23,7 +23,7 @@ abstract class AuthRepository {
   ///
   /// Returns a [Future] that completes with either an [Exception] if the
   /// operation fails, or a void if the registration is successful.
-  Future<void> register(RegisterCredentials credentials);
+  Future<User> register(RegisterCredentials credentials);
 
   /// Checks if a user is currently logged in.
   ///

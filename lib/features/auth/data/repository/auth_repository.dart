@@ -61,10 +61,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> register(RegisterCredentials credentials) async {
+  Future<User> register(RegisterCredentials credentials) async {
     try {
       // Make the API call and process the response.
-      await _remoteDataSource.register(credentials);
+      final result = await _remoteDataSource.register(credentials);
+      return _processAuthResponse(result);
     } catch (e) {
       throw Failure.handle(e);
     }

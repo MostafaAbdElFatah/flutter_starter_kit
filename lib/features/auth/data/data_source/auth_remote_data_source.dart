@@ -30,7 +30,7 @@ abstract class AuthRemoteDataSource {
   /// Registers a new user with the given [request].
   ///
   /// Throws a [ServerException] if the requests fails for any reason.
-  Future<void> register(RegisterCredentials request);
+  Future<LoginUserModel> register(RegisterCredentials request);
 
   /// Logs out the currently authenticated user from the server.
   ///
@@ -86,12 +86,12 @@ class AuthRemoteDataSourceImpl extends RemoteDataSource
   }
 
   @override
-  Future<void> register(RegisterCredentials credentials) async {
-    final response = await fetch<APIResponse>(
+  Future<LoginUserModel> register(RegisterCredentials credentials) async {
+    final response = await getSingle<LoginUserModel>(
       target: _endpoints.register(credentials),
-      mapper: APIResponse.fromJson,
+      mapper: LoginUserModel.fromJson,
     );
-    if (response.isSuccess) return;
+    if (response.isSuccess) return response.requireData;
     throw ServerException(response.errorMessage);
   }
 

@@ -112,14 +112,14 @@ class AuthCubit extends BaseCubit<AuthState> {
   }) async {
     emit(const AuthLoading());
     try {
-      final result = await runLatest<void>(
+      final result = await runLatest<User>(
         AuthOperation.register,
         _registerUseCase(
           RegisterCredentials(name: name, email: email, password: password,),
         ),
       );
       if (result.isCanceled) return;
-      //emit(AuthAuthenticated(result.requireValue<User>()));
+      emit(AuthAuthenticated(result.requireValue<User>()));
     } catch (e) {
       emit(AuthError(e.toString()));
     }
