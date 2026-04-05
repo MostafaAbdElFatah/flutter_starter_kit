@@ -6,7 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../features/auth/domain/repositories/auth_repository.dart';
+import '../../../features/auth/domain/repository/auth_repository.dart';
 import '../../utils/log.dart';
 import '../notification/local_notification_service.dart';
 import 'firebase_analytics_service.dart';

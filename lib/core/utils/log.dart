@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
-import '../env/env_data.dart';
+import '../../features/environments_dev/data/storage/environment_config_service.dart';
 import '../di/injection.dart' as di;
 
 /// A utility class for logging messages.
@@ -29,7 +29,7 @@ class Log {
 
   static bool get shouldDebug {
     if (overrideShouldDebugForTests) return false;
-    if (!di.isRegistered<AppConfig>()) return kDebugMode;
+    if (!di.isRegistered<EnvironmentConfigService>()) return kDebugMode;
     final currentEnvironment = di.environmentConfigService.currentEnvironment;
     return kDebugMode && !currentEnvironment.isProd;
   }

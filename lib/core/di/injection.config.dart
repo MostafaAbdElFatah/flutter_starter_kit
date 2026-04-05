@@ -16,13 +16,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
-import '../../features/auth/data/data_sources/auth_local_datasource.dart'
-    as _i498;
-import '../../features/auth/data/data_sources/auth_remote_datasource.dart'
-    as _i586;
-import '../../features/auth/data/models/auth_endpoints.dart' as _i990;
+import '../../features/auth/data/data_source/auth_local_data_source.dart'
+    as _i280;
+import '../../features/auth/data/data_source/auth_remote_data_source.dart'
+    as _i182;
+import '../../features/auth/data/models/auth_endpoint.dart' as _i51;
 import '../../features/auth/data/repository/auth_repository.dart' as _i104;
-import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
+import '../../features/auth/domain/repository/auth_repository.dart' as _i961;
 import '../../features/auth/domain/use_cases/delete_account_usecase.dart'
     as _i367;
 import '../../features/auth/domain/use_cases/get_authenticated_user_usecase.dart'
@@ -32,6 +32,7 @@ import '../../features/auth/domain/use_cases/is_logged_in_usecase.dart'
 import '../../features/auth/domain/use_cases/login_usecase.dart' as _i1012;
 import '../../features/auth/domain/use_cases/logout_usecase.dart' as _i844;
 import '../../features/auth/domain/use_cases/register_usecase.dart' as _i957;
+import '../../features/auth/domain/use_cases/send_otp_usecase.dart' as _i827;
 import '../../features/auth/presentation/cubit/auth_cubit.dart' as _i117;
 import '../../features/environments_dev/data/data_sources/environment_local_data_source.dart'
     as _i1;
@@ -80,16 +81,18 @@ import '../../features/onboarding/domain/use_cases/complete_onboarding_usecase.d
 import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart'
     as _i807;
 import '../../features/splash/presentation/cubit/splash_cubit.dart' as _i125;
-import '../infrastructure/data/network/api_client.dart' as _i450;
-import '../infrastructure/data/network/api_interceptor.dart' as _i922;
-import '../infrastructure/data/network/api_response_parser.dart' as _i990;
-import '../infrastructure/data/network/dio_api_client.dart' as _i498;
-import '../infrastructure/data/network/dio_module.dart' as _i75;
-import '../infrastructure/data/network/network_connectivity.dart' as _i993;
-import '../infrastructure/data/storage/hive_storage_service.dart' as _i378;
-import '../infrastructure/data/storage/secure_storage_service.dart' as _i783;
-import '../infrastructure/data/storage/storage_service.dart' as _i124;
+import '../common/dialog_guard.dart' as _i96;
+import '../infrastructure/data/network/api_client.dart' as _i456;
+import '../infrastructure/data/network/api_interceptor.dart' as _i50;
+import '../infrastructure/data/network/api_response_parser.dart' as _i409;
+import '../infrastructure/data/network/dio_api_client.dart' as _i1035;
+import '../infrastructure/data/network/dio_module.dart' as _i183;
+import '../infrastructure/data/network/network_connectivity.dart' as _i498;
+import '../infrastructure/data/storage/hive_storage_service.dart' as _i581;
+import '../infrastructure/data/storage/secure_storage_service.dart' as _i224;
+import '../infrastructure/data/storage/storage_service.dart' as _i419;
 import '../router/app_router.dart' as _i81;
+import '../services/device_services.dart' as _i71;
 import '../services/firebase/firebase_analytics_service.dart' as _i431;
 import '../services/firebase/firebase_crashlytics_service.dart' as _i349;
 import '../services/firebase/firebase_messaging_service.dart' as _i340;
@@ -110,6 +113,7 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final injectionModule = _$InjectionModule();
     final networkModule = _$NetworkModule();
+    gh.lazySingleton<_i96.DialogGuard>(() => _i96.DialogGuard());
     gh.lazySingleton<_i895.Connectivity>(() => injectionModule.connectivity);
     gh.lazySingleton<_i833.DeviceInfoPlugin>(
       () => injectionModule.deviceInfoPlugin,
@@ -124,13 +128,13 @@ extension GetItInjectableX on _i174.GetIt {
     }, preResolve: true);
     gh.lazySingleton<_i845.AppLocaleState>(() => _i845.AppLocaleState());
     gh.lazySingleton<_i48.PlatformChecker>(() => const _i48.PlatformChecker());
-    gh.lazySingleton<_i990.AuthEndpoints>(() => _i990.AuthEndpoints());
-    gh.lazySingleton<_i783.SecureStorageService>(
-      () => _i783.SecureStorageServiceImpl(gh<_i558.FlutterSecureStorage>()),
+    gh.lazySingleton<_i51.AuthEndpoints>(() => _i51.AuthEndpoints());
+    gh.lazySingleton<_i224.SecureStorageService>(
+      () => _i224.SecureStorageServiceImpl(gh<_i558.FlutterSecureStorage>()),
     );
     gh.lazySingleton<_i356.PayloadParser>(() => _i356.IsolatePayloadParser());
-    gh.lazySingleton<_i993.NetworkConnectivity>(
-      () => _i993.NetworkConnectivityImpl(gh<_i895.Connectivity>()),
+    gh.lazySingleton<_i498.NetworkConnectivity>(
+      () => _i498.NetworkConnectivityImpl(gh<_i895.Connectivity>()),
     );
     gh.lazySingleton<_i431.FirebaseAnalyticsService>(
       () => _i431.FirebaseAnalyticsService(
@@ -147,16 +151,18 @@ extension GetItInjectableX on _i174.GetIt {
         service: gh<_i474.LocalNotificationService>(),
       ),
     );
+    gh.lazySingleton<_i71.DeviceServices>(
+      () => _i71.DeviceServices(
+        platformChecker: gh<_i48.PlatformChecker>(),
+        deviceInfoPlugin: gh<_i833.DeviceInfoPlugin>(),
+      ),
+    );
     gh.lazySingleton<_i440.DeviceServices>(
       () => _i440.DeviceServices(
         platformChecker: gh<_i48.PlatformChecker>(),
         deviceInfoPlugin: gh<_i833.DeviceInfoPlugin>(),
       ),
     );
-    await gh.factoryAsync<_i124.StorageService>(() {
-      final i = _i378.HiveStorageService(gh<_i783.SecureStorageService>());
-      return i.init().then((_) => i);
-    }, preResolve: true);
     gh.lazySingleton<_i331.CancelAllNotificationsUseCase>(
       () => _i331.CancelAllNotificationsUseCase(
         gh<_i1068.NotificationRepository>(),
@@ -174,6 +180,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i766.ShowNotificationUseCase>(
       () => _i766.ShowNotificationUseCase(gh<_i1068.NotificationRepository>()),
     );
+    gh.lazySingleton<_i409.APIResponseParser>(
+      () => _i409.IsolateAPIResponseParser(gh<_i356.PayloadParser>()),
+    );
+    await gh.factoryAsync<_i419.StorageService>(() {
+      final i = _i581.HiveStorageService(gh<_i224.SecureStorageService>());
+      return i.init().then((_) => i);
+    }, preResolve: true);
     gh.factory<_i459.NotificationCubit>(
       () => _i459.NotificationCubit(
         showNotificationUseCase: gh<_i766.ShowNotificationUseCase>(),
@@ -185,26 +198,26 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i109.EnvironmentConfigService>(
       () => _i109.EnvironmentConfigStorageService(
-        storageService: gh<_i124.StorageService>(),
+        storageService: gh<_i419.StorageService>(),
       ),
     );
-    gh.lazySingleton<_i990.APIResponseParser>(
-      () => _i990.IsolateAPIResponseParser(gh<_i356.PayloadParser>()),
-    );
-    gh.lazySingleton<_i922.APIInterceptor>(
-      () => _i922.APIInterceptor(
+    gh.lazySingleton<_i50.APIInterceptor>(
+      () => _i50.APIInterceptor(
         appLocaleState: gh<_i845.AppLocaleState>(),
-        secureStorage: gh<_i783.SecureStorageService>(),
+        secureStorage: gh<_i224.SecureStorageService>(),
         environmentConfigService: gh<_i109.EnvironmentConfigService>(),
       ),
     );
-    gh.lazySingleton<_i72.OnboardingLocalDataSource>(
-      () => _i72.OnboardingLocalDataSourceImpl(gh<_i124.StorageService>()),
+    gh.lazySingleton<_i361.Dio>(
+      () => networkModule.dio(gh<_i50.APIInterceptor>()),
     );
-    gh.lazySingleton<_i498.AuthLocalDataSource>(
-      () => _i498.AuthLocalDataSourceImpl(
-        storageService: gh<_i124.StorageService>(),
-        secureStorageService: gh<_i783.SecureStorageService>(),
+    gh.lazySingleton<_i72.OnboardingLocalDataSource>(
+      () => _i72.OnboardingLocalDataSourceImpl(gh<_i419.StorageService>()),
+    );
+    gh.lazySingleton<_i280.AuthLocalDataSource>(
+      () => _i280.AuthLocalDataSourceImpl(
+        storageService: gh<_i419.StorageService>(),
+        secureStorageService: gh<_i224.SecureStorageService>(),
       ),
     );
     gh.lazySingleton<_i1.EnvironmentLocalDataSource>(
@@ -212,12 +225,12 @@ extension GetItInjectableX on _i174.GetIt {
         environmentConfigService: gh<_i109.EnvironmentConfigService>(),
       ),
     );
+    gh.lazySingleton<_i456.APIClient>(
+      () => _i1035.DioAPIClient(gh<_i361.Dio>(), gh<_i409.APIResponseParser>()),
+    );
     gh.lazySingleton<_i310.EnvironmentRepository>(
       () =>
           _i156.EnvironmentRepositoryImpl(gh<_i1.EnvironmentLocalDataSource>()),
-    );
-    gh.lazySingleton<_i361.Dio>(
-      () => networkModule.dio(gh<_i922.APIInterceptor>()),
     );
     gh.lazySingleton<_i335.OnboardingRepository>(
       () => _i20.OnboardingRepositoryImpl(gh<_i72.OnboardingLocalDataSource>()),
@@ -251,8 +264,40 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i807.OnboardingCubit>(
       () => _i807.OnboardingCubit(gh<_i897.CompleteOnboardingUseCase>()),
     );
-    gh.lazySingleton<_i450.APIClient>(
-      () => _i498.DioAPIClient(gh<_i361.Dio>(), gh<_i990.APIResponseParser>()),
+    gh.lazySingleton<_i182.AuthRemoteDataSource>(
+      () => _i182.AuthRemoteDataSourceImpl(
+        apiClient: gh<_i456.APIClient>(),
+        connectivity: gh<_i498.NetworkConnectivity>(),
+        authEndpoints: gh<_i51.AuthEndpoints>(),
+      ),
+    );
+    gh.lazySingleton<_i961.AuthRepository>(
+      () => _i104.AuthRepositoryImpl(
+        deviceServices: gh<_i71.DeviceServices>(),
+        localDataSource: gh<_i280.AuthLocalDataSource>(),
+        remoteDataSource: gh<_i182.AuthRemoteDataSource>(),
+      ),
+    );
+    gh.lazySingleton<_i367.DeleteAccountUseCase>(
+      () => _i367.DeleteAccountUseCase(gh<_i961.AuthRepository>()),
+    );
+    gh.lazySingleton<_i242.GetAuthenticatedUserUseCase>(
+      () => _i242.GetAuthenticatedUserUseCase(gh<_i961.AuthRepository>()),
+    );
+    gh.lazySingleton<_i391.IsLoggedInUseCase>(
+      () => _i391.IsLoggedInUseCase(gh<_i961.AuthRepository>()),
+    );
+    gh.lazySingleton<_i1012.LoginUseCase>(
+      () => _i1012.LoginUseCase(gh<_i961.AuthRepository>()),
+    );
+    gh.lazySingleton<_i844.LogoutUseCase>(
+      () => _i844.LogoutUseCase(gh<_i961.AuthRepository>()),
+    );
+    gh.lazySingleton<_i957.RegisterUseCase>(
+      () => _i957.RegisterUseCase(gh<_i961.AuthRepository>()),
+    );
+    gh.lazySingleton<_i827.SendOtpUseCase>(
+      () => _i827.SendOtpUseCase(gh<_i961.AuthRepository>()),
     );
     gh.factory<_i266.EnvironmentCubit>(
       () => _i266.EnvironmentCubit(
@@ -264,50 +309,12 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i651.UpdateEnvironmentConfigUseCase>(),
       ),
     );
-    gh.lazySingleton<_i586.AuthRemoteDataSource>(
-      () => _i586.AuthRemoteDataSourceImpl(
-        apiClient: gh<_i450.APIClient>(),
-        connectivity: gh<_i993.NetworkConnectivity>(),
-        authEndpoints: gh<_i990.AuthEndpoints>(),
-      ),
-    );
-    gh.lazySingleton<_i787.AuthRepository>(
-      () => _i104.AuthRepositoryImpl(
-        deviceServices: gh<_i440.DeviceServices>(),
-        localDataSource: gh<_i498.AuthLocalDataSource>(),
-        remoteDataSource: gh<_i586.AuthRemoteDataSource>(),
-      ),
-    );
-    gh.lazySingleton<_i367.DeleteAccountUseCase>(
-      () => _i367.DeleteAccountUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.lazySingleton<_i242.GetAuthenticatedUserUseCase>(
-      () => _i242.GetAuthenticatedUserUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.lazySingleton<_i391.IsLoggedInUseCase>(
-      () => _i391.IsLoggedInUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.lazySingleton<_i1012.LoginUseCase>(
-      () => _i1012.LoginUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.lazySingleton<_i844.LogoutUseCase>(
-      () => _i844.LogoutUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.lazySingleton<_i957.RegisterUseCase>(
-      () => _i957.RegisterUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.factory<_i125.SplashCubit>(
-      () => _i125.SplashCubit(
-        gh<_i391.IsLoggedInUseCase>(),
-        gh<_i808.CheckOnboardingStatusUseCase>(),
-      ),
-    );
     await gh.lazySingletonAsync<_i340.FirebaseMessageService>(() {
       final i = _i340.FirebaseMessageService(
         firebaseService: gh<_i376.FirebaseService>(),
         analyticsService: gh<_i431.FirebaseAnalyticsService>(),
         crashlyticsService: gh<_i349.FirebaseCrashlyticsService>(),
-        authRepository: gh<_i787.AuthRepository>(),
+        authRepository: gh<_i961.AuthRepository>(),
         localNotificationService: gh<_i474.LocalNotificationService>(),
       );
       return i.init().then((_) => i);
@@ -322,6 +329,12 @@ extension GetItInjectableX on _i174.GetIt {
         getAuthenticatedUserUseCase: gh<_i242.GetAuthenticatedUserUseCase>(),
       ),
     );
+    gh.factory<_i125.SplashCubit>(
+      () => _i125.SplashCubit(
+        gh<_i391.IsLoggedInUseCase>(),
+        gh<_i808.CheckOnboardingStatusUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i81.AuthGuard>(
       () => _i81.AuthGuard(gh<_i117.AuthCubit>()),
     );
@@ -334,4 +347,4 @@ extension GetItInjectableX on _i174.GetIt {
 
 class _$InjectionModule extends _i464.InjectionModule {}
 
-class _$NetworkModule extends _i75.NetworkModule {}
+class _$NetworkModule extends _i183.NetworkModule {}

@@ -11,13 +11,19 @@ abstract class AuthRepository {
   ///
   /// Returns a [Future] that completes with either an [Exception] if the
   /// operation fails, or a [User] object if the login is successful.
-  Future<User> login(LoginCredentials params);
+  Future<User> login(LoginCredentials credentials);
+
+  /// Requests a One-Time Password (OTP) to be sent to the specified [phone] number.
+  ///
+  /// This is typically used for phone-based authentication or verification flows.
+  /// Returns a [Future] that completes with either an [Exception]
+  Future<void> sendOtp(String phone);
 
   /// Registers a new user with the given [name], [email], and [password].
   ///
   /// Returns a [Future] that completes with either an [Exception] if the
-  /// operation fails, or a [User] object if the registration is successful.
-  Future<User> register(RegisterCredentials params);
+  /// operation fails, or a void if the registration is successful.
+  Future<void> register(RegisterCredentials credentials);
 
   /// Checks if a user is currently logged in.
   ///
@@ -35,6 +41,11 @@ abstract class AuthRepository {
   /// Returns the [User] object if found, otherwise returns `null`.
   User? getAuthenticatedUser();
 
+  /// Updates the cached user information.
+  ///
+  /// This is typically used after profile updates to keep local data in sync.
+  Future<void> cacheUser(User user);
+
   /// Logs out the current user.
   ///
   /// This will clear any cached user data and delete the authentication token.
@@ -42,3 +53,4 @@ abstract class AuthRepository {
 
   Future<void> deleteAccount();
 }
+

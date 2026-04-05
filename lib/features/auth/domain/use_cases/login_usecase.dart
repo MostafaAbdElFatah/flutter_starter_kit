@@ -2,8 +2,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/infrastructure/domain/use_cases/usecase.dart';
 import '../entities/login_credentials.dart';
+import '../repository/auth_repository.dart';
 import '../entities/user.dart';
-import '../repositories/auth_repository.dart';
 
 /// A use case for logging in a user.
 ///
@@ -11,7 +11,8 @@ import '../repositories/auth_repository.dart';
 /// the [AuthRepository] to perform the login operation and returns the result
 /// to the presentation layer.
 @lazySingleton
-class LoginUseCase extends AsyncUseCase<AuthRepository, User, LoginCredentials> {
+class LoginUseCase
+    extends AsyncUseCase<AuthRepository, User, LoginCredentials> {
   /// Creates an instance of [LoginUseCase].
   ///
   /// Requires an [AuthRepository] to be injected.
@@ -24,5 +25,5 @@ class LoginUseCase extends AsyncUseCase<AuthRepository, User, LoginCredentials> 
   /// Returns a [Future] that completes with either an [Exception] if the
   /// operation fails, or a [User] object if the login is successful.
   @override
-  Future<User> call(LoginCredentials params) => repository.login(params);
+  Future<User> call(LoginCredentials credentials) => repository.login(credentials);
 }

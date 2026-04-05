@@ -2,7 +2,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/infrastructure/data/storage/secure_storage_service.dart';
 import '../../../../core/infrastructure/data/storage/storage_service.dart';
-import '../models/user.dart';
+import '../models/user_model.dart';
+
 
 /// A concrete implementation of [AuthLocalDataSource] that uses [StorageService]
 /// for caching user data and [SecureStorageService] for managing the auth token.
@@ -22,7 +23,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     required StorageService storageService,
     required SecureStorageService secureStorageService,
   }) : _storageService = storageService,
-       _secureStorageService = secureStorageService;
+        _secureStorageService = secureStorageService;
 
   // ---------------------------------------------------------------------------
   // Token Management
@@ -55,6 +56,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   bool hasUser() => _storageService.has(_loginUserKey);
+
 }
 
 /// An abstract class representing the local data source for authentication.
@@ -81,8 +83,8 @@ abstract class TokenLocalDataSource {
   /// Returns `null` if no token is found.
   Future<String?> getToken();
 
-  /// Deletes the saved authentication token from secure storage.
-  //Future<void> deleteToken();
+/// Deletes the saved authentication token from secure storage.
+//Future<void> deleteToken();
 }
 
 /// An abstract class representing the local data source for user data.

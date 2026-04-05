@@ -1,9 +1,8 @@
+import 'package:flutter_starter_kit/features/auth/data/models/user_model.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_starter_kit/features/auth/domain/entities/user.dart';
-import 'package:flutter_starter_kit/features/auth/data/models/responses/login_response.dart';
-import 'package:flutter_starter_kit/features/auth/data/models/user.dart';
 import 'package:flutter_starter_kit/features/auth/data/repository/auth_repository.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/login_credentials.dart';
 import 'package:flutter_starter_kit/features/auth/domain/entities/register_credentials.dart';

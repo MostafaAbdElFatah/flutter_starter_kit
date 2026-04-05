@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/infrastructure/domain/use_cases/usecase.dart';
-import '../repositories/auth_repository.dart';
+import '../repository/auth_repository.dart';
 import '../entities/user.dart';
 
 /// A use case that retrieves the currently authenticated user.

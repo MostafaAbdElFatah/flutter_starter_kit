@@ -41,44 +41,40 @@ import 'package:flutter_starter_kit/core/infrastructure/data/storage/secure_stor
 import 'package:flutter_starter_kit/core/infrastructure/data/storage/storage_service.dart'
     as _i38;
 import 'package:flutter_starter_kit/core/infrastructure/domain/use_cases/usecase.dart'
-    as _i55;
+    as _i53;
 import 'package:flutter_starter_kit/core/utils/app_locale.dart' as _i31;
 import 'package:flutter_starter_kit/core/utils/device_services.dart' as _i44;
 import 'package:flutter_starter_kit/core/utils/platform_checker.dart' as _i43;
-import 'package:flutter_starter_kit/features/auth/data/data_sources/auth_local_datasource.dart'
+import 'package:flutter_starter_kit/features/auth/data/data_source/auth_local_data_source.dart'
     as _i48;
-import 'package:flutter_starter_kit/features/auth/data/data_sources/auth_remote_datasource.dart'
+import 'package:flutter_starter_kit/features/auth/data/data_source/auth_remote_data_source.dart'
     as _i49;
-import 'package:flutter_starter_kit/features/auth/data/models/auth_endpoints.dart'
+import 'package:flutter_starter_kit/features/auth/data/models/auth_endpoint.dart'
     as _i45;
-import 'package:flutter_starter_kit/features/auth/data/models/requests/login_request.dart'
-    as _i46;
-import 'package:flutter_starter_kit/features/auth/data/models/requests/register_request.dart'
-    as _i47;
-import 'package:flutter_starter_kit/features/auth/data/models/responses/login_response.dart'
+import 'package:flutter_starter_kit/features/auth/data/models/login_user_model.dart'
     as _i23;
-import 'package:flutter_starter_kit/features/auth/data/models/user.dart'
+import 'package:flutter_starter_kit/features/auth/data/models/user_model.dart'
     as _i35;
 import 'package:flutter_starter_kit/features/auth/domain/entities/login_credentials.dart'
-    as _i50;
+    as _i46;
 import 'package:flutter_starter_kit/features/auth/domain/entities/register_credentials.dart'
-    as _i51;
+    as _i47;
 import 'package:flutter_starter_kit/features/auth/domain/entities/user.dart'
     as _i12;
-import 'package:flutter_starter_kit/features/auth/domain/repositories/auth_repository.dart'
+import 'package:flutter_starter_kit/features/auth/domain/repository/auth_repository.dart'
     as _i24;
 import 'package:flutter_starter_kit/features/auth/domain/use_cases/delete_account_usecase.dart'
-    as _i56;
-import 'package:flutter_starter_kit/features/auth/domain/use_cases/get_authenticated_user_usecase.dart'
-    as _i57;
-import 'package:flutter_starter_kit/features/auth/domain/use_cases/login_usecase.dart'
-    as _i52;
-import 'package:flutter_starter_kit/features/auth/domain/use_cases/logout_usecase.dart'
     as _i54;
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/get_authenticated_user_usecase.dart'
+    as _i55;
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/login_usecase.dart'
+    as _i50;
+import 'package:flutter_starter_kit/features/auth/domain/use_cases/logout_usecase.dart'
+    as _i52;
 import 'package:flutter_starter_kit/features/auth/domain/use_cases/register_usecase.dart'
-    as _i53;
+    as _i51;
 import 'package:flutter_starter_kit/features/environments_dev/data/data_sources/environment_local_data_source.dart'
-    as _i58;
+    as _i56;
 import 'package:flutter_starter_kit/features/environments_dev/data/models/auth_config.dart'
     as _i14;
 import 'package:flutter_starter_kit/features/environments_dev/data/models/base_url_config.dart'
@@ -94,15 +90,15 @@ import 'package:flutter_starter_kit/features/environments_dev/domain/entities/ba
 import 'package:flutter_starter_kit/features/environments_dev/domain/entities/environment.dart'
     as _i27;
 import 'package:flutter_starter_kit/features/environments_dev/domain/repository/environment_repository.dart'
-    as _i59;
+    as _i57;
 import 'package:flutter_starter_kit/features/environments_dev/domain/use_cases/developer_login_usecase.dart'
-    as _i62;
-import 'package:flutter_starter_kit/features/environments_dev/domain/use_cases/get_environment_config_use_case.dart'
     as _i60;
+import 'package:flutter_starter_kit/features/environments_dev/domain/use_cases/get_environment_config_use_case.dart'
+    as _i58;
 import 'package:flutter_starter_kit/features/environments_dev/domain/use_cases/update_environment_configuration_use_case.dart'
-    as _i61;
+    as _i59;
 import 'package:flutter_starter_kit/features/onboarding/data/data_sources/onboarding_local_datasource.dart'
-    as _i63;
+    as _i61;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i26;
 
@@ -278,8 +274,9 @@ class _FakeAPIEndpoint_28 extends _i1.SmartFake implements _i22.APIEndpoint {
     : super(parent, parentInvocation);
 }
 
-class _FakeLoginUser_29 extends _i1.SmartFake implements _i23.LoginUser {
-  _FakeLoginUser_29(Object parent, Invocation parentInvocation)
+class _FakeLoginUserModel_29 extends _i1.SmartFake
+    implements _i23.LoginUserModel {
+  _FakeLoginUserModel_29(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -1363,33 +1360,15 @@ class MockUserModel extends _i1.Mock implements _i35.UserModel {
   }
 
   @override
-  String get id =>
+  String get phone =>
       (super.noSuchMethod(
-            Invocation.getter(#id),
-            returnValue: _i26.dummyValue<String>(this, Invocation.getter(#id)),
-          )
-          as String);
-
-  @override
-  String get email =>
-      (super.noSuchMethod(
-            Invocation.getter(#email),
+            Invocation.getter(#phone),
             returnValue: _i26.dummyValue<String>(
               this,
-              Invocation.getter(#email),
+              Invocation.getter(#phone),
             ),
           )
           as String);
-
-  @override
-  bool get isVerified =>
-      (super.noSuchMethod(Invocation.getter(#isVerified), returnValue: false)
-          as bool);
-
-  @override
-  List<Object?> get props =>
-      (super.noSuchMethod(Invocation.getter(#props), returnValue: <Object?>[])
-          as List<Object?>);
 
   @override
   Map<String, dynamic> toJson() =>
@@ -1400,39 +1379,18 @@ class MockUserModel extends _i1.Mock implements _i35.UserModel {
           as Map<String, dynamic>);
 
   @override
+  Map<String, dynamic> toMap() =>
+      (super.noSuchMethod(
+            Invocation.method(#toMap, []),
+            returnValue: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
+
+  @override
   _i12.User toEntity() =>
       (super.noSuchMethod(
             Invocation.method(#toEntity, []),
             returnValue: _FakeUser_11(this, Invocation.method(#toEntity, [])),
-          )
-          as _i12.User);
-
-  @override
-  _i12.User copyWith({
-    String? id,
-    String? email,
-    String? name,
-    String? avatarUrl,
-    bool? isVerified,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#copyWith, [], {
-              #id: id,
-              #email: email,
-              #name: name,
-              #avatarUrl: avatarUrl,
-              #isVerified: isVerified,
-            }),
-            returnValue: _FakeUser_11(
-              this,
-              Invocation.method(#copyWith, [], {
-                #id: id,
-                #email: email,
-                #name: name,
-                #avatarUrl: avatarUrl,
-                #isVerified: isVerified,
-              }),
-            ),
           )
           as _i12.User);
 }
@@ -2861,23 +2819,34 @@ class MockAuthEndpoints extends _i1.Mock implements _i45.AuthEndpoints {
   }
 
   @override
-  _i22.APIEndpoint login(_i46.LoginRequest? request) =>
+  _i22.APIEndpoint sendOtp(String? phone) =>
       (super.noSuchMethod(
-            Invocation.method(#login, [request]),
+            Invocation.method(#sendOtp, [phone]),
             returnValue: _FakeAPIEndpoint_28(
               this,
-              Invocation.method(#login, [request]),
+              Invocation.method(#sendOtp, [phone]),
             ),
           )
           as _i22.APIEndpoint);
 
   @override
-  _i22.APIEndpoint register(_i47.RegisterRequest? request) =>
+  _i22.APIEndpoint login(_i46.LoginCredentials? credentials) =>
       (super.noSuchMethod(
-            Invocation.method(#register, [request]),
+            Invocation.method(#login, [credentials]),
             returnValue: _FakeAPIEndpoint_28(
               this,
-              Invocation.method(#register, [request]),
+              Invocation.method(#login, [credentials]),
+            ),
+          )
+          as _i22.APIEndpoint);
+
+  @override
+  _i22.APIEndpoint register(_i47.RegisterCredentials? credentials) =>
+      (super.noSuchMethod(
+            Invocation.method(#register, [credentials]),
+            returnValue: _FakeAPIEndpoint_28(
+              this,
+              Invocation.method(#register, [credentials]),
             ),
           )
           as _i22.APIEndpoint);
@@ -2965,24 +2934,35 @@ class MockAuthRemoteDataSource extends _i1.Mock
   }
 
   @override
-  _i11.Future<_i23.LoginUser> login(_i46.LoginRequest? request) =>
+  _i11.Future<_i23.LoginUserModel> login(_i46.LoginCredentials? request) =>
       (super.noSuchMethod(
             Invocation.method(#login, [request]),
-            returnValue: _i11.Future<_i23.LoginUser>.value(
-              _FakeLoginUser_29(this, Invocation.method(#login, [request])),
+            returnValue: _i11.Future<_i23.LoginUserModel>.value(
+              _FakeLoginUserModel_29(
+                this,
+                Invocation.method(#login, [request]),
+              ),
             ),
           )
-          as _i11.Future<_i23.LoginUser>);
+          as _i11.Future<_i23.LoginUserModel>);
 
   @override
-  _i11.Future<_i23.LoginUser> register(_i47.RegisterRequest? request) =>
+  _i11.Future<void> sendOtp(String? phone) =>
+      (super.noSuchMethod(
+            Invocation.method(#sendOtp, [phone]),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
+
+  @override
+  _i11.Future<void> register(_i47.RegisterCredentials? request) =>
       (super.noSuchMethod(
             Invocation.method(#register, [request]),
-            returnValue: _i11.Future<_i23.LoginUser>.value(
-              _FakeLoginUser_29(this, Invocation.method(#register, [request])),
-            ),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i11.Future<_i23.LoginUser>);
+          as _i11.Future<void>);
 
   @override
   _i11.Future<void> logout() =>
@@ -3012,24 +2992,32 @@ class MockAuthRepository extends _i1.Mock implements _i24.AuthRepository {
   }
 
   @override
-  _i11.Future<_i12.User> login(_i50.LoginCredentials? params) =>
+  _i11.Future<_i12.User> login(_i46.LoginCredentials? credentials) =>
       (super.noSuchMethod(
-            Invocation.method(#login, [params]),
+            Invocation.method(#login, [credentials]),
             returnValue: _i11.Future<_i12.User>.value(
-              _FakeUser_11(this, Invocation.method(#login, [params])),
+              _FakeUser_11(this, Invocation.method(#login, [credentials])),
             ),
           )
           as _i11.Future<_i12.User>);
 
   @override
-  _i11.Future<_i12.User> register(_i51.RegisterCredentials? params) =>
+  _i11.Future<void> sendOtp(String? phone) =>
       (super.noSuchMethod(
-            Invocation.method(#register, [params]),
-            returnValue: _i11.Future<_i12.User>.value(
-              _FakeUser_11(this, Invocation.method(#register, [params])),
-            ),
+            Invocation.method(#sendOtp, [phone]),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i11.Future<_i12.User>);
+          as _i11.Future<void>);
+
+  @override
+  _i11.Future<void> register(_i47.RegisterCredentials? credentials) =>
+      (super.noSuchMethod(
+            Invocation.method(#register, [credentials]),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
 
   @override
   _i11.Future<bool> isLoggedIn() =>
@@ -3038,6 +3026,15 @@ class MockAuthRepository extends _i1.Mock implements _i24.AuthRepository {
             returnValue: _i11.Future<bool>.value(false),
           )
           as _i11.Future<bool>);
+
+  @override
+  _i11.Future<void> cacheUser(_i12.User? user) =>
+      (super.noSuchMethod(
+            Invocation.method(#cacheUser, [user]),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
 
   @override
   _i11.Future<void> logout() =>
@@ -3061,7 +3058,7 @@ class MockAuthRepository extends _i1.Mock implements _i24.AuthRepository {
 /// A class which mocks [LoginUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLoginUseCase extends _i1.Mock implements _i52.LoginUseCase {
+class MockLoginUseCase extends _i1.Mock implements _i50.LoginUseCase {
   MockLoginUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -3078,11 +3075,11 @@ class MockLoginUseCase extends _i1.Mock implements _i52.LoginUseCase {
           as _i24.AuthRepository);
 
   @override
-  _i11.Future<_i12.User> call(_i50.LoginCredentials? params) =>
+  _i11.Future<_i12.User> call(_i46.LoginCredentials? credentials) =>
       (super.noSuchMethod(
-            Invocation.method(#call, [params]),
+            Invocation.method(#call, [credentials]),
             returnValue: _i11.Future<_i12.User>.value(
-              _FakeUser_11(this, Invocation.method(#call, [params])),
+              _FakeUser_11(this, Invocation.method(#call, [credentials])),
             ),
           )
           as _i11.Future<_i12.User>);
@@ -3091,7 +3088,7 @@ class MockLoginUseCase extends _i1.Mock implements _i52.LoginUseCase {
 /// A class which mocks [RegisterUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRegisterUseCase extends _i1.Mock implements _i53.RegisterUseCase {
+class MockRegisterUseCase extends _i1.Mock implements _i51.RegisterUseCase {
   MockRegisterUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -3108,20 +3105,19 @@ class MockRegisterUseCase extends _i1.Mock implements _i53.RegisterUseCase {
           as _i24.AuthRepository);
 
   @override
-  _i11.Future<_i12.User> call(_i51.RegisterCredentials? params) =>
+  _i11.Future<void> call(_i47.RegisterCredentials? credentials) =>
       (super.noSuchMethod(
-            Invocation.method(#call, [params]),
-            returnValue: _i11.Future<_i12.User>.value(
-              _FakeUser_11(this, Invocation.method(#call, [params])),
-            ),
+            Invocation.method(#call, [credentials]),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i11.Future<_i12.User>);
+          as _i11.Future<void>);
 }
 
 /// A class which mocks [LogoutUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLogoutUseCase extends _i1.Mock implements _i54.LogoutUseCase {
+class MockLogoutUseCase extends _i1.Mock implements _i52.LogoutUseCase {
   MockLogoutUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -3138,7 +3134,7 @@ class MockLogoutUseCase extends _i1.Mock implements _i54.LogoutUseCase {
           as _i24.AuthRepository);
 
   @override
-  _i11.Future<void> call(_i55.NoParams? params) =>
+  _i11.Future<void> call(_i53.NoParams? params) =>
       (super.noSuchMethod(
             Invocation.method(#call, [params]),
             returnValue: _i11.Future<void>.value(),
@@ -3151,7 +3147,7 @@ class MockLogoutUseCase extends _i1.Mock implements _i54.LogoutUseCase {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockDeleteAccountUseCase extends _i1.Mock
-    implements _i56.DeleteAccountUseCase {
+    implements _i54.DeleteAccountUseCase {
   MockDeleteAccountUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -3168,7 +3164,7 @@ class MockDeleteAccountUseCase extends _i1.Mock
           as _i24.AuthRepository);
 
   @override
-  _i11.Future<void> call(_i55.NoParams? params) =>
+  _i11.Future<void> call(_i53.NoParams? params) =>
       (super.noSuchMethod(
             Invocation.method(#call, [params]),
             returnValue: _i11.Future<void>.value(),
@@ -3181,7 +3177,7 @@ class MockDeleteAccountUseCase extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetAuthenticatedUserUseCase extends _i1.Mock
-    implements _i57.GetAuthenticatedUserUseCase {
+    implements _i55.GetAuthenticatedUserUseCase {
   MockGetAuthenticatedUserUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -3198,7 +3194,7 @@ class MockGetAuthenticatedUserUseCase extends _i1.Mock
           as _i24.AuthRepository);
 
   @override
-  _i12.User? call(_i55.NoParams? params) =>
+  _i12.User? call(_i53.NoParams? params) =>
       (super.noSuchMethod(Invocation.method(#call, [params])) as _i12.User?);
 }
 
@@ -3206,7 +3202,7 @@ class MockGetAuthenticatedUserUseCase extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockEnvironmentLocalDataSource extends _i1.Mock
-    implements _i58.EnvironmentLocalDataSource {
+    implements _i56.EnvironmentLocalDataSource {
   MockEnvironmentLocalDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -3273,7 +3269,7 @@ class MockEnvironmentLocalDataSource extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockEnvironmentRepository extends _i1.Mock
-    implements _i59.EnvironmentRepository {
+    implements _i57.EnvironmentRepository {
   MockEnvironmentRepository() {
     _i1.throwOnMissingStub(this);
   }
@@ -3299,7 +3295,7 @@ class MockEnvironmentRepository extends _i1.Mock
 
   @override
   _i9.APIConfig getConfigForEnvironment(
-    _i60.EnvironmentConfigGetParams? params,
+    _i58.EnvironmentConfigGetParams? params,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getConfigForEnvironment, [params]),
@@ -3312,7 +3308,7 @@ class MockEnvironmentRepository extends _i1.Mock
 
   @override
   _i11.Future<void> updateConfiguration(
-    _i61.EnvironmentConfigUpdateParams? params,
+    _i59.EnvironmentConfigUpdateParams? params,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#updateConfiguration, [params]),
@@ -3322,7 +3318,7 @@ class MockEnvironmentRepository extends _i1.Mock
           as _i11.Future<void>);
 
   @override
-  bool loginAsDeveloper(_i62.DevLoginParams? params) =>
+  bool loginAsDeveloper(_i60.DevLoginParams? params) =>
       (super.noSuchMethod(
             Invocation.method(#loginAsDeveloper, [params]),
             returnValue: false,
@@ -3334,7 +3330,7 @@ class MockEnvironmentRepository extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockOnboardingLocalDataSource extends _i1.Mock
-    implements _i63.OnboardingLocalDataSource {
+    implements _i61.OnboardingLocalDataSource {
   MockOnboardingLocalDataSource() {
     _i1.throwOnMissingStub(this);
   }

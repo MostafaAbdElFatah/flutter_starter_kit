@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 import '../../../../core/core.dart';
 import '../../../../core/di/injection.dart' as di;
 import '../../../../core/infrastructure/domain/use_cases/usecase.dart';
