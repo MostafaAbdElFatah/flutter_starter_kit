@@ -1,17 +1,12 @@
 import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'dart:async';
 import 'dart:math';
 
-import '../../../../core/utils/app_locale.dart';
+import '../../../../core/core.dart';
 import '../../../../core/di/injection.dart' as injection;
-import '../../../../core/assets/localization_keys.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
-import '../dialogs/delete_account_dialog.dart';
 import '../../../environments_dev/presentation/dialogs/developer_login_dialog.dart';
 import '../widgets/settings_tile.dart';
 
@@ -147,17 +142,14 @@ class _SettingsPageState extends State<SettingsPageContent> {
               SettingsTile(
                 icon: Icons.logout,
                 title: LocalizationKeys.logout,
-                onTap: AuthCubit.of(context).logout,
+                onTap: () => _logoutBtnTapped(context),
               ),
               SettingsTile(
                 icon: Icons.delete_forever,
                 title: LocalizationKeys.deleteAccount,
                 iconColor: Colors.red,
                 textColor: Colors.red,
-                onTap: () => showDeleteAccountDialog(
-                  context,
-                  deleteAccount: AuthCubit.of(context).deleteAccount,
-                ),
+                onTap: () => _deleteAccountBtnTapped(context),
               ),
               if (_showHiddenMenu) ...[
                 const Divider(),
@@ -170,6 +162,44 @@ class _SettingsPageState extends State<SettingsPageContent> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+
+
+  void _logoutBtnTapped(BuildContext context) {
+    context.openAdaptiveDialog(
+      AdaptiveDialogOptions(
+        imageType: AlertType.critical,
+        confirmBackground: AppColors.red,
+        cancelLabel: LocalizationKeys.cancel,
+        confirmLabel: LocalizationKeys.logout,
+        title: LocalizationKeys.logout,
+        message: 'LocalizationKeys.logoutWarning',
+        cancelBackground: Theme.of(context).primaryColor,
+        onConfirmPressed: () {
+          context.pop();
+          AuthCubit.of(context).deleteAccount();
+        },
+      ),
+    );
+  }
+
+  void _deleteAccountBtnTapped(BuildContext context) {
+    context.openAdaptiveDialog(
+      AdaptiveDialogOptions(
+        imageType: AlertType.critical,
+        confirmBackground: AppColors.red,
+        cancelLabel: LocalizationKeys.cancel,
+        confirmLabel: LocalizationKeys.delete,
+        title: LocalizationKeys.deleteAccount,
+        message: LocalizationKeys.deleteAccountWarning,
+        cancelBackground: Theme.of(context).primaryColor,
+        onConfirmPressed: () {
+          context.pop();
+          AuthCubit.of(context).deleteAccount();
+        },
       ),
     );
   }
