@@ -26,7 +26,13 @@ class HomeRouter {
   ];
 }
 
-extension GoRouterHomeRoutesExtension on GoRouter {
+extension GoRouterHomeRoutesX on GoRouter {
+  // Home Navigation
+  void goToSplash() => go(HomeRoutes.splash);
+  void goToHome() => go(HomeRoutes.home);
+}
+
+extension GoRouterHomeRoutesContextX on BuildContext {
   // Home Navigation
   void goToSplash() => go(HomeRoutes.splash);
   void goToHome() => go(HomeRoutes.home);
