@@ -1,3 +1,4 @@
+import '../../../extensions/iterable/json_parsing_extensions.dart';
 import 'api_response.dart';
 import 'typed_api_response.dart';
 
@@ -23,16 +24,8 @@ class ListAPIResponse<T> extends TypedAPIResponse<List<T>> {
     required Map<String, dynamic> json,
     required T Function(Map<String, dynamic>) itemFromJson,
   }) {
-    final rawData = json['data'];
-    final items = rawData is List
-        ? rawData
-            .whereType<Map<String, dynamic>>()
-            .map(itemFromJson)
-            .toList(growable: false)
-        : <T>[];
-
     return ListAPIResponse.fromBase(
-      data: items,
+      data: json.getTypedList("data", itemFromJson),
       base: APIResponse.fromJson(statusCode, message, json),
     );
   }

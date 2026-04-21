@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../assets/localization_keys.dart';
+import '../../../extensions/iterable/json_parsing_extensions.dart';
 
 
 /// Represents a generic API response.
@@ -62,9 +63,9 @@ class APIResponse extends Equatable {
   ) =>
       APIResponse(
         statusCode: statusCode ?? 0,
-        message: json["message"] ?? message,
         errors: json["errors"],
-        pagination: json["pagination"] == null ? null : Pagination.fromJson(json["pagination"]),
+        message: json.getStringOrNull("message") ?? message,
+        pagination: json.getObjectOrNull('pagination', Pagination.fromJson),
       );
 
   /// Converts this [APIResponse] into a JSON object.

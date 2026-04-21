@@ -1,3 +1,4 @@
+import '../../../extensions/iterable/json_parsing_extensions.dart';
 import '../errors/failure.dart';
 import 'api_response.dart';
 
@@ -28,10 +29,9 @@ class TypedAPIResponse<T> extends APIResponse {
     required Map<String, dynamic> json,
     required T Function(Map<String, dynamic>) itemFromJson,
   }) {
-    final rawData = json['data'];
     return TypedAPIResponse.fromBase(
-      data: rawData is Map<String, dynamic> ? itemFromJson(rawData) : null,
       base: APIResponse.fromJson(statusCode, message, json),
+      data: json.getObjectOrNull("data", itemFromJson),
     );
   }
 }

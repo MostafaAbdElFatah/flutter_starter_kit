@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../../../../core/extensions/iterable/json_parsing_extensions.dart';
 import '../../domain/entities/user.dart';
 
 class UserModel {
@@ -31,16 +32,16 @@ class UserModel {
   ///
   /// This factory is used to deserialize the response from an API call.
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    final profile = json["profile"] as Map<String, dynamic>?;
-
-    final avatar = json["avatar"] ?? profile?["avatar"];
+    final profile = json.getMap("profile");
+    final avatar = json.getStringOrNull('avatar') ??
+        profile?.getStringOrNull('avatar_url');
 
     return UserModel(
-      id: json["id"],
-      email: json["email"],
-      name: json["name"],
+      id: json.getString("id"),
+      email: json.getString("email"),
+      name: json.getString("name"),
+      isVerified: json.getBool("isVerified"),
       avatarUrl: avatar,
-      isVerified: json["isVerified"] ?? false,
     );
   }
 

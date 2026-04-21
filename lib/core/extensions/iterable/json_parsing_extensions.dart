@@ -61,6 +61,15 @@ extension JsonParsing on Map<String, dynamic> {
     return value.whereType<T>().map((e) => e).toList(growable: false);
   }
 
+  /// Returns the nested map at [key].
+  /// Returns null if the key is missing, null, or not a JSON map.
+  Map<String, dynamic>? getMap(String key) {
+    if (!hasValue(key)) return null;
+    final value = this[key];
+    if (value is! Map<String, dynamic>) return null;
+    return value;
+  }
+
   /// Returns the nested object at [key] parsed via a provided [fromJson] factory.
   /// Throws an [Exception] if the key is missing, null, or not a JSON object.
   T getObject<T>(String key, T Function(Map<String, dynamic>) fromJson) =>

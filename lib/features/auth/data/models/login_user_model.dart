@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/extensions/iterable/json_parsing_extensions.dart';
 import 'user_model.dart';
 
 
@@ -23,8 +24,8 @@ class LoginUserModel extends Equatable {
   /// Creates a [LoginUserModel] from a JSON map.
   factory LoginUserModel.fromJson(Map<String, dynamic> json) {
     return LoginUserModel(
-      user: UserModel.fromJson(json["user"]),
-      token: json["token"] ?? "N/A",
+      user: json.getObject("user", UserModel.fromJson),
+      token: json.getString("token"),
     );
   }
 
