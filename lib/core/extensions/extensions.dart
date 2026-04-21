@@ -2,6 +2,7 @@ export 'context/context_navigator_extension.dart';
 export 'context/context_extension.dart';
 export 'datetime/datetime_extension.dart';
 export 'iterable/iterable_extension.dart';
+export 'iterable/json_parsing_extensions.dart';
 export 'numbers/double_extension.dart';
 export 'numbers/int_extension.dart';
 export 'scroll/scroll_controller_extension.dart';
