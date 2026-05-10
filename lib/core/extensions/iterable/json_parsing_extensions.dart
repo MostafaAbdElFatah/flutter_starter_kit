@@ -37,6 +37,38 @@ extension JsonParsing on Map<String, dynamic> {
     return value.isEmpty ? null : value;
   }
 
+  /// Returns the value at [key] as a [DateTime].
+  /// Falls back to [defaultValue] if the key is missing, null, or unparseable.
+  DateTime getDateTime(String key, {DateTime? defaultValue}) =>
+      getDateTimeOrNull(key) ?? defaultValue ?? DateTime(2000);
+
+  /// Returns the value at [key] as a nullable [DateTime].
+  /// Returns null if the key is missing, null, or unparseable.
+  DateTime? getDateTimeOrNull(String key) {
+    if (!hasValue(key)) return null;
+    // final value = this[key].toString().trim();
+    // return value.isEmpty ? null : DateTime.tryParse(value);
+
+    final raw = this[key];
+
+    // Handle int (millisecondsSinceEpoch)
+    if (raw is int) return DateTime.fromMillisecondsSinceEpoch(raw);
+
+    // Handle string
+    final value = raw.toString().trim();
+    if (value.isEmpty) return null;
+
+    // Try parse as int (string timestamp)
+    // Handle string (try int first, then ISO parse)
+    final millis = int.tryParse(value);
+    if (millis != null) {
+      return DateTime.fromMillisecondsSinceEpoch(millis);
+    }
+
+    // Fallback to ISO string parsing
+    return DateTime.tryParse(value);
+  }
+
   /// Returns the value at [key] as a [bool].
   /// Handles native [bool] values directly, and parses `"true"`/`"false"` strings.
   /// Falls back to [defaultValue] if the key is missing, null, or unparseable.
@@ -52,15 +84,6 @@ extension JsonParsing on Map<String, dynamic> {
     return value.toString().toLowerCase() == 'true';
   }
 
-  /// Returns the nested list at [key].
-  /// Returns an empty list if the key is missing, null, or not a JSON list.
-  List<T> getList<T>(String key) {
-    if (!hasValue(key)) return <T>[];
-    final value = this[key];
-    if (value is! List) return <T>[];
-    return value.whereType<T>().map((e) => e).toList(growable: false);
-  }
-
   /// Returns the nested map at [key].
   /// Returns null if the key is missing, null, or not a JSON map.
   Map<String, dynamic>? getMap(String key) {
@@ -70,11 +93,33 @@ extension JsonParsing on Map<String, dynamic> {
     return value;
   }
 
+  /// Returns the nested list at [key].
+  /// Returns an empty list if the key is missing, null, or not a JSON list.
+  List<T> getList<T>(String key) {
+    if (!hasValue(key)) return <T>[];
+    final value = this[key];
+    if (value is! List) return <T>[];
+    return value.whereType<T>().map((e) => e).toList(growable: false);
+  }
+
+  /// Returns the nested object at [key] parsed via a provided [fromValue] factory.
+  /// Throws an [Exception] if the key is missing, null.
+  T getEnum<T, V>(String key, T Function(V) fromValue) =>
+      getEnumOrNull<T, V>(key, fromValue) ??
+          (throw Exception('Key "$key" not found or not a valid JSON object.'));
+
+  /// Returns the nested En at [key] parsed via a provided [fromValue] factory.
+  /// Returns null if the key is missing, null.
+  T? getEnumOrNull<T, V>(String key, T Function(V) fromValue) {
+    if (!hasValue(key)) return null;
+    return fromValue(this[key]);
+  }
+
   /// Returns the nested object at [key] parsed via a provided [fromJson] factory.
   /// Throws an [Exception] if the key is missing, null, or not a JSON object.
   T getObject<T>(String key, T Function(Map<String, dynamic>) fromJson) =>
       getObjectOrNull(key, fromJson) ??
-      (throw Exception('Key "$key" not found or not a valid JSON object.'));
+          (throw Exception('Key "$key" not found or not a valid JSON object.'));
 
   /// Returns the nested object at [key] parsed via a provided [fromJson] factory.
   /// Returns null if the key is missing, null, or not a JSON object.
@@ -88,9 +133,9 @@ extension JsonParsing on Map<String, dynamic> {
   /// Returns the nested list at [key] parsed via a provided [fromJson] factory.
   /// Returns an empty list if the key is missing, null, or not a JSON list.
   List<T> getTypedList<T>(
-    String key,
-    T Function(Map<String, dynamic>) fromJson,
-  ) {
+      String key,
+      T Function(Map<String, dynamic>) fromJson,
+      ) {
     if (!hasValue(key)) return <T>[];
     final value = this[key];
     if (value is! List) return <T>[];
