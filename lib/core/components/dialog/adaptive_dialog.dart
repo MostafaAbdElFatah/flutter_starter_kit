@@ -193,14 +193,7 @@ class AdaptiveDialog extends StatelessWidget {
                   ],
                 )
               else
-                Center(
-                  child: FlexibleElevatedButton(
-                    label: options.confirmLabel ?? LocalizationKeys.ok,
-                    onPressed: options.onConfirmPressed ?? () => context.pop(),
-                    padding: EdgeInsets.zero,
-                    textColor: AppColors.white,
-                  ),
-                ),
+                Center(child: _buildConfirmButton(context)),
             ],
           ),
         ),
